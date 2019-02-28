@@ -1,0 +1,11 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.13.1"
+  },
+  "scripts": {
+    "release": "lerna version",
+    "postversion": "echo \"postversion from root\""
+  }
+}
