@@ -1,6 +1,7 @@
 {
   "name": "plugin-1",
   "version": "0.0.1",
+  "private": true,
   "description": "> TODO: description",
   "author": "David Arenas <darensr@gmail.com>",
   "homepage": "https://github.com/frontity/wp-org-plugins#readme",
@@ -18,8 +19,7 @@
     "url": "git+https://github.com/frontity/wp-org-plugins.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
-    "version": "echo \"plugin-1 fails\" && exit 1"
+    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/frontity/wp-org-plugins/issues"

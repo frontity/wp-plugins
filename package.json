@@ -2,10 +2,13 @@
   "name": "root",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.13.1"
+    "lerna": "^3.13.1",
+    "minimist": "^1.2.0",
+    "replace-in-file": "^3.4.3",
+    "simple-git": "^1.107.0"
   },
   "scripts": {
-    "release": "lerna version",
-    "postversion": "echo \"postversion from root\""
+    "release": "lerna version --yes",
+    "version": "lerna exec --concurrency 1 -- node ../../version.scripts.js"
   }
 }
