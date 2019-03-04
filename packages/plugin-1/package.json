@@ -18,7 +18,8 @@
     "url": "git+https://github.com/frontity/wp-org-plugins.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "version": "echo \"plugin-1 fails\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/frontity/wp-org-plugins/issues"
