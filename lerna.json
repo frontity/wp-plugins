@@ -1,5 +1,5 @@
 {
-  "packages": ["packages/*"],
+  "packages": ["plugins/*"],
   "version": "independent",
   "command": {
     "version": {

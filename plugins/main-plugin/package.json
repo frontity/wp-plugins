@@ -1,0 +1,27 @@
+{
+  "name": "main-plugin",
+  "version": "0.0.1",
+  "private": true,
+  "description": "> TODO: description",
+  "author": "David Arenas <darensr@gmail.com>",
+  "homepage": "https://github.com/frontity/wp-org-plugins#readme",
+  "license": "ISC",
+  "main": "lib/main-plugin.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontity/wp-org-plugins.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/frontity/wp-org-plugins/issues"
+  }
+}
