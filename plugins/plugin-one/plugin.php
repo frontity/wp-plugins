@@ -4,13 +4,14 @@
  * Version: 0.0.1
  */
 
-define('PLUGIN_VERSION', '0.0.1');
+define('FRONTITY_ONE_VERSION', '0.0.1');
+define('FRONTITY_ONE_PATH', plugin_dir_path(__FILE__));
+define('FRONTITY_ONE_URL', plugin_dir_url(__FILE__));
 
-function activate()
-{ }
+if (!class_exists("Plugin_One")) {
+  require_once FRONTITY_ONE_PATH . "class-plugin-one.php";
+}
 
-function deactivate()
-{ }
+$plugin_one = new Plugin_One();
 
-register_activation_hook(__FILE__, "activate");
-register_deactivation_hook(__FILE__, "deactivate");
+add_action('init', array($plugin_one, 'should_run'));
