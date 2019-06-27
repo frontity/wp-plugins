@@ -3,14 +3,14 @@
   "private": true,
   "devDependencies": {
     "lerna": "^3.13.1",
-    "minimist": "^1.2.0",
     "replace-in-file": "^3.4.3",
     "simple-git": "^1.107.0",
-    "symlink-dir": "^3.1.0"
+    "symlink-dir": "^3.1.0",
+    "webpack": "^4.35.0"
   },
   "scripts": {
     "sync": "node ./scripts/symlink.js",
-    "release": "lerna version --yes",
+    "release": "lerna version --yes && node scripts/release.js",
     "version": "lerna exec --concurrency 1 -- node ../../scripts/version.js"
   }
 }
