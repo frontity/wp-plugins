@@ -18,5 +18,3 @@ $plugin_two = new Plugin_Two();
 add_action('init', array($main_plugin, 'run'));
 add_action('init', array($plugin_one, 'run'));
 add_action('init', array($plugin_two, 'run'));
-
-require_once FRONTITY_MAIN_PATH . 'admin.php';

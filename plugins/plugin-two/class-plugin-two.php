@@ -6,6 +6,7 @@ class Plugin_Two
   {
     if (!class_exists("Main_Plugin")) {
       add_action("admin_menu", array($this, "register_menu"));
+      add_action("admin_enqueue_scripts", array($this, "register_script"));
       $this->run();
     } else {
       add_action("admin_notices", array($this, "show_warning"));
@@ -18,8 +19,25 @@ class Plugin_Two
       'Plugin Two',
       'Plugin Two',
       'manage_options',
-      'plugin-two'
+      'plugin-two',
+      function () {
+        require_once FRONTITY_ONE_PATH . "admin/index.php";
+      }
     );
+  }
+
+  function register_script($hook)
+  {
+    if ('settings_page_plugin-two' === $hook) {
+      wp_register_script(
+        'frontity_two_admin_js',
+        FRONTITY_TWO_URL . 'admin/build/bundle.js',
+        array(),
+        FRONTITY_TWO_VERSION,
+        true
+      );
+      wp_enqueue_script('frontity_two_admin_js');
+    }
   }
 
   function show_warning()

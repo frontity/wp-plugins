@@ -1,14 +1,23 @@
 {
-  "name": "root",
+  "name": "wp-org-plugins",
   "private": true,
   "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "core-js": "^3.1.4",
     "lerna": "^3.13.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "replace-in-file": "^3.4.3",
     "simple-git": "^1.107.0",
     "symlink-dir": "^3.1.0",
-    "webpack": "^4.35.0"
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.5"
   },
   "scripts": {
+    "dev": "webpack --watch",
     "sync": "node ./scripts/symlink.js",
     "release": "lerna version --yes && node scripts/release.js",
     "version": "lerna exec --concurrency 1 -- node ../../scripts/version.js"

@@ -6,9 +6,10 @@ class Plugin_One
   {
     if (!class_exists("Main_Plugin")) {
       add_action("admin_menu", array($this, "register_menu"));
+      add_action("admin_enqueue_scripts", array($this, "register_script"));
       $this->run();
     } else {
-      add_action("admin_notices", array($this, "show_warning"));
+      add_action("admin_notices", array($this, "render_warning"));
     };
   }
 
@@ -18,11 +19,28 @@ class Plugin_One
       'Plugin One',
       'Plugin One',
       'manage_options',
-      'plugin-one'
+      'plugin-one',
+      function () {
+        require_once FRONTITY_ONE_PATH . "admin/index.php";
+      }
     );
   }
 
-  function show_warning()
+  function register_script($hook)
+  {
+    if ('settings_page_plugin-one' === $hook) {
+      wp_register_script(
+        'frontity_one_admin_js',
+        FRONTITY_ONE_URL . 'admin/build/bundle.js',
+        array(),
+        FRONTITY_ONE_VERSION,
+        true
+      );
+      wp_enqueue_script('frontity_one_admin_js');
+    }
+  }
+
+  function render_warning()
   {
     if (get_current_screen()->id === "plugins") {
       echo
