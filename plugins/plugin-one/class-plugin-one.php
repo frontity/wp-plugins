@@ -60,3 +60,18 @@ class Plugin_One
   function run()
   { }
 }
+
+function Plugin_One_Activation() {
+  $settings = get_option('plugin_one_settings');
+  if (!$settings) {
+    update_option('plugin_one_settings', array(
+      'value' => 1,
+    ));
+  }
+}
+
+function Plugin_One_Deactivation() {
+  $settings = get_option('plugin_one_settings');
+  $settings["value"] = 0;
+  update_option('plugin_one_settings', $settings);
+}

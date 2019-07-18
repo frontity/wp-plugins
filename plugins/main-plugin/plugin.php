@@ -18,3 +18,9 @@ $plugin_two = new Plugin_Two();
 add_action('init', array($main_plugin, 'run'));
 add_action('init', array($plugin_one, 'run'));
 add_action('init', array($plugin_two, 'run'));
+
+function Main_Plugin_Activation() {
+  Plugin_One_Activation();
+}
+
+register_activation_hook(__FILE__, 'Main_Plugin_Activation');

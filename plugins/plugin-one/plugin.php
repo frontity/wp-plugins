@@ -15,3 +15,7 @@ if (!class_exists("Plugin_One")) {
 $plugin_one = new Plugin_One();
 
 add_action('init', array($plugin_one, 'should_run'));
+
+register_activation_hook(__FILE__, 'Plugin_One_Activation');
+register_deactivation_hook(__FILE__, 'Plugin_One_Deactivation');
+
