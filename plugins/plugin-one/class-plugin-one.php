@@ -57,8 +57,17 @@ class Plugin_One
     }
   }
 
+  function save_settings()
+  {
+    $data = json_decode(stripslashes($_POST["data"]), true);
+    if ($data) update_option('plugin_one_settings', $data);
+    wp_send_json($data);
+  }
+
   function run()
-  { }
+  {
+    add_action('wp_ajax_frontity_save_plugin_one_settings', array($this, 'save_settings'));
+  }
 }
 
 function Plugin_One_Activation() {
