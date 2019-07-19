@@ -1,7 +1,6 @@
-import { createStore } from "@frontity/connect";
 import { post } from "axios";
 
-const store = createStore({
+export default {
   state: {
     pluginOne: {
       settings: window.frontity.plugins.pluginOne.settings
@@ -24,9 +23,4 @@ const store = createStore({
       }
     }
   }
-});
-
-window.frontity.state = store.state;
-window.frontity.actions = store.actions;
-
-export default store;
+};

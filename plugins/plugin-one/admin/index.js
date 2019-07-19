@@ -1,8 +1,13 @@
 import React from "react";
 import { render } from "react-dom";
-import { Provider } from "@frontity/connect";
+import { Provider, createStore } from "@frontity/connect";
 import PluginOne from "./components";
-import store from "./store";
+import config from "./config";
+
+// Init store and expose it in window.frontity
+const store = createStore(config);
+window.frontity.state = store.state;
+window.frontity.actions = store.actions;
 
 const App = () => (
   <Provider value={store}>
