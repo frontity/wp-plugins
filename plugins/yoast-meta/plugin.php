@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Yoast Meta
+ * Plugin Name: REST API Yoast Meta by Frontity
  * Version: 0.1.0
  */
 
