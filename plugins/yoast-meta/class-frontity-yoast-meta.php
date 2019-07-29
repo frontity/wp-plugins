@@ -80,14 +80,12 @@ function Frontity_Yoast_Meta_Activation()
   $settings = get_option(Frontity_Yoast_Meta::$settings);
   if (!$settings) {
     update_option(Frontity_Yoast_Meta::$settings, array(
-      'value' => 1,
+      'isActive' => true,
     ));
   }
 }
 
 function Frontity_Yoast_Meta_Deactivation()
 {
-  // $settings = get_option(Frontity_Yoast_Meta::$settings);
-  // $settings["value"] = 0;
-  // update_option(Frontity_Yoast_Meta::$settings, $settings);
+  delete_option(Frontity_Yoast_Meta::$settings);
 }

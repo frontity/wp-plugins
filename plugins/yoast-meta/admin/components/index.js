@@ -1,13 +1,17 @@
 import React from "react";
 import connect from "@frontity/connect";
 
-const YoastMetaPlugin = ({ state, actions }) => (
-  <>
-    <div>
-      This is REST API Yoast Meta by Frontity: {state.yoastMeta.settings.value}
-    </div>
-    <button onClick={actions.yoastMeta.setValue}>set Value</button>
-  </>
-);
+const YoastPlugin = ({ state, actions }) => {
+  const { isActive } = state.yoast.settings;
+  const { activate, deactivate } = actions.yoast;
+  return (
+    <>
+      <div>REST API Yoast Meta by Frontity</div>
+      <button onClick={isActive ? deactivate : activate}>
+        {isActive ? "Deactivate" : "Activate"}
+      </button>
+    </>
+  );
+};
 
-export default connect(YoastMetaPlugin);
+export default connect(YoastPlugin);

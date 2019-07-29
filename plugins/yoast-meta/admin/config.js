@@ -17,8 +17,12 @@ export default {
         console.log("saved");
         console.log(res);
       },
-      setValue: ({ state, actions }) => {
-        state.yoast.settings.value = Math.random();
+      activate: ({ state, actions }) => {
+        state.yoast.settings.isActive = true;
+        actions.yoast.save();
+      },
+      deactivate: ({ state, actions }) => {
+        state.yoast.settings.isActive = false;
         actions.yoast.save();
       }
     }
