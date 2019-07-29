@@ -1,0 +1,17 @@
+{
+  "name": "frontity-yoast-meta",
+  "version": "0.1.0",
+  "private": true,
+  "description": "> TODO: description",
+  "author": "Frontity <tech@frontity.org>",
+  "homepage": "https://github.com/frontity/wp-org-plugins#readme",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frontity/wp-org-plugins.git"
+  },
+  "scripts": {},
+  "bugs": {
+    "url": "https://github.com/frontity/wp-org-plugins/issues"
+  }
+}
