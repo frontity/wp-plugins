@@ -17,12 +17,12 @@ export default {
         console.log("saved");
         console.log(res);
       },
-      activate: ({ state, actions }) => {
-        state.yoast.settings.isActive = true;
+      enable: ({ state, actions }) => {
+        state.yoast.settings.isEnabled = true;
         actions.yoast.save();
       },
-      deactivate: ({ state, actions }) => {
-        state.yoast.settings.isActive = false;
+      disable: ({ state, actions }) => {
+        state.yoast.settings.isEnabled = false;
         actions.yoast.save();
       }
     }

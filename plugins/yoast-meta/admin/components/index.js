@@ -2,15 +2,18 @@ import React from "react";
 import connect from "@frontity/connect";
 
 const YoastPlugin = ({ state, actions }) => {
-  const { isActive } = state.yoast.settings;
-  const { activate, deactivate } = actions.yoast;
+  const { isEnabled } = state.yoast.settings;
+  const { enable, disable } = actions.yoast;
   return (
-    <>
-      <div>REST API Yoast Meta by Frontity</div>
-      <button onClick={isActive ? deactivate : activate}>
-        {isActive ? "Deactivate" : "Activate"}
+    <div className="wrap">
+      <h1>REST API Yoast Meta by Frontity</h1>
+      <button
+        className="button button-primary"
+        onClick={isEnabled ? disable : enable}
+      >
+        {isEnabled ? "Disable" : "Enable"}
       </button>
-    </>
+    </div>
   );
 };
 
