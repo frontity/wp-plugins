@@ -2,6 +2,23 @@
 
 class Plugin_One
 {
+  static function activate()
+  {
+    $settings = get_option('plugin_one_settings');
+    if (!$settings) {
+      update_option('plugin_one_settings', array(
+        'value' => 1,
+      ));
+    }
+  }
+
+  static function deactivate()
+  {
+    $settings = get_option('plugin_one_settings');
+    $settings["value"] = 0;
+    update_option('plugin_one_settings', $settings);
+  }
+
   function should_run()
   {
     if (!class_exists("Main_Plugin")) {
@@ -21,7 +38,7 @@ class Plugin_One
       'manage_options',
       'plugin-one',
       function () {
-        require_once FRONTITY_ONE_PATH . "admin/index.php";
+        require_once plugin_dir_path(__FILE__) . "admin/index.php";
       }
     );
   }
@@ -68,19 +85,4 @@ class Plugin_One
   {
     add_action('wp_ajax_frontity_save_plugin_one_settings', array($this, 'save_settings'));
   }
-}
-
-function Plugin_One_Activation() {
-  $settings = get_option('plugin_one_settings');
-  if (!$settings) {
-    update_option('plugin_one_settings', array(
-      'value' => 1,
-    ));
-  }
-}
-
-function Plugin_One_Deactivation() {
-  $settings = get_option('plugin_one_settings');
-  $settings["value"] = 0;
-  update_option('plugin_one_settings', $settings);
 }

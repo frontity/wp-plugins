@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Main Plugin
  * Version: 0.0.1
@@ -11,16 +12,24 @@ define('FRONTITY_MAIN_URL', plugin_dir_url(__FILE__));
 
 require_once FRONTITY_MAIN_PATH . 'require-dev.php';
 
-$main_plugin = new Main_Plugin();
-$plugin_one = new Plugin_One();
-$plugin_two = new Plugin_Two();
+// All frontity plugins
+$frontity_plugin_classes = array(
+  "Main_Plugin",
+  "Plugin_One",
+  "Plugin_Two",
+  "Frontity_Yoast_Meta"
+);
 
-add_action('init', array($main_plugin, 'run'));
-add_action('init', array($plugin_one, 'run'));
-add_action('init', array($plugin_two, 'run'));
-
-function Main_Plugin_Activation() {
-  Plugin_One_Activation();
+// Instantiate plugin class and
+// add plugin's init action.
+foreach ($frontity_plugin_classes as $plugin_class) {
+  $plugin_instance = new $plugin_class();
+  add_action('init', array($plugin_instance, 'run'));
 }
 
-register_activation_hook(__FILE__, 'Main_Plugin_Activation');
+// Activate plugins
+register_activation_hook(__FILE__, function () use ($frontity_plugin_clases) {
+  foreach (array_slice($frontity_plugin_clases, 1) as $plugin_class) {
+    $plugin_class::activate();
+  };
+});

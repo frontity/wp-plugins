@@ -4,6 +4,7 @@ import { Provider, createStore } from "@frontity/connect";
 import MainPlugin from "./components";
 import PluginOne from "../../plugin-one/admin/components";
 import PluginTwo from "../../plugin-two/admin/components";
+import YoastMeta from "../../yoast-meta/admin/components";
 import config from "./config";
 
 // Init store and expose it in window.frontity
@@ -16,7 +17,8 @@ const App = () => (
     <MainPlugin />
     <PluginOne />
     <PluginTwo />
+    <YoastMeta />
   </Provider>
 );
 
-render(App, document.getElementById("root"));
+render(<App />, document.getElementById("root"));

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Plugin Two
  * Version: 0.0.1
@@ -15,3 +16,6 @@ if (!class_exists("Plugin_Two")) {
 $plugin_two = new Plugin_Two();
 
 add_action('init', array($plugin_two, 'should_run'));
+
+register_activation_hook(__FILE__, 'Plugin_Two::activate');
+register_deactivation_hook(__FILE__, 'Plugin_Two::deactivate');

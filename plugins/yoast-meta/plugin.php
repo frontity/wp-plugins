@@ -17,5 +17,5 @@ $frontity_yoast_meta = new Frontity_Yoast_Meta();
 
 add_action('init', array($frontity_yoast_meta, 'should_run'));
 
-register_deactivation_hook(__FILE__, 'Frontity_Yoast_Meta_Deactivation');
-register_activation_hook(__FILE__, 'Frontity_Yoast_Meta_Activation');
+register_activation_hook(__FILE__, 'Frontity_Yoast_Meta::activate');
+register_deactivation_hook(__FILE__, 'Frontity_Yoast_Meta::deactivate');

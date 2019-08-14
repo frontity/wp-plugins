@@ -9,3 +9,6 @@ if (!class_exists("Plugin_One")) {
 if (!class_exists("Plugin_Two")) {
   require_once FRONTITY_MAIN_PATH . "plugins/class-plugin-two.php";
 }
+if (!class_exists("Frontity_Yoast_Meta")) {
+  require_once FRONTITY_MAIN_PATH . "plugins/class-frontity-yoast-meta.php";
+}

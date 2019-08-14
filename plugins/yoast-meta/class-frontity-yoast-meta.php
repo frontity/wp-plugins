@@ -8,7 +8,22 @@ class Frontity_Yoast_Meta
   public static $settings = 'frontity_yoast_settings';
   public static $script = 'frontity_yoast_meta_admin_js';
 
-  static function is_enabled()
+  public static function activate()
+  {
+    $settings = get_option(Frontity_Yoast_Meta::$settings);
+    if (!$settings) {
+      update_option(Frontity_Yoast_Meta::$settings, array(
+        'isEnabled' => true,
+      ));
+    }
+  }
+
+  public static function deactivate()
+  {
+    delete_option(Frontity_Yoast_Meta::$settings);
+  }
+
+  public static function is_enabled()
   {
     if (isset($_GET["yoast_meta"])) {
       if ($_GET["yoast_meta"] === "true") return true;
@@ -42,7 +57,7 @@ class Frontity_Yoast_Meta
       'manage_options',
       Frontity_Yoast_Meta::$menu_slug,
       function () {
-        require_once FRONTITY_YOAST_META_PATH . "admin/index.php";
+        require_once plugin_dir_path(__FILE__) . "admin/index.php";
       }
     );
   }
@@ -107,23 +122,8 @@ class Frontity_Yoast_Meta
     add_action('wp_ajax_frontity_save_' . Frontity_Yoast_Meta::$settings, array($this, 'save_settings'));
 
     if (Frontity_Yoast_Meta::is_enabled()) {
-      require_once FRONTITY_YOAST_META_PATH . "class-yoast-to-rest-api.php";
+      require_once plugin_dir_path(__FILE__) . "class-yoast-to-rest-api.php";
       new Yoast_To_REST_API();
     }
   }
-}
-
-function Frontity_Yoast_Meta_Activation()
-{
-  $settings = get_option(Frontity_Yoast_Meta::$settings);
-  if (!$settings) {
-    update_option(Frontity_Yoast_Meta::$settings, array(
-      'isEnabled' => true,
-    ));
-  }
-}
-
-function Frontity_Yoast_Meta_Deactivation()
-{
-  delete_option(Frontity_Yoast_Meta::$settings);
 }

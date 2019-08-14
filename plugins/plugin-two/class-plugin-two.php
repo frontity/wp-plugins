@@ -2,6 +2,12 @@
 
 class Plugin_Two
 {
+  static function activate()
+  { }
+
+  static function deactivate()
+  { }
+
   function should_run()
   {
     if (!class_exists("Main_Plugin")) {
