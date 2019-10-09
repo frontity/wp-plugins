@@ -11,7 +11,7 @@ export default {
       save: async ({ state }) => {
         console.log("saving");
         const data = new window.FormData();
-        data.append("action", "frontity_save_plugin_one_settings");
+        data.append("action", "frontity_save_frontity_plugin_one_settings");
         data.append("data", JSON.stringify(state.pluginOne.settings));
         const res = await post(window.ajaxurl, data);
         console.log("saved");

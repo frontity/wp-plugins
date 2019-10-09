@@ -1,7 +1,7 @@
 <?php
 $plugin_dir_url = FRONTITY_ONE_URL;
 $locale = get_locale();
-$settings = get_option('plugin_one_settings');
+$settings = get_option(Plugin_One::$settings);
 ?>
 
 <div id='root'></div>
