@@ -1,8 +1,6 @@
 <?php
 $plugin_dir_url = FRONTITY_MAIN_URL;
 $locale = get_locale();
-$plugin_one_settings = get_option('plugin_one_settings');
-$yoast_meta_settings = get_option(Frontity_Yoast_Meta::$settings);
 ?>
 
 <div id='root'></div>
@@ -12,13 +10,22 @@ $yoast_meta_settings = get_option(Frontity_Yoast_Meta::$settings);
     plugins: {}
   };
 
-  window.frontity.plugins.pluginOne = {
-    url: <?php echo json_encode($plugin_dir_url ? $plugin_dir_url : ''); ?>,
-    settings: <?php echo json_encode($plugin_one_settings ? $plugin_one_settings : new stdClass()); ?>,
-  };
+  <?php
+    foreach ($frontity_plugin_classes as $plugin_class) {
+      // Get the plugin URL
+      $url = json_encode($plugin_dir_url ? $plugin_dir_url : '');
 
-  window.frontity.plugins.yoast = {
-    url: <?php echo json_encode($plugin_dir_url ? $plugin_dir_url : ''); ?>,
-    settings: <?php echo json_encode($yoast_meta_settings ? $yoast_meta_settings : new stdClass()); ?>,
-  }
+      // Get settings from database
+      $settings = get_option($plugin_class::$settings);
+      $settings = json_encode($settings ? $settings : new stdClass());
+
+      // Return code to add the plugin's settings
+      echo "
+      window.frontity.plugins." . $plugin_class::$plugin_store . " = {
+        url: " . $url . ",
+        settings: " . $settings . "
+      };";
+    }
+  ?>
+
 </script>
