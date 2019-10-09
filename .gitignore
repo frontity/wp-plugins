@@ -63,3 +63,6 @@ typings/
 # release
 release
 build
+
+# local vscode config
+.vscode
