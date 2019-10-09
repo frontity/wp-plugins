@@ -1,12 +1,5 @@
 <?php // @codingStandardsIgnoreStart
-/**
- * Plugin Name: Yoast to REST API
- * Description: Adds Yoast fields to page and post metadata to WP REST API responses
- * Author: Niels Garve, Pablo Postigo, Tedy Warsitha, Charlie Francis
- * Author URI: https://github.com/niels-garve
- * Version: 1.4.2
- * Plugin URI: https://github.com/niels-garve/yoast-to-rest-api
- */
+
 class Yoast_To_REST_API
 {
 	protected $keys = array(
