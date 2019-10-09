@@ -2,6 +2,13 @@
 
 class Main_Plugin
 {
+  public static $plugin_store = "main";
+  public static $plugin_title = 'Main Plugin by Frontity';
+  public static $menu_title = 'Main Plugin';
+  public static $menu_slug = 'frontity-main-plugin';
+  public static $settings = 'frontity_main_plugin_settings';
+  public static $script = 'frontity_main_plugin_admin_js';
+
   function register_menu()
   {
     add_menu_page(
@@ -10,6 +17,7 @@ class Main_Plugin
       'manage_options',
       'main-plugin',
       function () {
+        global $frontity_plugin_classes;
         require_once FRONTITY_MAIN_PATH . "admin/index.php";
       }
     );

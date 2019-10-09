@@ -2,6 +2,13 @@
 
 class Plugin_Two
 {
+  public static $plugin_store = "pluginTwo";
+  public static $plugin_title = 'Plugin Two by Frontity';
+  public static $menu_title = 'Plugin Two';
+  public static $menu_slug = 'frontity-plugin-two';
+  public static $settings = 'frontity_plugin_two_settings';
+  public static $script = 'frontity_plugin_two_admin_js';
+
   static function activate()
   { }
 

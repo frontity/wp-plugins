@@ -2,11 +2,18 @@
 
 class Plugin_One
 {
+  public static $plugin_store = "pluginOne";
+  public static $plugin_title = 'Plugin One by Frontity';
+  public static $menu_title = 'Plugin One';
+  public static $menu_slug = 'frontity-plugin-one';
+  public static $settings = 'frontity_plugin_one_settings';
+  public static $script = 'frontity_plugin_one_admin_js';
+
   static function activate()
   {
-    $settings = get_option('plugin_one_settings');
+    $settings = get_option(Plugin_One::$settings);
     if (!$settings) {
-      update_option('plugin_one_settings', array(
+      update_option(Plugin_One::$settings, array(
         'value' => 1,
       ));
     }
@@ -14,9 +21,9 @@ class Plugin_One
 
   static function deactivate()
   {
-    $settings = get_option('plugin_one_settings');
+    $settings = get_option(Plugin_One::$settings);
     $settings["value"] = 0;
-    update_option('plugin_one_settings', $settings);
+    update_option(Plugin_One::$settings, $settings);
   }
 
   function should_run()
@@ -77,12 +84,12 @@ class Plugin_One
   function save_settings()
   {
     $data = json_decode(stripslashes($_POST["data"]), true);
-    if ($data) update_option('plugin_one_settings', $data);
+    if ($data) update_option(Plugin_One::$settings, $data);
     wp_send_json($data);
   }
 
   function run()
   {
-    add_action('wp_ajax_frontity_save_plugin_one_settings', array($this, 'save_settings'));
+    add_action('wp_ajax_frontity_save_' . Plugin_One::$settings, array($this, 'save_settings'));
   }
 }

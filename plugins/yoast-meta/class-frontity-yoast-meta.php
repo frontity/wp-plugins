@@ -2,6 +2,7 @@
 
 class Frontity_Yoast_Meta
 {
+  public static $plugin_store = "yoast";
   public static $plugin_title = 'REST API Yoast Meta by Frontity';
   public static $menu_title = 'Yoast Meta';
   public static $menu_slug = 'frontity-yoast-meta';
