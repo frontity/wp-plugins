@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "webpack --watch",
     "sync": "node ./scripts/symlink.js",
-    "release": "lerna version --yes && node scripts/release.js",
+    "release": "lerna version --no-push --yes && node scripts/release.js",
     "version": "lerna exec --concurrency 1 -- node ../../scripts/version.js"
   },
   "dependencies": {
