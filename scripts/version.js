@@ -1,19 +1,16 @@
-const path = require('path');
+const path = require("path");
 const connect = require("simple-git/promise");
 const replace = require("replace-in-file");
-const packageJson = require(path.join(process.cwd(), './package.json'));
+const packageJson = require(path.join(process.cwd(), "./package.json"));
 
 (async () => {
   const options = {
     files: "plugin.php",
-    from: [
-      /Version: \d+\.\d+\.\d+/,
-      /define\('PLUGIN_VERSION', '\d+\.\d+\.\d+'\)/,
-    ],
+    from: [/Version: \d+\.\d+\.\d+/, /_VERSION', '\d+\.\d+\.\d+'\)/],
     to: [
       `Version: ${packageJson.version}`,
-      `define('PLUGIN_VERSION', '${packageJson.version}')`,
-    ],
+      `_VERSION', '${packageJson.version}')`
+    ]
   };
   try {
     const changes = await replace(options);
