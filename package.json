@@ -20,6 +20,7 @@
   "scripts": {
     "dev": "webpack --watch",
     "sync": "node ./scripts/symlink.js",
+    "sync:prod": "NODE=production node ./scripts/symlink.js",
     "build": "NODE=production node scripts/build.js",
     "version": "lerna exec --concurrency 1 -- node ../../scripts/version.js",
     "release": "lerna version --no-push --yes && npm run build"
