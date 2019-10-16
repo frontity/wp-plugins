@@ -4,9 +4,8 @@ const fs = require("fs-extra");
 const path = require("path");
 const replace = require("replace-in-file");
 
-// Assume this command is executed from the project root
-const BUILD_FOLDER = path.normalize("./build");
-const PLUGINS_FOLDER = path.normalize("./plugins");
+const BUILD_FOLDER = path.resolve(__dirname, "../build");
+const PLUGINS_FOLDER = path.resolve(__dirname, "../plugins");
 const MAIN_PLUGIN = "main-plugin";
 
 (async () => {
@@ -34,7 +33,9 @@ const MAIN_PLUGIN = "main-plugin";
           !(
             file.includes("package.json") ||
             file.includes("node_modules") ||
-            (file.includes("admin/") && !file.includes("admin/build"))
+            (file.includes("admin/") &&
+              !file.endsWith(".php") &&
+              !file.includes("admin/build"))
           )
       });
 
@@ -50,19 +51,16 @@ const MAIN_PLUGIN = "main-plugin";
         // - without package.json
         // - without node_modules
         // - without admin
-        const subpluginPath = path.join(
-          BUILD_FOLDER,
-          MAIN_PLUGIN,
-          "plugins",
-          plugin
-        );
+        // - without plugin.php
+        const subpluginPath = path.join(BUILD_FOLDER, MAIN_PLUGIN, "plugins");
         await fs.ensureDir(subpluginPath);
         await fs.copy(pluginPath, subpluginPath, {
           filter: file =>
             !(
               file.includes("package.json") ||
               file.includes("node_modules") ||
-              file.includes("admin/")
+              file.includes("admin") ||
+              file.includes("plugin.php")
             )
         });
       }
