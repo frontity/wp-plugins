@@ -31,19 +31,11 @@ const MAIN_PLUGIN = "main-plugin";
       const buildPath = path.join(BUILD_FOLDER, plugin);
 
       // Copy it to ./build/PLUGIN folder
-      // - without package.json
       // - without node_modules
-      // - without src files inside admin folders
+      // - source files should be included!
       console.log(`Copying files from ${chalk.yellow(plugin)}`);
       await fs.copy(pluginPath, buildPath, {
-        filter: file =>
-          !(
-            file.includes("package.json") ||
-            file.includes("node_modules") ||
-            (file.includes("admin/") &&
-              !file.endsWith(".php") &&
-              !file.includes("admin/build"))
-          )
+        filter: file => !file.includes("node_modules")
       });
 
       if (plugin === MAIN_PLUGIN) {
@@ -55,19 +47,19 @@ const MAIN_PLUGIN = "main-plugin";
         });
       } else {
         // Copy it also to ./build/MAIN_PLUGIN/plugins/PLUGIN folder
-        // - without package.json
+        // - without plugin.php (this file contains the plugin definition)
         // - without node_modules
+        // - without package.json
         // - without admin
-        // - without plugin.php
         const subpluginPath = path.join(BUILD_FOLDER, MAIN_PLUGIN, "plugins");
         await fs.ensureDir(subpluginPath);
         await fs.copy(pluginPath, subpluginPath, {
           filter: file =>
             !(
-              file.includes("package.json") ||
+              file.includes("plugin.php") ||
               file.includes("node_modules") ||
-              file.includes("admin") ||
-              file.includes("plugin.php")
+              file.includes("package.json") ||
+              file.includes("admin")
             )
         });
       }
