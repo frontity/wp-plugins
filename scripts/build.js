@@ -3,6 +3,7 @@ const config = require("../webpack.config");
 const fs = require("fs-extra");
 const path = require("path");
 const replace = require("replace-in-file");
+const chalk = require("chalk");
 
 const BUILD_FOLDER = path.resolve(__dirname, "../build");
 const PLUGINS_FOLDER = path.resolve(__dirname, "../plugins");
@@ -10,7 +11,12 @@ const MAIN_PLUGIN = "main-plugin";
 
 (async () => {
   // Build UI in production mode
-  webpack(config).run();
+  console.log("Building admin UI pages");
+  await new Promise((resolve, reject) =>
+    webpack({ ...config, mode: "production" }).run((error, stats) =>
+      error ? reject(error) : resolve(stats)
+    )
+  );
 
   // Ensure build folder is empty
   await fs.emptyDir(BUILD_FOLDER);
@@ -28,6 +34,7 @@ const MAIN_PLUGIN = "main-plugin";
       // - without package.json
       // - without node_modules
       // - without src files inside admin folders
+      console.log(`Copying files from ${chalk.yellow(plugin)}`);
       await fs.copy(pluginPath, buildPath, {
         filter: file =>
           !(
@@ -66,4 +73,6 @@ const MAIN_PLUGIN = "main-plugin";
       }
     })
   );
+
+  console.log(chalk.green("\nBuild finished.\n"));
 })();
