@@ -7,6 +7,9 @@
 
 /**
  * Abstract class to create Frontity plugins
+ *
+ * This abstract class is an intent to avoid duplicating code. It implements
+ * the basic behavior a plugin would need.
  */
 abstract class Frontity_Plugin {
 
