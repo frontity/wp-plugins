@@ -58,13 +58,9 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 */
 	public function rest_add_yoast( $response, $post, $request ) {
 
-		$yoast_data = $this->get_yoast_data( $post );
+		$head_tags = $this->get_head_tags( $post );
 
-		$yoast_meta    = apply_filters( 'wp_rest_yoast_meta_filter_yoast_meta', $yoast_data['meta'] );
-		$yoast_json_ld = apply_filters( 'wp_rest_yoast_meta_filter_yoast_json_ld', $yoast_data['json_ld'] );
-
-		$response->data['yoast_meta']    = $yoast_meta;
-		$response->data['yoast_json_ld'] = $yoast_json_ld;
+		$response->data['head_tags'] = $head_tags;
 
 		return $response;
 	}
@@ -77,7 +73,7 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 *
 	 * @return array|mixed
 	 */
-	public function get_yoast_data( $post ) {
+	public function get_head_tags( $post ) {
 		$this->setup_postdata_and_wp_query( $post );
 
 		// Add missing opengraph hooks.
@@ -97,9 +93,9 @@ class Frontity_Yoast_Meta_Rest_Api {
 		$this->reset_postdata_and_wp_query();
 
 		// Parse the xml to create an array of meta items.
-		$yoast_data = $this->parse( $html );
+		$head_tags = $this->parse( $html );
 
-		return $yoast_data;
+		return $head_tags;
 	}
 
 
@@ -111,40 +107,87 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * @return array An array containing all meta key/value pairs.
 	 */
 	private function parse( $html ) {
+		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+
+		$head_tags = array();
+
 		$dom = new DOMDocument();
-
-		$internal_errors = libxml_use_internal_errors( true );
 		$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' ) );
+		$nodes = $dom->getElementsByTagName( 'head' )[0]->childNodes;
+		foreach ( $nodes as $node ) {
 
-		$metas       = $dom->getElementsByTagName( 'meta' );
-		$yoast_metas = array();
-		foreach ( $metas as $meta ) {
-			if ( $meta->hasAttributes() ) {
-				$yoast_meta = array();
-				foreach ( $meta->attributes as $attr ) {
-				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-					$yoast_meta[ $attr->nodeName ] = $attr->nodeValue;
+			// Ignore comments.
+			if ( get_class( $node ) === 'DOMComment' ) {
+				continue;
+			}
+
+			// Create the tag object.
+			$head_tag = array(
+				'tag' => $node->tagName,
+			);
+
+			// Add attributes.
+			if ( $node->hasAttributes() ) {
+				$head_tag['attributes'] = array();
+				foreach ( $node->attributes as $attr ) {
+					$head_tag['attributes'][ $attr->nodeName ] = $attr->nodeValue;
 				}
-				$yoast_metas[] = $yoast_meta;
+			}
+
+			// Add content.
+			if ( '' !== $node->textContent ) {
+				$head_tag['content'] = $node->textContent;
+			}
+
+			// Append this tag to response if valid.
+			if ( ! (
+				$this->is_javascript( $head_tag ) ||
+				$this->is_style( $head_tag )
+			) ) {
+				$head_tags[] = $head_tag;
 			}
 		}
 
-		$xpath         = new DOMXPath( $dom );
-		$yoast_json_ld = array();
-		foreach ( $xpath->query( '//script[@type="application/ld+json"]' ) as $node ) {
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			$yoast_json_ld[] = json_decode( (string) $node->nodeValue, true );
-		}
-		libxml_use_internal_errors( $internal_errors );
+		return $head_tags;
+		// phpcs:enable
+	}
 
-		return array(
-			'meta'    => $yoast_metas,
-			'json_ld' => $yoast_json_ld,
+	/**
+	 * Check if a tag is JavaScript tag.
+	 *
+	 * @param Array $head_tag Object with the tag data.
+	 *
+	 * @return bool TRUE if it's a JavaScript script tag.
+	 */
+	private function is_javascript( $head_tag ) {
+		return 'script' === $head_tag['tag'] && (
+			! isset( $head_tag['attributes'] ) ||
+			! isset( $head_tag['attributes']['type'] ) ||
+			( in_array(
+				$head_tag['attributes']['type'],
+				array( '', 'text/javascript', 'application/javascript' ),
+				true
+			) )
 		);
 	}
 
 	/**
-	 * Temporary set up postdata and wp_query to represent the current post (so Yoast will process it correctly)
+	 * Check if a tag is a style tag or a stylesheet.
+	 *
+	 * @param Array $head_tag Object with the tag data.
+	 *
+	 * @return bool TRUE if it's a style tag or a stylesheet.
+	 */
+	private function is_style( $head_tag ) {
+		return 'style' === $head_tag['tag'] || (
+			'link' === $head_tag['tag'] &&
+			'stylesheet' === $head_tag['attributes']['rel']
+		);
+	}
+
+	/**
+	 * Temporary set up postdata and wp_query to represent the current post
+	 * (so Yoast will process it correctly).
 	 *
 	 * @param WP_Post $post Post object.
 	 *
@@ -187,7 +230,8 @@ class Frontity_Yoast_Meta_Rest_Api {
 	}
 
 	/**
-	 * Register `rest_prepare_{$post_type}` hooks for all post types visible in REST API.
+	 * Register `rest_prepare_{$post_type}` hooks for all post types visible
+	 * in REST API.
 	 */
 	public function register_rest_prepare_hooks() {
 		foreach ( get_post_types( array( 'show_in_rest' => true ), 'objects' ) as $post_type ) {
