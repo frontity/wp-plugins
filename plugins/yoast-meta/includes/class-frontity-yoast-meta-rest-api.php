@@ -30,41 +30,38 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * Initialize the class and set its properties.
 	 */
 	public function __construct() {
-
-		$this->register_rest_prepare_hooks();
-
-		add_action( 'rest_api_init', 'wpseo_frontend_head_init' );
-		register_rest_field(
-			'type',
-			'new',
-			array(
-				'get_callback' => function () {
-					return 'hi';
-				},
-			)
-		);
+		$this->define_public_hooks();
 	}
 
 	/**
-	 * Add the Yoast meta data to the WP REST output
-	 *
-	 * @access  public
-	 *
-	 * @param WP_REST_Response $response The response object.
-	 * @param WP_Post          $post Post object.
-	 * @param WP_REST_Request  $request Request object.
-	 *
-	 * @return  WP_REST_Response
+	 * Register all hooks.
 	 */
-	public function rest_add_yoast( $response, $post, $request ) {
+	public function define_public_hooks() {
+		// Add Yoast to rest_api_init.
+		add_action( 'rest_api_init', 'wpseo_frontend_head_init' );
 
-		$head_tags = $this->get_head_tags( $post );
+		// Add head_tags field to all post types.
+		add_action( 'registered_post_type', array( $this, 'register_post_type_fields' ) );
 
-		$response->data['head_tags'] = $head_tags;
-
-		return $response;
+		foreach ( get_post_types( array( 'show_in_rest' => true ), 'objects' ) as $post_type ) {
+			$this->register_post_type_fields( $post_type );
+		}
 	}
 
+	/**
+	 * Register rest fields for post types.
+	 *
+	 * @param WP_Post_Type $post_type The name of the post type.
+	 */
+	public function register_post_type_fields( $post_type ) {
+		register_rest_field(
+			$post_type->name,
+			'head_tags',
+			array(
+				'get_callback' => array( $this, 'get_head_tags' ),
+			)
+		);
+	}
 
 	/**
 	 * Fetch yoast meta and possibly json ld and store in transient if needed
@@ -116,8 +113,8 @@ class Frontity_Yoast_Meta_Rest_Api {
 		$nodes = $dom->getElementsByTagName( 'head' )[0]->childNodes;
 		foreach ( $nodes as $node ) {
 
-			// Ignore comments.
-			if ( get_class( $node ) === 'DOMComment' ) {
+			// Ignore comments, texts, etc.
+			if ( get_class( $node ) !== 'DOMElement' ) {
 				continue;
 			}
 
@@ -205,8 +202,8 @@ class Frontity_Yoast_Meta_Rest_Api {
 		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		$wp_query = new WP_Query(
 			array(
-				'p'         => $post->ID,
-				'post_type' => $post->post_type,
+				'p'         => $post['id'],
+				'post_type' => $post['type'],
 			)
 		);
 
@@ -227,15 +224,5 @@ class Frontity_Yoast_Meta_Rest_Api {
 		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		$wp_the_query = $this->old_wp_the_query;
 		wp_reset_postdata();
-	}
-
-	/**
-	 * Register `rest_prepare_{$post_type}` hooks for all post types visible
-	 * in REST API.
-	 */
-	public function register_rest_prepare_hooks() {
-		foreach ( get_post_types( array( 'show_in_rest' => true ), 'objects' ) as $post_type ) {
-			add_filter( 'rest_prepare_' . $post_type->name, array( $this, 'rest_add_yoast' ), 10, 3 );
-		}
 	}
 }
