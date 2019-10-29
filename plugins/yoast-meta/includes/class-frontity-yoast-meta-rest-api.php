@@ -14,51 +14,129 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * Variable to store the original WP Query object (needed to restore it).
 	 *
 	 * @access  private
-	 * @var     \WP_Query
+	 * @var     array
 	 */
-	private $old_wp_query;
-
-	/**
-	 * Variable to store the original WP The Query object (needed to restore it).
-	 *
-	 * @access  private
-	 * @var     \WP_Query
-	 */
-	private $old_wp_the_query;
+	private $query_backup = array();
 
 	/**
 	 * Initialize the class and set its properties.
 	 */
 	public function __construct() {
-		$this->define_public_hooks();
+		add_action( 'rest_api_init', array( $this, 'define_public_hooks' ) );
 	}
 
 	/**
 	 * Register all hooks.
 	 */
 	public function define_public_hooks() {
-		// Add Yoast to rest_api_init.
-		add_action( 'rest_api_init', 'wpseo_frontend_head_init' );
-
-		// Add head_tags field to all post types.
-		add_action( 'registered_post_type', array( $this, 'register_post_type_fields' ) );
-
+		// Add head_tags field to all post types and embed type links.
 		foreach ( get_post_types( array( 'show_in_rest' => true ), 'objects' ) as $post_type ) {
-			$this->register_post_type_fields( $post_type );
+			$this->register_rest_field( $post_type->name, 'get_post_type_head_tags' );
+			add_filter( 'rest_prepare_' . $post_type->name, array( $this, 'add_type_to_links' ), 10 );
 		}
+
+		// Add head_tags field to all taxonomies.
+		foreach ( get_taxonomies( array( 'show_in_rest' => true ), 'objects' ) as $taxonomy ) {
+			$taxonomy_name = 'post_tag' === $taxonomy->name ? 'tag' : $taxonomy->name;
+			$this->register_rest_field( $taxonomy_name, 'get_taxonomy_head_tags' );
+		}
+
+		// Add head_tags field to types.
+		$this->register_rest_field( 'type', 'get_archive_head_tags' );
 	}
 
 	/**
-	 * Register rest fields for post types.
+	 * Register rest fields for post types, taxonomies or types.
 	 *
-	 * @param WP_Post_Type $post_type The name of the post type.
+	 * @param string $object_type Post type object.
+	 * @param string $callback Method to run in get_callback.
 	 */
-	public function register_post_type_fields( $post_type ) {
+	public function register_rest_field( $object_type, $callback ) {
 		register_rest_field(
-			$post_type->name,
+			$object_type,
 			'head_tags',
 			array(
-				'get_callback' => array( $this, 'get_head_tags' ),
+				'get_callback' => array( $this, $callback ),
+			)
+		);
+	}
+
+	/**
+	 * Add type to links.
+	 *
+	 * @param WP_Response $response Post type object.
+	 *
+	 * @return WP_Response Modified response.
+	 */
+	public function add_type_to_links( $response ) {
+		$type      = $response->data['type'];
+		$types_url = rest_url( 'wp/v2/types/' . $type );
+
+		$response->add_links(
+			array(
+				'type' => array(
+					'href'       => $types_url,
+					'embeddable' => true,
+				),
+			)
+		);
+
+		return $response;
+	}
+
+	/**
+	 * For post type.
+	 *
+	 * @param WP_Object $post Post type object.
+	 */
+	public function get_post_type_head_tags( $post ) {
+		return $this->get_head_tags(
+			array(
+				'p'         => $post['id'],
+				'post_type' => $post['type'],
+			)
+		);
+	}
+
+	/**
+	 * For taxonomy.
+	 *
+	 * @param WP_Object $taxonomy Post type object.
+	 */
+	public function get_taxonomy_head_tags( $taxonomy ) {
+		$query = null;
+
+		if ( 'category' === $taxonomy['taxonomy'] ) {
+			$query = array(
+				'cat' => $taxonomy['id'],
+			);
+		} elseif ( 'post_tag' === $taxonomy['taxonomy'] ) {
+			$query = array(
+				'tag_id' => $taxonomy['id'],
+			);
+		} else {
+			$query = array(
+				'tax_query' => array(
+					array(
+						'taxonomy' => $taxonomy['taxonomy'],
+						'terms'    => $taxonomy['id'],
+					),
+				),
+			);
+		}
+
+		return $this->get_head_tags( $query );
+	}
+
+	/**
+	 * For archives.
+	 *
+	 * @param WP_Object $type Post type object.
+	 */
+	public function get_archive_head_tags( $type ) {
+		return $this->get_head_tags(
+			array(
+				'post_type' => array( $type['slug'] ),
 			)
 		);
 	}
@@ -66,20 +144,13 @@ class Frontity_Yoast_Meta_Rest_Api {
 	/**
 	 * Fetch yoast meta and possibly json ld and store in transient if needed
 	 *
-	 * @param WP_Post $post Post object.
-	 *
+	 * @param array $query Query object.
 	 * @return array|mixed
 	 */
-	public function get_head_tags( $post ) {
-		$this->setup_postdata_and_wp_query( $post );
+	public function get_head_tags( $query ) {
 
-		// Add missing opengraph hooks.
-		if ( is_singular() && ! is_front_page() ) {
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'article_author_facebook' ), 15 );
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'tags' ), 16 );
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'category' ), 17 );
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'publish_date' ), 19 );
-		}
+		$this->backup_query();
+		$this->replace_query( new WP_Query( $query ) );
 
 		ob_start();
 		do_action( 'wp_head' );
@@ -87,10 +158,10 @@ class Frontity_Yoast_Meta_Rest_Api {
 		$html = html_entity_decode( $html ); // Replaces &hellip; to ...
 		$html = preg_replace( '/&(?!#?[a-z0-9]+;)/', '&amp;', $html ); // Replaces & to '&amp;.
 
-		$this->reset_postdata_and_wp_query();
-
 		// Parse the xml to create an array of meta items.
 		$head_tags = $this->parse( $html );
+
+		$this->restore_query();
 
 		return $head_tags;
 	}
@@ -183,46 +254,79 @@ class Frontity_Yoast_Meta_Rest_Api {
 	}
 
 	/**
-	 * Temporary set up postdata and wp_query to represent the current post
-	 * (so Yoast will process it correctly).
-	 *
-	 * @param WP_Post $post Post object.
+	 * Backup current query.
 	 *
 	 * @access private
 	 */
-	private function setup_postdata_and_wp_query( $post ) {
+	private function backup_query() {
 		global $wp_query, $wp_the_query;
-
-		setup_postdata( $post );
-
 		// Store current values.
-		$this->old_wp_query     = $wp_query;
-		$this->old_wp_the_query = $wp_the_query;
-
-		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-		$wp_query = new WP_Query(
+		array_push(
+			$this->query_backup,
 			array(
-				'p'         => $post['id'],
-				'post_type' => $post['type'],
+				'wp_query'     => $wp_query,
+				'wp_the_query' => $wp_the_query,
 			)
 		);
 
-		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-		$wp_the_query = $wp_query;
+	}
+
+	/**
+	 * Replace current query by the given one.
+	 *
+	 * @param WP_Query $query Given query.
+	 * @access private
+	 */
+	private function replace_query( $query ) {
+		global $wp_query, $wp_the_query;
+		// phpcs:disable WordPress.WP.GlobalVariablesOverride.Prohibited
+		$wp_query     = $query;
+		$wp_the_query = $query;
+		// phpcs:enable
+
+		// Init Yoast.
+		// Add first actions.
+		wpseo_frontend_head_init();
+		// Add missing opengraph hooks.
+		if ( is_singular() && ! is_front_page() ) {
+			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'article_author_facebook' ), 15 );
+			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'tags' ), 16 );
+			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'category' ), 17 );
+			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'publish_date' ), 19 );
+		}
+		// Create a new instance.
+		WPSEO_Frontend::get_instance();
 	}
 
 	/**
 	 * Reset postdata and wp_query to previous values.
 	 *
-	 * @access  private
+	 * @access private
 	 */
-	private function reset_postdata_and_wp_query() {
+	private function restore_query() {
 		global $wp_query, $wp_the_query;
+		$backup = array_pop( $this->query_backup );
+		// phpcs:disable WordPress.WP.GlobalVariablesOverride.Prohibited
+		$wp_query     = $backup['wp_query'];
+		$wp_the_query = $backup['wp_the_query'];
+		// phpcs:enable
 
-		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-		$wp_query = $this->old_wp_query;
-		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-		$wp_the_query = $this->old_wp_the_query;
-		wp_reset_postdata();
+		// Create an action and move this to a hook?
+		$wp_seo = WPSEO_Frontend::get_instance();
+		// Remove wp_seo actions added to 'wp_head' hook.
+		remove_action( 'wp_head', array( $wp_seo, 'front_page_specific_init' ), 0 );
+		remove_action( 'wp_head', array( $wp_seo, 'head' ), 1 );
+
+		// Remove all actions from WPSEO hooks.
+		remove_all_actions( 'wpseo_head' );
+		remove_all_actions( 'wpseo_json_ld' );
+		remove_all_actions( 'wpseo_opengraph' );
+
+		// Remove WPSEO_Twitter instance.
+		WPSEO_Twitter::$instance = null;
+
+		// Reset WPSEO plugin.
+		$wp_seo->reset();
 	}
+
 }
