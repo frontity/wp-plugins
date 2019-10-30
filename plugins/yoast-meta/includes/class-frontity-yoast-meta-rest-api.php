@@ -134,9 +134,10 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * @param WP_Object $type Post type object.
 	 */
 	public function get_archive_head_tags( $type ) {
+		$post_type = 'post' === $type['slug'] ? '' : $type['slug'];
 		return $this->get_head_tags(
 			array(
-				'post_type' => array( $type['slug'] ),
+				'post_type' => $post_type,
 			)
 		);
 	}
