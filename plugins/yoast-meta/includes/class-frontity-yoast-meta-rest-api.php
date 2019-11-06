@@ -32,7 +32,11 @@ class Frontity_Yoast_Meta_Rest_Api {
 		// Add head_tags field to all post types and embed type links.
 		foreach ( get_post_types( array( 'show_in_rest' => true ), 'objects' ) as $post_type ) {
 			$this->register_rest_field( $post_type->name, 'get_post_type_head_tags' );
-			add_filter( 'rest_prepare_' . $post_type->name, array( $this, 'add_type_to_links' ), 10 );
+
+			// Add type only for posts or post types with archive.
+			if ( 'post' === $post_type->name || $post_type->has_archive ) {
+				add_filter( 'rest_prepare_' . $post_type->name, array( $this, 'add_type_to_links' ), 10 );
+			}
 		}
 
 		// Add head_tags field to all taxonomies.
@@ -43,6 +47,9 @@ class Frontity_Yoast_Meta_Rest_Api {
 
 		// Add head_tags field to types.
 		$this->register_rest_field( 'type', 'get_archive_head_tags' );
+
+		// Add head_tags field to authors.
+		$this->register_rest_field( 'user', 'get_author_head_tags' );
 	}
 
 	/**
@@ -104,27 +111,24 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * @param WP_Object $taxonomy Post type object.
 	 */
 	public function get_taxonomy_head_tags( $taxonomy ) {
-		$query = null;
+		$query = array();
 
 		if ( 'category' === $taxonomy['taxonomy'] ) {
-			$query = array(
-				'cat' => $taxonomy['id'],
-			);
+			$query['cat'] = $taxonomy['id'];
 		} elseif ( 'post_tag' === $taxonomy['taxonomy'] ) {
-			$query = array(
-				'tag_id' => $taxonomy['id'],
-			);
+			$query['tag_id'] = $taxonomy['id'];
 		} else {
-			$query = array(
-				'tax_query' => array(
-					array(
-						'taxonomy' => $taxonomy['taxonomy'],
-						'terms'    => $taxonomy['id'],
-					),
+
+		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+			$query['tax_query'] = array(
+				array(
+					'taxonomy' => $taxonomy['taxonomy'],
+					'terms'    => $taxonomy['id'],
 				),
 			);
 		}
 
+		// Return the head tags.
 		return $this->get_head_tags( $query );
 	}
 
@@ -134,10 +138,26 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * @param WP_Object $type Post type object.
 	 */
 	public function get_archive_head_tags( $type ) {
-		$post_type = 'post' === $type['slug'] ? '' : $type['slug'];
+		$query_vars = array();
+
+		// Add 'post_type' var only for types other than 'post'.
+		if ( 'post' !== $type['slug'] ) {
+			$query_vars['post_type'] = $type['slug'];
+		}
+
+		// Return the head tags.
+		return $this->get_head_tags( $query_vars );
+	}
+
+	/**
+	 * For authors.
+	 *
+	 * @param WP_Object $author Post type object.
+	 */
+	public function get_author_head_tags( $author ) {
 		return $this->get_head_tags(
 			array(
-				'post_type' => $post_type,
+				'author' => $author['id'],
 			)
 		);
 	}
@@ -145,13 +165,12 @@ class Frontity_Yoast_Meta_Rest_Api {
 	/**
 	 * Fetch yoast meta and possibly json ld and store in transient if needed
 	 *
-	 * @param array $query Query object.
+	 * @param string|array $query_vars URL query string or array of vars.
 	 * @return array|mixed
 	 */
-	public function get_head_tags( $query ) {
-
+	public function get_head_tags( $query_vars ) {
 		$this->backup_query();
-		$this->replace_query( new WP_Query( $query ) );
+		$this->replace_query( $query_vars );
 
 		ob_start();
 		do_action( 'wp_head' );
@@ -275,14 +294,26 @@ class Frontity_Yoast_Meta_Rest_Api {
 	/**
 	 * Replace current query by the given one.
 	 *
-	 * @param WP_Query $query Given query.
+	 * @param string|array $query_vars URL query string or array of vars.
 	 * @access private
 	 */
-	private function replace_query( $query ) {
+	private function replace_query( $query_vars ) {
 		global $wp_query, $wp_the_query;
+
+		// Create an emtpy query.
+		$new_query = new WP_Query();
+
+		// Query elements using $query_vars.
+		$new_query->query( $query_vars );
+
+		// If $query_vars is empty, that means it's the home query.
+		if ( empty( $query_vars ) ) {
+			$new_query->is_home = true;
+		}
+
 		// phpcs:disable WordPress.WP.GlobalVariablesOverride.Prohibited
-		$wp_query     = $query;
-		$wp_the_query = $query;
+		$wp_query     = $new_query;
+		$wp_the_query = $new_query;
 		// phpcs:enable
 
 		// Init Yoast.
@@ -311,6 +342,7 @@ class Frontity_Yoast_Meta_Rest_Api {
 		$wp_query     = $backup['wp_query'];
 		$wp_the_query = $backup['wp_the_query'];
 		// phpcs:enable
+		wp_reset_postdata();
 
 		// Create an action and move this to a hook?
 		$wp_seo = WPSEO_Frontend::get_instance();
