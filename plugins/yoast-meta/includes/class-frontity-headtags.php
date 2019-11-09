@@ -2,20 +2,20 @@
 /**
  * File description.
  *
- * @package Frontity_Yoast_Meta
+ * @package Frontity_Headtags
  */
 
 /**
  * Class that contains the main behavior.
  */
-class Frontity_Yoast_Meta_Rest_Api {
+class Frontity_Headtags {
 	/**
 	 * Prefix used in transients.
 	 *
 	 * @access  private
 	 * @var     string
 	 */
-	private $transient_prefix = 'frontity_head_tags_';
+	private $transient_prefix = 'frontity_headtags_';
 
 	/**
 	 * Variable to store the original WP Query object (needed to restore it).
@@ -36,144 +36,29 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * Register all hooks.
 	 */
 	public function define_public_hooks() {
-		// Add head_tags field to all post types.
-		foreach ( get_post_types( array( 'show_in_rest' => true ), 'objects' ) as $post_type ) {
-			$this->register_head_tags_field( $post_type->name, 'get_post_type_head_tags' );
+		// Load dependencies.
+		$dirname = dirname( __FILE__ );
+		require_once "$dirname/hooks/class-frontity-headtags-post-type-hooks.php";
+		require_once "$dirname/hooks/class-frontity-headtags-taxonomy-hooks.php";
+		require_once "$dirname/hooks/class-frontity-headtags-author-hooks.php";
 
-			// Embed type links only for posts or post types with archive.
-			if ( 'post' === $post_type->name || $post_type->has_archive ) {
-				add_filter( 'rest_prepare_' . $post_type->name, array( $this, 'add_type_to_links' ), 10 );
-			}
-		}
+		// Init classes.
+		$post_types = new Frontity_Headtags_Post_Type_Hooks( $this );
+		$taxonomies = new Frontity_Headtags_Taxonomy_Hooks( $this );
+		$authors    = new Frontity_Headtags_Author_Hooks( $this );
 
-		// Add head_tags field to all taxonomies.
-		foreach ( get_taxonomies( array( 'show_in_rest' => true ), 'objects' ) as $taxonomy ) {
-			$taxonomy_name = 'post_tag' === $taxonomy->name ? 'tag' : $taxonomy->name;
-			$this->register_head_tags_field( $taxonomy_name, 'get_taxonomy_head_tags' );
-		}
-
-		// Add head_tags field to types.
-		$this->register_head_tags_field( 'type', 'get_archive_head_tags' );
-
-		// Add head_tags field to authors.
-		$this->register_head_tags_field( 'user', 'get_author_head_tags' );
-
-		// Update and remove cached head.
-		add_action( 'save_post', array( $this, 'update_yoast_meta' ), 10, 2 );
-		add_action( 'delete_post', array( $this, 'delete_yoast_meta' ) );
-	}
-
-	/**
-	 * Register rest fields for post types, taxonomies or types.
-	 *
-	 * @param string $object_type Post type object.
-	 * @param string $callback Method to run in get_callback.
-	 */
-	public function register_head_tags_field( $object_type, $callback ) {
-		register_rest_field(
-			$object_type,
-			'head_tags',
-			array(
-				'get_callback' => array( $this, $callback ),
-			)
-		);
-	}
-
-	/**
-	 * Add type to links.
-	 *
-	 * @param WP_Response $response Post type object.
-	 *
-	 * @return WP_Response Modified response.
-	 */
-	public function add_type_to_links( $response ) {
-		$type      = $response->data['type'];
-		$types_url = rest_url( 'wp/v2/types/' . $type );
-
-		$response->add_links(
-			array(
-				'type' => array(
-					'href'       => $types_url,
-					'embeddable' => true,
-				),
-			)
-		);
-
-		return $response;
-	}
-
-	/**
-	 * For post type.
-	 *
-	 * @param WP_Object $post Post type object.
-	 */
-	public function get_post_type_head_tags( $post ) {
-		$key   = $post['type'] . '_' . $post['id'];
-		$query = array(
-			'p'         => $post['id'],
-			'post_type' => $post['type'],
-		);
-		// Return the head tags.
-		return $this->get_head_tags( $key, $query );
-	}
-
-	/**
-	 * For taxonomy.
-	 *
-	 * @param WP_Object $taxonomy Post type object.
-	 */
-	public function get_taxonomy_head_tags( $taxonomy ) {
-		$key   = $taxonomy['taxonomy'] . '_' . $taxonomy['id'];
-		$query = array();
-
-		if ( 'category' === $taxonomy['taxonomy'] ) {
-			$query['cat'] = $taxonomy['id'];
-		} elseif ( 'post_tag' === $taxonomy['taxonomy'] ) {
-			$query['tag_id'] = $taxonomy['id'];
+		// Init hooks.
+		if ( is_admin() ) {
+			$post_types->register_admin_hooks();
+			$taxonomies->register_admin_hooks();
+			$authors->register_admin_hooks();
 		} else {
-
-		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-			$query['tax_query'] = array(
-				array(
-					'taxonomy' => $taxonomy['taxonomy'],
-					'terms'    => $taxonomy['id'],
-				),
-			);
+			$post_types->register_rest_hooks();
+			$taxonomies->register_rest_hooks();
+			$authors->register_rest_hooks();
 		}
-
-		// Return the head tags.
-		return $this->get_head_tags( $key, $query );
 	}
 
-	/**
-	 * For archives.
-	 *
-	 * @param WP_Object $type Post type object.
-	 */
-	public function get_archive_head_tags( $type ) {
-		$key   = 'archive_' . $type['slug'];
-		$query = array();
-
-		// Add 'post_type' var only for types other than 'post'.
-		if ( 'post' !== $type['slug'] ) {
-			$query['post_type'] = $type['slug'];
-		}
-
-		// Return the head tags.
-		return $this->get_head_tags( $key, $query );
-	}
-
-	/**
-	 * For authors.
-	 *
-	 * @param WP_Object $author Post type object.
-	 */
-	public function get_author_head_tags( $author ) {
-		$key   = 'author_' . $author['id'];
-		$query = array( 'author' => $author['id'] );
-
-		return $this->get_head_tags( $key, $query );
-	}
 
 	/**
 	 * Get cached head tags if found.
@@ -181,7 +66,7 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * @param string $transient_key Transient key.
 	 * @return array|mixed
 	 */
-	public function get_cached_head_tags( $transient_key ) {
+	public function get_cached_headtags( $transient_key ) {
 		return get_transient( $this->transient_prefix . $transient_key );
 	}
 
@@ -189,11 +74,21 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * Set cached head tags for this key.
 	 *
 	 * @param string      $transient_key Transient key.
-	 * @param array|mixed $head_tags Head tags to cache.
+	 * @param array|mixed $headtags Head tags to cache.
 	 * @return bool
 	 */
-	public function set_cached_head_tags( $transient_key, $head_tags ) {
-		return set_transient( $this->transient_prefix . $transient_key, $head_tags, MONTH_IN_SECONDS );
+	public function set_cached_headtags( $transient_key, $headtags ) {
+		return set_transient( $this->transient_prefix . $transient_key, $headtags, MONTH_IN_SECONDS );
+	}
+
+	/**
+	 * Set cached head tags for this key.
+	 *
+	 * @param string $transient_key Transient key.
+	 * @return bool
+	 */
+	public function delete_cached_headtags( $transient_key ) {
+		return delete_transient( $this->transient_prefix . $transient_key );
 	}
 
 	/**
@@ -203,17 +98,17 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * @param string|array $query URL query string or array of vars.
 	 * @return array|mixed
 	 */
-	public function get_head_tags( $key, $query ) {
+	public function get_headtags( $key, $query ) {
 		// Get head tags from transients.
-		$head_tags = $this->get_cached_head_tags( $key );
+		$headtags = $this->get_cached_headtags( $key );
 
 		// If head tags are not cached, compute and cache them.
-		if ( empty( $head_tags ) ) {
-			$head_tags = $this->compute_head_tags( $query );
-			$this->set_cached_head_tags( $key, $head_tags );
+		if ( empty( $headtags ) ) {
+			$headtags = $this->compute_headtags( $query );
+			$this->set_cached_headtags( $key, $headtags );
 		}
 		// Return the head tags obtained.
-		return $head_tags;
+		return $headtags;
 	}
 
 	/**
@@ -222,7 +117,7 @@ class Frontity_Yoast_Meta_Rest_Api {
 	 * @param string|array $query_vars URL query string or array of vars.
 	 * @return array|mixed
 	 */
-	public function compute_head_tags( $query_vars ) {
+	public function compute_headtags( $query_vars ) {
 		$this->backup_query();
 		$this->replace_query( $query_vars );
 
@@ -233,11 +128,11 @@ class Frontity_Yoast_Meta_Rest_Api {
 		$html = preg_replace( '/&(?!#?[a-z0-9]+;)/', '&amp;', $html ); // Replaces & to '&amp;.
 
 		// Parse the xml to create an array of meta items.
-		$head_tags = $this->parse( $html );
+		$headtags = $this->parse( $html );
 
 		$this->restore_query();
 
-		return $head_tags;
+		return $headtags;
 	}
 
 
@@ -251,7 +146,7 @@ class Frontity_Yoast_Meta_Rest_Api {
 	private function parse( $html ) {
 		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
-		$head_tags = array();
+		$headtags = array();
 
 		$dom = new DOMDocument();
 		$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' ) );
@@ -286,11 +181,11 @@ class Frontity_Yoast_Meta_Rest_Api {
 				$this->is_javascript( $head_tag ) ||
 				$this->is_style( $head_tag )
 			) ) {
-				$head_tags[] = $head_tag;
+				$headtags[] = $head_tag;
 			}
 		}
 
-		return $head_tags;
+		return $headtags;
 		// phpcs:enable
 	}
 
@@ -415,5 +310,4 @@ class Frontity_Yoast_Meta_Rest_Api {
 		// Reset WPSEO plugin.
 		$wp_seo->reset();
 	}
-
 }

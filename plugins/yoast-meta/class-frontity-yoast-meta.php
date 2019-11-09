@@ -75,9 +75,9 @@ class Frontity_Yoast_Meta extends Frontity_Plugin {
 	public function run() {
 		parent::run();
 
-		if ( $this->is_enabled() && ! is_admin() ) {
-			require_once plugin_dir_path( __FILE__ ) . '/includes/class-frontity-yoast-meta-rest-api.php';
-			new Frontity_Yoast_Meta_Rest_Api();
+		if ( $this->is_enabled() ) {
+			require_once plugin_dir_path( __FILE__ ) . '/includes/class-frontity-headtags.php';
+			new Frontity_Headtags();
 		}
 	}
 }
