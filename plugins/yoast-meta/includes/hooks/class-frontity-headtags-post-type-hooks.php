@@ -61,6 +61,8 @@ class Frontity_Headtags_Post_Type_Hooks {
 	 * Register hooks for post types.
 	 */
 	public function register_admin_hooks() {
+		// Consider using save_post_{$post->post_type}
+		// (see https://developer.wordpress.org/reference/hooks/save_post_post-post_type/).
 		add_action( 'save_post', array( $this, 'purge_headtags' ), 10, 2 );
 		add_action( 'delete_post', array( $this, 'purge_headtags' ) );
 	}
