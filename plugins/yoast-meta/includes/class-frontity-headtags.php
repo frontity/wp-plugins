@@ -26,22 +26,40 @@ class Frontity_Headtags {
 	private $query_backup = array();
 
 	/**
+	 * Integrations.
+	 *
+	 * @access  private
+	 * @var     array
+	 */
+	private $integrations = array();
+
+	/**
 	 * Initialize the class and set its properties.
 	 */
 	public function __construct() {
-		add_action( 'rest_api_init', array( $this, 'define_public_hooks' ) );
+		$this->load_dependencies();
+		$this->define_public_hooks();
+		$this->setup_integrations();
+	}
+
+	/**
+	 * Load dependencies.
+	 */
+	public function load_dependencies() {
+		// Directory name.
+		$dirname = dirname( __FILE__ );
+		// Hooks.
+		require_once "$dirname/hooks/class-frontity-headtags-post-type-hooks.php";
+		require_once "$dirname/hooks/class-frontity-headtags-taxonomy-hooks.php";
+		require_once "$dirname/hooks/class-frontity-headtags-author-hooks.php";
+		// Integrations.
+		require_once "$dirname/integrations/class-frontity-headtags-yoast.php";
 	}
 
 	/**
 	 * Register all hooks.
 	 */
 	public function define_public_hooks() {
-		// Load dependencies.
-		$dirname = dirname( __FILE__ );
-		require_once "$dirname/hooks/class-frontity-headtags-post-type-hooks.php";
-		require_once "$dirname/hooks/class-frontity-headtags-taxonomy-hooks.php";
-		require_once "$dirname/hooks/class-frontity-headtags-author-hooks.php";
-
 		// Init classes.
 		$post_types = new Frontity_Headtags_Post_Type_Hooks( $this );
 		$taxonomies = new Frontity_Headtags_Taxonomy_Hooks( $this );
@@ -57,6 +75,15 @@ class Frontity_Headtags {
 			$taxonomies->register_rest_hooks();
 			$authors->register_rest_hooks();
 		}
+	}
+
+	/**
+	 * Load integrations like Yoast, etc.
+	 */
+	public function setup_integrations() {
+		$this->integrations = array(
+			new Frontity_Headtags_Yoast(),
+		);
 	}
 
 
@@ -265,18 +292,10 @@ class Frontity_Headtags {
 		$wp_the_query = $new_query;
 		// phpcs:enable
 
-		// Init Yoast.
-		// Add first actions.
-		wpseo_frontend_head_init();
-		// Add missing opengraph hooks.
-		if ( is_singular() && ! is_front_page() ) {
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'article_author_facebook' ), 15 );
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'tags' ), 16 );
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'category' ), 17 );
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'publish_date' ), 19 );
+		// Init integrations.
+		foreach ( $this->integrations as $integration ) {
+			$integration->init();
 		}
-		// Create a new instance.
-		WPSEO_Frontend::get_instance();
 	}
 
 	/**
@@ -293,21 +312,9 @@ class Frontity_Headtags {
 		// phpcs:enable
 		wp_reset_postdata();
 
-		// Create an action and move this to a hook?
-		$wp_seo = WPSEO_Frontend::get_instance();
-		// Remove wp_seo actions added to 'wp_head' hook.
-		remove_action( 'wp_head', array( $wp_seo, 'front_page_specific_init' ), 0 );
-		remove_action( 'wp_head', array( $wp_seo, 'head' ), 1 );
-
-		// Remove all actions from WPSEO hooks.
-		remove_all_actions( 'wpseo_head' );
-		remove_all_actions( 'wpseo_json_ld' );
-		remove_all_actions( 'wpseo_opengraph' );
-
-		// Remove WPSEO_Twitter instance.
-		WPSEO_Twitter::$instance = null;
-
-		// Reset WPSEO plugin.
-		$wp_seo->reset();
+		// Reset integrations.
+		foreach ( $this->integrations as $integration ) {
+			$integration->reset();
+		}
 	}
 }
