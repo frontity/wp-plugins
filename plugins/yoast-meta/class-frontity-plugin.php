@@ -17,49 +17,49 @@ abstract class Frontity_Plugin {
 	 * Object with all the plugin information.
 	 *
 	 * This variable is used when initializing the plugin. It contains:
-	 *   $description['plugin_namespace']
-	 *   $description['plugin_title']
-	 *   $description['menu_title']
-	 *   $description['menu_slug']
-	 *   $description['option']
-	 *   $description['default_settings']
-	 *   $description['script']
-	 *   $description['enable_param']
-	 *   $description['url']
-	 *   $description['version']
+	 *   $props['plugin_namespace']
+	 *   $props['plugin_title']
+	 *   $props['menu_title']
+	 *   $props['menu_slug']
+	 *   $props['option']
+	 *   $props['default_settings']
+	 *   $props['script']
+	 *   $props['enable_param']
+	 *   $props['url']
+	 *   $props['version']
 	 *
-	 * @var description An object containing the keys above.
+	 * @var props An object containing the keys above.
 	 */
-	public $description;
+	public $props;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param string $description Object with all the plugin information.
+	 * @param string $props Object with all the plugin information.
 	 */
-	public function __construct( $description ) {
-		$this->description = $description;
+	public function __construct( $props ) {
+		$this->props = $props;
 	}
 
 	/**
-	 * Get a value from description
+	 * Get a value from props
 	 *
 	 * @param string $key The key.
 	 * @return any The value.
 	 */
 	public function get( $key ) {
-		return $this->description['$key'];
+		return $this->props[ $key ];
 	}
 
 	/**
 	 * Method executed when the plugin is activated.
 	 */
 	public function activate() {
-		$settings = get_option( $this->description['option'] );
+		$settings = get_option( $this->props['option'] );
 		if ( ! $settings ) {
 			update_option(
-				$this->description['option'],
-				$this->description['default_settings']
+				$this->props['option'],
+				$this->props['default_settings']
 			);
 		}
 	}
@@ -68,7 +68,7 @@ abstract class Frontity_Plugin {
 	 * Method executed when the plugin is deactivated.
 	 */
 	public function deactivate() {
-		delete_option( $this->description['option'] );
+		delete_option( $this->props['option'] );
 	}
 
 	/**
@@ -78,9 +78,9 @@ abstract class Frontity_Plugin {
 	 */
 	public function is_enabled(): bool {
 
-		if ( isset( $_GET[ $this->description['enable_param'] ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_GET[ $this->props['enable_param'] ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-			$is_enabled = sanitize_key( $_GET[ $this->description['enable_param'] ] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$is_enabled = sanitize_key( $_GET[ $this->props['enable_param'] ] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 			if ( 'true' === $is_enabled ) {
 				return true;
@@ -90,7 +90,7 @@ abstract class Frontity_Plugin {
 				return false;
 			}
 		} else {
-			$settings = get_option( $this->description['option'] );
+			$settings = get_option( $this->props['option'] );
 			return (bool) $settings['isEnabled'];
 		}
 	}
@@ -116,10 +116,10 @@ abstract class Frontity_Plugin {
 	 */
 	public function register_menu() {
 		add_options_page(
-			$this->description['menu_title'],
-			$this->description['menu_title'],
+			$this->props['menu_title'],
+			$this->props['menu_title'],
 			'manage_options',
-			$this->description['menu_slug'],
+			$this->props['menu_slug'],
 			function () {
 				require_once plugin_dir_path( __FILE__ ) . 'admin/index.php';
 			}
@@ -132,15 +132,15 @@ abstract class Frontity_Plugin {
 	 * @param string $hook The hook.
 	 */
 	public function register_script( $hook ) {
-		if ( 'settings_page_' . $this->description['menu_slug'] === $hook ) {
+		if ( 'settings_page_' . $this->props['menu_slug'] === $hook ) {
 			wp_register_script(
-				$this->description['script'],
-				$this->description['url'] . 'admin/build/bundle.js',
+				$this->props['script'],
+				$this->props['url'] . 'admin/build/bundle.js',
 				array(),
-				$this->description['version'],
+				$this->props['version'],
 				true
 			);
-			wp_enqueue_script( $this->description['script'] );
+			wp_enqueue_script( $this->props['script'] );
 		}
 	}
 
@@ -150,7 +150,7 @@ abstract class Frontity_Plugin {
 	public function render_warning() {
 		if ( get_current_screen()->id === 'plugins' ) {
 			echo '<div class="notice notice-warning">' .
-			'<h2>' . esc_html( $this->description['plugin_title'] ) . '</h2>' .
+			'<h2>' . esc_html( $this->props['plugin_title'] ) . '</h2>' .
 			'<p>' .
 			'We noticed that you have enabled <b>Main Plugin</b>, ' .
 			'which includes <b>Yoast Meta</b>. ' .
@@ -166,21 +166,21 @@ abstract class Frontity_Plugin {
 	 * Save current settings into the database.
 	 */
 	public function save_settings() {
-		if ( ! isset( $_POST['description'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( ! isset( $_POST['data'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			return;
 		}
 
-		$description = json_decode( stripslashes( $_POST['description'] ), true ); // phpcs:ignore
-		if ( $description ) {
-			update_option( $this->description['option'], $description );
+		$data = json_decode( stripslashes( $_POST['data'] ), true ); // phpcs:ignore
+		if ( $data ) {
+			update_option( $this->props['option'], $data );
 		}
-		wp_send_json( $description );
+		wp_send_json( $data );
 	}
 
 	/**
 	 * Execute the plugin.
 	 */
 	public function run() {
-		add_action( 'wp_ajax_frontity_save_' . $this->description['option'], array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_frontity_save_' . $this->props['option'], array( $this, 'save_settings' ) );
 	}
 }
