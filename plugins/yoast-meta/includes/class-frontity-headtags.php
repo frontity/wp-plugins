@@ -81,7 +81,7 @@ class Frontity_Headtags {
 	 * Fetch yoast meta and possibly json ld and store in transient if needed
 	 *
 	 * @param string|array $query_vars URL query string or array of vars.
-	 * @return array|mixed
+	 * @return array
 	 */
 	public function compute_headtags( $query_vars ) {
 		$this->backup_query();
@@ -95,6 +95,9 @@ class Frontity_Headtags {
 
 		// Parse the xml to create an array of meta items.
 		$headtags = $this->parse( $html );
+
+		// Filter not desired head tags.
+		$headtags = apply_filters( "{$this->prefix}result", $headtags );
 
 		$this->restore_query();
 
@@ -146,9 +149,7 @@ class Frontity_Headtags {
 		}
 
 		// phpcs:enable
-
-		// Return all the head tags after apply filters.
-		return apply_filters( "{$this->prefix}result", $headtags );
+		return $headtags;
 	}
 
 	/**
