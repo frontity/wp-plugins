@@ -37,8 +37,68 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		parent::run();
 
 		if ( $this->is_enabled() ) {
-			require_once plugin_dir_path( __FILE__ ) . '/includes/class-frontity-headtags.php';
-			new Frontity_Headtags();
+			$this->load_dependencies();
+			$this->setup_hooks();
+			$this->setup_integrations();
+			$this->setup_filters();
 		}
+	}
+
+	/**
+	 * Load all dependencies.
+	 */
+	public function load_dependencies() {
+		// Directory name.
+		$dirname = dirname( __FILE__ );
+		// Main class.
+		require_once "$dirname/includes/class-frontity-headtags.php";
+		// Hooks.
+		require_once "$dirname/includes/hooks/class-frontity-headtags-post-type-hooks.php";
+		require_once "$dirname/includes/hooks/class-frontity-headtags-taxonomy-hooks.php";
+		require_once "$dirname/includes/hooks/class-frontity-headtags-author-hooks.php";
+		// Integrations.
+		require_once "$dirname/includes/integrations/class-frontity-headtags-yoast.php";
+		// Filters.
+		require_once "$dirname/includes/filters/class-frontity-headtags-filters.php";
+	}
+
+	/**
+	 * Register all hooks.
+	 */
+	public function setup_hooks() {
+		// Init main class.
+		$headtags = new Frontity_Headtags();
+		// Init classes.
+		$post_types = new Frontity_Headtags_Post_Type_Hooks( $headtags );
+		$taxonomies = new Frontity_Headtags_Taxonomy_Hooks( $headtags );
+		$authors    = new Frontity_Headtags_Author_Hooks( $headtags );
+
+		// Init hooks.
+		if ( is_admin() ) {
+			$post_types->register_admin_hooks();
+			$taxonomies->register_admin_hooks();
+			$authors->register_admin_hooks();
+		} else {
+			$post_types->register_rest_hooks();
+			$taxonomies->register_rest_hooks();
+			$authors->register_rest_hooks();
+		}
+	}
+
+	/**
+	 * Load integrations like Yoast, etc.
+	 */
+	public function setup_integrations() {
+		// Setup Yoast integration.
+		if ( class_exists( 'WPSEO_Frontend' ) ) {
+			new Frontity_Headtags_Yoast();
+		}
+	}
+
+	/**
+	 * Add filters to 'frontity_headtags' hook.
+	 */
+	public function setup_filters() {
+		new Frontity_Headtags_Filters();
 	}
 }

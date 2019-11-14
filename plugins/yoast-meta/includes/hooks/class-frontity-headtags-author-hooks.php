@@ -39,7 +39,7 @@ class Frontity_Headtags_Author_Hooks {
 	 * Register hooks for authors.
 	 */
 	public function register_admin_hooks() {
-		add_action( 'edit_user_profile', array( $this, 'purge_headtags' ), 10, 2 );
+		add_action( 'profile_update', array( $this, 'purge_headtags' ), 10, 2 );
 		add_action( 'delete_user', array( $this, 'purge_headtags' ) );
 	}
 
@@ -50,7 +50,7 @@ class Frontity_Headtags_Author_Hooks {
 	 * @param WP_Object $author Author object.
 	 */
 	public function get_headtags( $author ) {
-		$key   = 'author_' . $author['id'];
+		$key   = "author_{$author['id']}";
 		$query = array( 'author' => $author['id'] );
 
 		// Return the head tags.
@@ -60,11 +60,13 @@ class Frontity_Headtags_Author_Hooks {
 	/**
 	 * Add type to links.
 	 *
-	 * @param string $unknown Post type id.
+	 * @param string $id User id.
 	 * @return bool True if deleted.
 	 */
-	public function purge_headtags( $unknown ) {
-		// TODO: check what comes from $unknown.
+	public function purge_headtags( $id ) {
+		$key = "author_$id";
+
+		// Remove head tags for this user.
 		return $this->frontity_headtags->delete_cached_headtags( $key );
 	}
 }

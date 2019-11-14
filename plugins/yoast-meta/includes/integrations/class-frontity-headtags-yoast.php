@@ -9,6 +9,13 @@
  * Init and reset Yoast.
  */
 class Frontity_Headtags_Yoast {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		add_action( 'frontity_headtags_replace_query', array( $this, 'setup' ) );
+		add_action( 'frontity_headtags_restore_query', array( $this, 'reset' ) );
+	}
 
 	/**
 	 * Init function.

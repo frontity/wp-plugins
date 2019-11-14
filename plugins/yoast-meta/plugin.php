@@ -11,6 +11,7 @@ define( 'FRONTITY_HEADTAGS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FRONTITY_HEADTAGS_URL', plugin_dir_url( __FILE__ ) );
 
 if ( ! class_exists( 'Frontity_Headtags' ) ) {
+	require_once FRONTITY_HEADTAGS_PATH . 'class-frontity-plugin.php';
 	require_once FRONTITY_HEADTAGS_PATH . 'class-frontity-headtags-plugin.php';
 }
 
