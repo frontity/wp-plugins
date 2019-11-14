@@ -20,7 +20,7 @@ class Frontity_Headtags_Taxonomy_Hooks {
 	/**
 	 * Constructor.
 	 *
-	 * @param Frontity_Headtags $frontity_headtags Main class.
+	 * @param Frontity_Headtags $frontity_headtags Main class instance.
 	 */
 	public function __construct( $frontity_headtags ) {
 		$this->frontity_headtags = $frontity_headtags;
@@ -44,34 +44,35 @@ class Frontity_Headtags_Taxonomy_Hooks {
 	 * Register hooks for taxonomies.
 	 */
 	public function register_admin_hooks() {
-		foreach ( get_taxonomies( array( 'show_in_rest' => true ), 'objects' ) as $taxonomy ) {
-			$taxonomy_name = 'post_tag' === $taxonomy->name ? 'tag' : $taxonomy->name;
-			add_action( "edited_$taxonomy_name", array( $this, 'purge_headtags' ), 10, 2 );
-			add_action( "deleted_$taxonomy_name", array( $this, 'purge_headtags' ) );
-		}
+		add_action( 'edited_term', array( $this, 'purge_headtags' ), 10, 3 );
+		add_action( 'delete_term', array( $this, 'purge_headtags' ), 10, 3 );
 	}
 
 
 	/**
-	 * For taxonomies.
+	 * Get head tags for this taxonomy.
 	 *
-	 * @param WP_Object $taxonomy Taxonomy object.
+	 * @param mixed $taxonomy Taxonomy object.
 	 */
 	public function get_headtags( $taxonomy ) {
-		$key   = $taxonomy['taxonomy'] . '_' . $taxonomy['id'];
+		$slug = $taxonomy['taxonomy'];
+		$id   = $taxonomy['id'];
+
+		// Build key with the variables above.
+		$key   = "{$slug}_{$id}";
 		$query = array();
 
-		if ( 'category' === $taxonomy['taxonomy'] ) {
-			$query['cat'] = $taxonomy['id'];
-		} elseif ( 'post_tag' === $taxonomy['taxonomy'] ) {
-			$query['tag_id'] = $taxonomy['id'];
+		if ( 'category' === $slug ) {
+			$query['cat'] = $id;
+		} elseif ( 'post_tag' === $slug ) {
+			$query['tag_id'] = $id;
 		} else {
 
 		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 			$query['tax_query'] = array(
 				array(
-					'taxonomy' => $taxonomy['taxonomy'],
-					'terms'    => $taxonomy['id'],
+					'taxonomy' => $slug,
+					'terms'    => $id,
 				),
 			);
 		}
@@ -81,13 +82,16 @@ class Frontity_Headtags_Taxonomy_Hooks {
 	}
 
 	/**
-	 * Add type to links.
+	 * Remove head tags from cache.
 	 *
-	 * @param string $unknown Post type id.
+	 * @param int    $term Term Id.
+	 * @param int    $tt_id Term Taxonomy Id.
+	 * @param string $taxonomy Taxonomy slug.
 	 * @return bool True if deleted.
 	 */
-	public function purge_headtags( $unknown ) {
-		// TODO: check what comes from $unknown.
+	public function purge_headtags( $term, $tt_id, $taxonomy ) {
+		$key = "{$taxonomy}_{$term}";
+
 		return $this->frontity_headtags->delete_cached_headtags( $key );
 	}
 }
