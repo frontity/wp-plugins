@@ -13,6 +13,7 @@ const Main = () => {
 export default Main;
 
 const MainContainer = styled.main`
-  max-width: 600px;
+  max-width: 968px;
   margin: 64px auto;
+  padding: 0 16px;
 `;

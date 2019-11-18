@@ -20,6 +20,7 @@ const Anchor = styled.a`
   letter-spacing: 1.2px;
   text-transform: uppercase;
   text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
 
   svg {

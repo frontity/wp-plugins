@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 
 export default styled.div`
+  margin: ${({ margin }) => margin || 0};
   padding: 16px;
   background-color: #ffffff;
   box-sizing: border-box;

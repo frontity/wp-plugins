@@ -11,13 +11,12 @@ import Heart from "./icons/heart";
 const Footer = () => {
   return (
     <FooterContainer>
-      <FooterTop>
+      <Row gap={44}>
         <TinyCard>
-          <Info />
+          <Info color="#b1b3bb" size={16} />
           Any problem or questions? Join our community forum and let us know,
           we'll be happy to help!
         </TinyCard>
-        <Space size={44} />
         <Link
           icon={<Frontity />}
           href="https://community.frontity.org"
@@ -25,15 +24,15 @@ const Footer = () => {
         >
           Ask the community
         </Link>
-      </FooterTop>
-      <HorizontalBar />
-      <TinyCard>
-        <Heart />
+      </Row>
+      <Separator />
+      <TinyCard margin="35px 0">
+        <Heart color="#ea5a35" size={16} />
         Frontity is an open source framework for building headless WordPress
         sites with ReactJS. If you like the project, you can show your support
         by leaving a positive review here or starring it on GitHub.
       </TinyCard>
-      <FooterBottom>
+      <Row gap={54}>
         <Link
           icon={<Twitter />}
           href="https://twitter.com/frontity"
@@ -41,7 +40,6 @@ const Footer = () => {
         >
           Follow Frontity
         </Link>
-        <Space size={54} />
         <Link
           icon={<GitHub />}
           href="https://github.com/frontity"
@@ -49,7 +47,6 @@ const Footer = () => {
         >
           Get involved on GitHub
         </Link>
-        <Space size={54} />
         <Link
           icon={<Frontity />}
           href="https://frontity.org/#newsletter"
@@ -57,7 +54,7 @@ const Footer = () => {
         >
           Get updates about Frontity
         </Link>
-      </FooterBottom>
+      </Row>
     </FooterContainer>
   );
 };
@@ -67,22 +64,37 @@ export default Footer;
 const FooterContainer = styled.footer`
   margin: auto;
   max-width: 968px;
+  padding: 0 16px;
 `;
 
-const Space = styled.div`
-  width: ${({ size }) => size || 0}px;
-  height: ${({ size }) => size || 0}px;
-`;
-
-const FooterTop = styled.div`
+const Row = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
+
+  @media only screen and (min-width: 968px) {
+    flex-direction: row;
+    align-items: baseline;
+    & > * {
+      margin-right: ${({ gap }) => gap}px;
+    }
+    & > *:last-child {
+      margin-right: 0;
+    }
+  }
+
+  @media only screen and (max-width: 967px) {
+    flex-direction: column;
+    align-items: stretch;
+    & > * {
+      margin-bottom: ${({ gap }) => gap / 2}px;
+    }
+    & > *:last-child {
+      margin-bottom: 0;
+  }
 `;
 
-const FooterBottom = styled.div`
-  display: flex;
-  flex-direction: row;
+const Separator = styled.div`
+  margin: 45px 0;
+  height: 4px;
+  opacity: 0.08;
+  background-color: #1f38c5;
 `;
-
-const HorizontalBar = styled.hr``;

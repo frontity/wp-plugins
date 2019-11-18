@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 
 export default styled.div`
+  margin: ${({ margin }) => margin};
   padding: 12px;
   background-color: #ffffff;
   box-sizing: border-box;
@@ -13,8 +14,6 @@ export default styled.div`
   flex-direction: row;
 
   svg {
-    height: 16px;
-    width: 16px;
     margin-right: 8px;
     vertical-align: text-bottom;
   }
