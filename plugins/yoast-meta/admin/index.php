@@ -5,7 +5,7 @@
  * @package Frontity_Yoast_Meta
  */
 
-$plugin_dir_url = FRONTITY_YOAST_META_URL;
+$plugin_dir_url = FRONTITY_HEADTAGS_URL;
 $loc            = get_locale();
 $settings       = get_option( 'frontity_yoast_settings' );
 ?>

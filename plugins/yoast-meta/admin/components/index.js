@@ -1,19 +1,20 @@
 import React from "react";
 import connect from "@frontity/connect";
+import GlobalStyles from "./global-styles";
+import Header from "./header";
+import Main from "./main";
+import Footer from "./footer";
 
 const YoastPlugin = ({ state, actions }) => {
   const { isEnabled } = state.yoast.settings;
   const { enable, disable } = actions.yoast;
   return (
-    <div className="wrap">
-      <h1>REST API Yoast Meta by Frontity</h1>
-      <button
-        className="button button-primary"
-        onClick={isEnabled ? disable : enable}
-      >
-        {isEnabled ? "Disable" : "Enable"}
-      </button>
-    </div>
+    <>
+      <GlobalStyles />
+      <Header />
+      <Main />
+      <Footer />
+    </>
   );
 };
 

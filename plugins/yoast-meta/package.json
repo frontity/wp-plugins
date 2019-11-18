@@ -13,5 +13,9 @@
   "scripts": {},
   "bugs": {
     "url": "https://github.com/frontity/wp-org-plugins/issues"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.22",
+    "@emotion/styled": "^10.0.23"
   }
 }

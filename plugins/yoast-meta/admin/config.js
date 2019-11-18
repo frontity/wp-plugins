@@ -4,6 +4,16 @@ export default {
   state: {
     yoast: {
       settings: window.frontity.plugins.yoast.settings
+    },
+    theme: {
+      colors: {
+        brandBlue: "#2038c5",
+        brandNavy: "#0c112b",
+        slate: "#e1e1e5",
+        lightSlate: "#f6f9fa",
+        emeral: "#7dd72d",
+        red: "#ea5a35"
+      }
     }
   },
   actions: {
