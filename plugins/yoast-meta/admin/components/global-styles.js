@@ -7,6 +7,12 @@ const globalStyles = css`
   /* Poppins font */
   @import url("https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap");
 
+  /* overrides padding for wpcontent class */
+  div#wpcontent,
+  .auto-fold div#wpcontent {
+    padding-left: 0;
+  }
+
   #root {
     font-family: Poppins, sans-serif;
     font-size: 16px;
