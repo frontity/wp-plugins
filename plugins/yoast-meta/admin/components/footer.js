@@ -5,12 +5,15 @@ import Link from "./link";
 import GitHub from "./icons/github";
 import Frontity from "./icons/frontity";
 import Twitter from "./icons/twitter";
+import Info from "./icons/info";
+import Heart from "./icons/heart";
 
 const Footer = () => {
   return (
     <FooterContainer>
       <FooterTop>
         <TinyCard>
+          <Info />
           Any problem or questions? Join our community forum and let us know,
           we'll be happy to help!
         </TinyCard>
@@ -25,6 +28,7 @@ const Footer = () => {
       </FooterTop>
       <HorizontalBar />
       <TinyCard>
+        <Heart />
         Frontity is an open source framework for building headless WordPress
         sites with ReactJS. If you like the project, you can show your support
         by leaving a positive review here or starring it on GitHub.
