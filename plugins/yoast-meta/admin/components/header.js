@@ -1,12 +1,16 @@
 import React from "react";
 import styled from "@emotion/styled";
 import Button from "./button";
+import FrontityLogo from "./frontity-logo";
 
 const Header = () => {
   return (
     <HeaderContainer>
       <HeaderTitle>
-        REST API - Head Tags Plugin by <FrontityLogo />
+        REST API - Head Tags Plugin by{" "}
+        <FrontityLogoContainer>
+          <FrontityLogo color="#1f38c5" />
+        </FrontityLogoContainer>
       </HeaderTitle>
       <HeaderButtons>
         <Button>Ask the community</Button>
@@ -31,7 +35,7 @@ const HeaderContainer = styled.div`
   padding: 0 32px;
 `;
 
-const HeaderTitle = styled.h1``;
+const HeaderTitle = styled.h2``;
 
 const HeaderButtons = styled.div`
   display: flex;
@@ -43,4 +47,11 @@ const HeaderButtons = styled.div`
   }
 `;
 
-const FrontityLogo = styled.div``;
+const FrontityLogoContainer = styled.span`
+  svg {
+    height: 0.8em;
+    margin-left: 8px;
+    overflow: visible;
+    vertical-align: baseline;
+  }
+`;
