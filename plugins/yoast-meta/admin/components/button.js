@@ -1,6 +1,18 @@
+import React from "react";
 import styled from "@emotion/styled";
 
-export default styled.a`
+const Button = ({ icon, primary, children, ...props }) => {
+  return (
+    <Anchor primary={primary} {...props}>
+      {icon || null}
+      <span>{children}</span>
+    </Anchor>
+  );
+};
+
+export default Button;
+
+const Anchor = styled.a`
   height: 32px;
   padding: 0 16px;
   display: flex;
@@ -14,11 +26,17 @@ export default styled.a`
       : "0 1px 4px 0 rgba(12, 17, 43, 0.12), 0 1px 4px 0 rgba(12, 17, 43, 0.16)"};
 
   background-color: ${({ primary }) => (primary ? "#1f38c5" : "#ffffff")};
-
+  color: ${({ primary }) => (primary ? "#ffffff" : "#1f38c5")};
   border: ${({ primary }) =>
     primary ? "none" : "solid 2px rgba(32, 56, 197, 0.4)"};
 
-  color: ${({ primary }) => (primary ? "#ffffff" : "##1f38c5")};
+  &:focus,
+  &:hover {
+    color: ${({ primary }) => (primary ? "#ffffff" : "#1f38c5")};
+    border: ${({ primary }) =>
+      primary ? "none" : "solid 2px rgba(32, 56, 197)"};
+  }
+
   font-family: Poppins, sans-serif;
   font-size: 12px;
   font-weight: 600;
@@ -27,4 +45,14 @@ export default styled.a`
   line-height: 1.33;
   letter-spacing: 1.2px;
   text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    padding-right: 8px;
+  }
 `;

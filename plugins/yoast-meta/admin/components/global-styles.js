@@ -34,19 +34,19 @@ const globalStyles = css`
 
     h1 {
       font-size: 32px;
-      line-height: 1.25;
+      line-height: 40px;
     }
     h2 {
       font-size: 24px;
-      line-height: 1.33;
+      line-height: 32px;
     }
     h3 {
       font-size: 20px;
-      line-height: 1.2;
+      line-height: 24px;
     }
     h4 {
       font-size: 14px;
-      line-height: normal;
+      line-height: 20px;
     }
   }
 `;
