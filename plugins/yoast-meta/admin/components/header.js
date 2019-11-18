@@ -38,10 +38,14 @@ const HeaderContainer = styled.div`
   box-shadow: 0 1px 4px 0 rgba(31, 56, 197, 0.12);
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   padding: 16px 32px;
+
+  @media (max-width: 1139px) {
+    flex-direction: column;
+    text-align: center;
+  }
 `;
 
 const HeaderTitle = styled.h2``;
@@ -51,8 +55,32 @@ const HeaderButtons = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  & > * {
-    margin-left: 16px;
+  @media (max-width: 1139px) {
+    margin-top: 16px;
+  }
+
+  @media (max-width: 589px) {
+    flex-direction: column;
+  }
+
+  @media (min-width: 590px) {
+    & > * {
+      margin-right: 16px;
+    }
+
+    & > *:last-child {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 589px) {
+    & > * {
+      margin-bottom: 8px;
+    }
+
+    & > *:last-child {
+      margin-bottom: 0;
+    }
   }
 `;
 
