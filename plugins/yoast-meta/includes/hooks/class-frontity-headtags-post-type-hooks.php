@@ -63,8 +63,8 @@ class Frontity_Headtags_Post_Type_Hooks {
 	public function register_admin_hooks() {
 		// Consider using save_post_{$post->post_type}
 		// (see https://developer.wordpress.org/reference/hooks/save_post_post-post_type/).
-		add_action( 'save_post', array( $this, 'purge_headtags' ), 10, 2 );
-		add_action( 'delete_post', array( $this, 'purge_headtags' ) );
+		add_action( 'save_post', array( $this, 'purge_post_headtags' ) );
+		add_action( 'delete_post', array( $this, 'purge_post_headtags' ) );
 	}
 
 
@@ -134,7 +134,20 @@ class Frontity_Headtags_Post_Type_Hooks {
 	 * @param string $post_id Post type id.
 	 * @return bool True if deleted.
 	 */
-	public function purge_headtags( $post_id ) {
+	public function purge_post_headtags( $post_id ) {
+		$post_type = get_post_type( $post_id );
+		$key       = "{$post_type}_{$post_id}";
+
+		return $this->frontity_headtags->delete_cached_headtags( $key );
+	}
+
+	/**
+	 * Add type to links.
+	 *
+	 * @param string $post_id Post type id.
+	 * @return bool True if deleted.
+	 */
+	public function purge_archive_headtags( $post_id ) {
 		$post_type = get_post_type( $post_id );
 		$key       = "{$post_type}_{$post_id}";
 
