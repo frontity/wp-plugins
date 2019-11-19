@@ -63,7 +63,7 @@ export default Footer;
 
 const FooterContainer = styled.footer`
   margin: auto;
-  max-width: 968px;
+  max-width: 700px;
   padding: 0 16px;
 `;
 
@@ -73,6 +73,7 @@ const Row = styled.div`
   @media only screen and (min-width: 968px) {
     flex-direction: row;
     align-items: baseline;
+    justify-content: space-between;
     & > * {
       margin-right: ${({ gap }) => gap}px;
     }
