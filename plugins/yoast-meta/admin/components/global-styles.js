@@ -23,6 +23,11 @@ const globalStyles = css`
     letter-spacing: normal;
     color: rgba(12, 17, 43, 0.8);
 
+    p {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
     small {
       font-size: 12px;
       line-height: 1.33;
