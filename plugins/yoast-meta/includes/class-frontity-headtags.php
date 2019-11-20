@@ -32,8 +32,7 @@ class Frontity_Headtags {
 	 * @return array|mixed
 	 */
 	public function get_cached_headtags( $key ) {
-		// return get_transient( "{$this->prefix}{$key}" );
-		return false; // Ignore cache.
+		return get_transient( "{$this->prefix}{$key}" );
 	}
 
 	/**
@@ -44,6 +43,14 @@ class Frontity_Headtags {
 	 * @return bool
 	 */
 	public function set_cached_headtags( $key, $headtags ) {
+		$cached_option = "{$this->prefix}cached_keys";
+
+		$array = get_option( $cached_option, array() );
+		if ( ! in_array( $key, $array, true ) ) {
+			$array[] = $key;
+			update_option( $cached_option, $array );
+		}
+
 		return set_transient( "{$this->prefix}{$key}", $headtags, MONTH_IN_SECONDS );
 	}
 
@@ -54,11 +61,36 @@ class Frontity_Headtags {
 	 * @return bool
 	 */
 	public function delete_cached_headtags( $key ) {
+		$cached_option = "{$this->prefix}cached_keys";
+
+		$array = get_option( $cached_option, array() );
+		if ( in_array( $key, $array, true ) ) {
+			$array = array_values( array_diff( $array, array( $key ) ) );
+			update_option( $cached_option, $array );
+		}
+
 		return delete_transient( "{$this->prefix}{$key}" );
 	}
 
 	/**
-	 * Fetch yoast meta and possibly json ld and store in transient if needed
+	 * Remove all cached head tags.
+	 *
+	 * @return bool
+	 */
+	public function clear_cache() {
+		$cached_option = "{$this->prefix}cached_keys";
+
+		$array = get_option( $cached_option, array() );
+		foreach ( $array as $key ) {
+			delete_transient( "{$this->prefix}{$key}" );
+		}
+
+		return update_option( $cached_option, array() );
+	}
+
+
+	/**
+	 * Get head tags for this key (from cache if possible).
 	 *
 	 * @param string       $key Transient key.
 	 * @param string|array $query URL query string or array of vars.
@@ -78,7 +110,7 @@ class Frontity_Headtags {
 	}
 
 	/**
-	 * Fetch yoast meta and possibly json ld and store in transient if needed
+	 * Compute head tags for a specific query_vars.
 	 *
 	 * @param string|array $query_vars URL query string or array of vars.
 	 * @return array

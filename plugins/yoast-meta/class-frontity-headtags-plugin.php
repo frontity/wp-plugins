@@ -36,12 +36,10 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 	public function run() {
 		parent::run();
 
-		if ( $this->is_enabled() ) {
-			$this->load_dependencies();
-			$this->setup_hooks();
-			$this->setup_integrations();
-			$this->setup_filters();
-		}
+		$this->load_dependencies();
+		$this->setup_hooks();
+		$this->setup_integrations();
+		$this->setup_filters();
 	}
 
 	/**
@@ -78,11 +76,14 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 			$post_types->register_admin_hooks();
 			$taxonomies->register_admin_hooks();
 			$authors->register_admin_hooks();
-		} else {
+		} elseif ( $this->is_enabled() ) {
 			$post_types->register_rest_hooks();
 			$taxonomies->register_rest_hooks();
 			$authors->register_rest_hooks();
 		}
+
+		// Add AJAX action hooks.
+		add_action( 'wp_ajax_frontity_headtags_clear_cache', array( $headtags, 'clear_cache' ) );
 	}
 
 	/**
