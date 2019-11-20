@@ -13,24 +13,28 @@ const Footer = () => {
     <FooterContainer>
       <Row gap={44}>
         <TinyCard>
-          <Info color="#b1b3bb" size={16} />
-          Any problem or questions? Join our community forum and let us know,
-          we'll be happy to help!
+          <Info color="#b1b3bb" size={32} />
+          <span>
+            Any problem or questions? Join our community forum and let us know,
+            we'll be happy to help!
+          </span>
+          <Link
+            icon={<Frontity />}
+            href="https://community.frontity.org"
+            target="_blank"
+          >
+            Ask the community
+          </Link>
         </TinyCard>
-        <Link
-          icon={<Frontity />}
-          href="https://community.frontity.org"
-          target="_blank"
-        >
-          Ask the community
-        </Link>
       </Row>
       <Separator />
       <TinyCard margin="35px 0">
-        <Heart color="#ea5a35" size={16} />
-        Frontity is an open source framework for building headless WordPress
-        sites with ReactJS. If you like the project, you can show your support
-        by leaving a positive review here or starring it on GitHub.
+        <Heart color="#ea5a35" size={32} />
+        <span>
+          Frontity is an open source framework for building headless WordPress
+          sites with ReactJS. If you like the project, you can show your support
+          by leaving a positive review here or starring it on GitHub.
+        </span>
       </TinyCard>
       <Row gap={54}>
         <Link
