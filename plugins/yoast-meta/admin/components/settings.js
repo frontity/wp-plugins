@@ -7,7 +7,7 @@ import Button from "./button";
 
 const Settings = ({ state, actions }) => {
   const { isEnabled } = state.headtags.settings;
-  const { enable, disable } = actions.headtags;
+  const { enable, disable, clearCache } = actions.headtags;
 
   return (
     <Card margin="56px 0">
@@ -24,7 +24,7 @@ const Settings = ({ state, actions }) => {
       <Field>
         <Label>head tags cache</Label>
         <InputContainer>
-          <Button>purge cache</Button>
+          <Button onClick={clearCache}>purge cache</Button>
         </InputContainer>
         <Description>
           Delete cached head tags for all entities (post types, authors,

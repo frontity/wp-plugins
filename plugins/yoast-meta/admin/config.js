@@ -34,6 +34,15 @@ export default {
       disable: ({ state, actions }) => {
         state.headtags.settings.isEnabled = false;
         actions.headtags.save();
+      },
+      clearCache: async ({}) => {
+        console.log("clearing cache");
+        const data = new window.FormData();
+        data.append("action", "frontity_headtags_clear_cache");
+        data.append("data", JSON.stringify({}));
+        const res = await post(window.ajaxurl, data);
+        console.log("cache is empty now");
+        console.log(res);
       }
     }
   }
