@@ -7,10 +7,11 @@ const globalStyles = css`
   /* Poppins font */
   @import url("https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap");
 
-  /* overrides padding for wpcontent class */
+  /* overrides padding and background for wpcontent class */
   div#wpcontent,
   .auto-fold div#wpcontent {
     padding-left: 0;
+    background-color: #eef5f8;
   }
 
   #root {
