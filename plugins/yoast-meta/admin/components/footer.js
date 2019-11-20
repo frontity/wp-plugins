@@ -15,8 +15,8 @@ const Footer = () => {
         <TinyCard>
           <Info color="#b1b3bb" size={32} />
           <span>
-            Any problem or questions? Join our community forum and let us know,
-            we'll be happy to help!
+            <strong>Any problem or questions?</strong> Join our community forum
+            and let us know, we'll be happy to help!
           </span>
           <Link
             icon={<Frontity />}
@@ -33,7 +33,18 @@ const Footer = () => {
         <span>
           Frontity is an open source framework for building headless WordPress
           sites with ReactJS. If you like the project, you can show your support
-          by leaving a positive review here or starring it on GitHub.
+          by{" "}
+          <InlineLink href="" target="_blank">
+            leaving a positive review
+          </InlineLink>{" "}
+          here or{" "}
+          <InlineLink
+            href="https://github.com/frontity/wp-org-plugins"
+            target="_blank"
+          >
+            starring it on GitHub
+          </InlineLink>
+          .
         </span>
       </TinyCard>
       <Row gap={54}>
@@ -78,22 +89,17 @@ const Row = styled.div`
     flex-direction: row;
     align-items: baseline;
     justify-content: space-between;
-    & > * {
+    & > *:not(:last-child) {
       margin-right: ${({ gap }) => gap}px;
-    }
-    & > *:last-child {
-      margin-right: 0;
     }
   }
 
   @media only screen and (max-width: 967px) {
     flex-direction: column;
     align-items: stretch;
-    & > * {
+    & > *:not(:last-child) {
       margin-bottom: ${({ gap }) => gap / 2}px;
     }
-    & > *:last-child {
-      margin-bottom: 0;
   }
 `;
 
@@ -102,4 +108,14 @@ const Separator = styled.div`
   height: 4px;
   opacity: 0.08;
   background-color: #1f38c5;
+`;
+
+const InlineLink = styled.a`
+  &,
+  &:hover,
+  &:visited {
+    color: #1f38c5;
+    text-decoration: none;
+    cursor: pointer;
+  }
 `;
