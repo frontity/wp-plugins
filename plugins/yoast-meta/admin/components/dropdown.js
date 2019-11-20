@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import TriangleIcon from "./icons/triangle";
 
 const Dropdown = ({ margin, title, children }) => {
-  const [isOpen, setOpen] = React.useState(false);
+  const [isOpen, setOpen] = React.useState(true);
   const toggle = () => setOpen(!isOpen);
 
   return (
