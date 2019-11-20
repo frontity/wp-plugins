@@ -12,7 +12,7 @@ const Button = ({ icon, primary, children, ...props }) => {
 
 export default Button;
 
-const Anchor = styled.a`
+const Anchor = styled.button`
   height: 32px;
   padding: 0 16px;
   display: flex;

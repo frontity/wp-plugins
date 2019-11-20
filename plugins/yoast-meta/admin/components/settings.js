@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
+import connect from "@frontity/connect";
 import Card from "./card";
 import Toggle from "./toggle";
 import Button from "./button";
 
-const Settings = () => {
-  const [checked, setChecked] = React.useState(false);
-  const toggleChecked = () => setChecked(!checked);
+const Settings = ({ state, actions }) => {
+  const { isEnabled } = state.headtags.settings;
+  const { enable, disable } = actions.headtags;
 
   return (
     <Card margin="56px 0">
@@ -14,7 +15,7 @@ const Settings = () => {
       <Field>
         <Label>enabled</Label>
         <InputContainer>
-          <Toggle checked={checked} onClick={toggleChecked} />
+          <Toggle checked={isEnabled} onClick={isEnabled ? disable : enable} />
         </InputContainer>
         <Description>
           Check this option to enable output to the REST API responses.
@@ -34,7 +35,7 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default connect(Settings);
 
 const Field = styled.div`
   display: flex;

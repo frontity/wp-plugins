@@ -1,13 +1,10 @@
 import React from "react";
-import connect from "@frontity/connect";
 import GlobalStyles from "./global-styles";
 import Header from "./header";
 import Main from "./main";
 import Footer from "./footer";
 
-const YoastPlugin = ({ state, actions }) => {
-  const { isEnabled } = state.yoast.settings;
-  const { enable, disable } = actions.yoast;
+const YoastPlugin = () => {
   return (
     <>
       <GlobalStyles />
@@ -18,4 +15,4 @@ const YoastPlugin = ({ state, actions }) => {
   );
 };
 
-export default connect(YoastPlugin);
+export default YoastPlugin;

@@ -14,12 +14,13 @@ const Header = () => {
         </FrontityLogoContainer>
       </HeaderTitle>
       <HeaderButtons>
-        <Button href="https://community.frontity.org" target="_blank">
+        <Button as="a" href="https://community.frontity.org" target="_blank">
           Ask the community
         </Button>
         <Button
           primary
           icon={<FrontityIcon />}
+          as="a"
           href="https://docs.frontity.org"
           target="_blank"
         >

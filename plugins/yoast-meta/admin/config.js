@@ -2,8 +2,8 @@ import { post } from "axios";
 
 export default {
   state: {
-    yoast: {
-      settings: window.frontity.plugins.yoast.settings
+    headtags: {
+      settings: window.frontity.plugins.headtags.settings
     },
     theme: {
       colors: {
@@ -17,23 +17,23 @@ export default {
     }
   },
   actions: {
-    yoast: {
+    headtags: {
       save: async ({ state }) => {
         console.log("saving");
         const data = new window.FormData();
-        data.append("action", "frontity_save_frontity_yoast_settings");
-        data.append("data", JSON.stringify(state.yoast.settings));
+        data.append("action", "frontity_save_frontity_headtags_settings");
+        data.append("data", JSON.stringify(state.headtags.settings));
         const res = await post(window.ajaxurl, data);
         console.log("saved");
         console.log(res);
       },
       enable: ({ state, actions }) => {
-        state.yoast.settings.isEnabled = true;
-        actions.yoast.save();
+        state.headtags.settings.isEnabled = true;
+        actions.headtags.save();
       },
       disable: ({ state, actions }) => {
-        state.yoast.settings.isEnabled = false;
-        actions.yoast.save();
+        state.headtags.settings.isEnabled = false;
+        actions.headtags.save();
       }
     }
   }
