@@ -11,7 +11,6 @@ const Settings = () => {
   return (
     <Card margin="56px 0">
       <h2>Settings</h2>
-      {/* <p>Activate this option to...</p> */}
       <Field>
         <Label>enabled</Label>
         <InputContainer>
@@ -27,8 +26,8 @@ const Settings = () => {
           <Button>purge cache</Button>
         </InputContainer>
         <Description>
-          Delete cached head tags for all entities (i.e. post types, authors,
-          taxonomies...)
+          Delete cached head tags for all entities (post types, authors,
+          taxonomies and archives).
         </Description>
       </Field>
     </Card>

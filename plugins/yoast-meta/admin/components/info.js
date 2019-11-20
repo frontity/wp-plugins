@@ -3,7 +3,7 @@ import Dropdown from "./dropdown";
 
 const Info = () => {
   return (
-    <Dropdown margin="56px 0" title="How to use this plugin / installation">
+    <Dropdown margin="56px 0" title="How to use REST API - Head Tags">
       <h4>If you are using Frontity</h4>
       <p>Explain these steps:</p>
       <p>
