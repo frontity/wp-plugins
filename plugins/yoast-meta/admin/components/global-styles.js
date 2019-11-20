@@ -59,5 +59,13 @@ const globalStyles = css`
       font-size: 14px;
       line-height: 20px;
     }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #000000;
+    }
   }
 `;
