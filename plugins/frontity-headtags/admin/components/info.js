@@ -5,19 +5,15 @@ const Info = () => {
   return (
     <Dropdown margin="56px 0" title="How to use REST API - Head Tags">
       <h4>If you are using Frontity</h4>
-      <p>Explain these steps:</p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
+        The only thing you have to do is install the{" "}
+        <a href="" target="_blank">
+          <code>@frontity/head-tags</code>
+        </a>{" "}
+        package into your Frontity project.
       </p>
       <br />
-      <h4>If you are other JS framework</h4>
-      <p>Explain these steps:</p>
+      <h4>If you are using other JS framework</h4>
       <p>
         Sed ut perspiciatis unde omnis iste natus error sit voluptatem
         accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
