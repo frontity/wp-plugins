@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 
 export default styled.div`
+  position: relative;
   margin: ${({ margin }) => margin || 0};
   padding: 32px;
   background-color: #ffffff;

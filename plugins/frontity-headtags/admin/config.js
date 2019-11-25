@@ -3,7 +3,11 @@ import { post } from "axios";
 export default {
   state: {
     headtags: {
-      settings: window.frontity.plugins.headtags.settings
+      settings: window.frontity.plugins.headtags.settings,
+      cacheModal: {
+        isWaitingConfirmation: false,
+        isConfirmed: false
+      }
     },
     theme: {
       colors: {
@@ -35,7 +39,7 @@ export default {
         state.headtags.settings.isEnabled = false;
         actions.headtags.save();
       },
-      clearCache: async ({}) => {
+      clearCache: async ({ state }) => {
         console.log("clearing cache");
         const data = new window.FormData();
         data.append("action", "frontity_headtags_clear_cache");
@@ -43,6 +47,17 @@ export default {
         const res = await post(window.ajaxurl, data);
         console.log("cache is empty now");
         console.log(res);
+        const { cacheModal } = state.headtags;
+        cacheModal.isWaitingConfirmation = false;
+        cacheModal.isConfirmed = true;
+      },
+      openCacheModal: ({ state }) => {
+        state.headtags.cacheModal.isWaitingConfirmation = true;
+      },
+      closeCacheModal: ({ state }) => {
+        const { cacheModal } = state.headtags;
+        cacheModal.isWaitingConfirmation = false;
+        cacheModal.isConfirmed = false;
       }
     }
   }
