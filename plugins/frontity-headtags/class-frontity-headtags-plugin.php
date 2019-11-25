@@ -23,7 +23,7 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 				'menu_title'       => 'Head Tags',
 				'menu_slug'        => 'frontity-headtags',
 				'script'           => 'frontity_headtags_admin_js',
-				'enable_param'     => 'headtags',
+				'enable_param'     => 'head_tags',
 				'option'           => 'frontity_headtags_settings',
 				'default_settings' => array( 'isEnabled' => true ),
 				'url'              => FRONTITY_HEADTAGS_URL,
