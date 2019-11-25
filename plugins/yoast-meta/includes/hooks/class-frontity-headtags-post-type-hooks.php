@@ -35,7 +35,7 @@ class Frontity_Headtags_Post_Type_Hooks {
 			// 1. Add the post type's 'headtags' field.
 			register_rest_field(
 				$post_type->name,
-				'headtags',
+				'head_tags',
 				array(
 					'get_callback' => array( $this, 'get_post_headtags' ),
 				)
@@ -50,7 +50,7 @@ class Frontity_Headtags_Post_Type_Hooks {
 		// 3. Add headtags field to types.
 		register_rest_field(
 			'type',
-			'headtags',
+			'head_tags',
 			array(
 				'get_callback' => array( $this, 'get_archive_headtags' ),
 			)

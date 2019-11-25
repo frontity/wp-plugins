@@ -36,7 +36,7 @@ class Frontity_Headtags_Taxonomy_Hooks {
 
 			// Register rest field.
 			$field_callbacks = array( 'get_callback' => array( $this, 'get_headtags' ) );
-			register_rest_field( $taxonomy_name, 'headtags', $field_callbacks );
+			register_rest_field( $taxonomy_name, 'head_tags', $field_callbacks );
 		}
 	}
 

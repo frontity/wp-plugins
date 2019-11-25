@@ -32,7 +32,7 @@ class Frontity_Headtags_Author_Hooks {
 	public function register_rest_hooks() {
 		// Register rest field.
 		$field_callbacks = array( 'get_callback' => array( $this, 'get_headtags' ) );
-		register_rest_field( 'user', 'headtags', $field_callbacks );
+		register_rest_field( 'user', 'head_tags', $field_callbacks );
 	}
 
 	/**
