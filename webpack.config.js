@@ -6,7 +6,8 @@ module.exports = {
     "plugins/main-plugin/admin/build/bundle": "./plugins/main-plugin/admin",
     "plugins/plugin-one/admin/build/bundle": "./plugins/plugin-one/admin",
     "plugins/plugin-two/admin/build/bundle": "./plugins/plugin-two/admin",
-    "plugins/yoast-meta/admin/build/bundle": "./plugins/yoast-meta/admin"
+    "plugins/frontity-headtags/admin/build/bundle":
+      "./plugins/frontity-headtags/admin"
   },
   output: {
     path: path.resolve("./"),
