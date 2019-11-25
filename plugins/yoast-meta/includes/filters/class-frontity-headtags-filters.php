@@ -1,12 +1,15 @@
 <?php
 /**
- * Filters file.
+ * File class-frontity-headtags-filters.php
  *
  * @package Frontity_Headtags
  */
 
 /**
- * Filters class.
+ * Head tags filters.
+ *
+ * It adds hooks to the actions that Frontity_Headtags execute just after replacing and restore
+ * the main wp_query .
  */
 class Frontity_Headtags_Filters {
 	/**

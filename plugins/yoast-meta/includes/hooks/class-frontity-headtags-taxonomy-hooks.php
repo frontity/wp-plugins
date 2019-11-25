@@ -1,12 +1,12 @@
 <?php
 /**
- * Hooks for taxonomies.
+ * File class-frontity-headtags-taxonomy-hooks.php
  *
- * @package Frontity_HeadTags.
+ * @package Frontity_Headtags.
  */
 
 /**
- * Class with hooks for taxonomies.
+ * Class with REST API hooks for taxonomies.
  */
 class Frontity_Headtags_Taxonomy_Hooks {
 

@@ -1,12 +1,12 @@
 <?php
 /**
- * Hooks for post types.
+ * File class-frontity-headtags-post-type-hooks.php
  *
- * @package Frontity_HeadTags.
+ * @package Frontity_Headtags.
  */
 
 /**
- * Class with hooks for post types.
+ * Class with REST API hooks for post types.
  */
 class Frontity_Headtags_Post_Type_Hooks {
 

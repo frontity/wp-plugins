@@ -1,12 +1,19 @@
 <?php
 /**
- * File description.
+ * File class-frontity-headtags.php
  *
  * @package Frontity_Headtags
  */
 
 /**
  * Class that contains the main behavior.
+ *
+ * This class has methods to get head tags by entity (posts, pages, taxonomies, authors and archives),
+ *
+ * These methods deal with three tasks mainly:
+ * - add head tags to cache and invalidate it (using transients)
+ * - compute and parse head tags by entity
+ * - replace wp_query in order to compute head tags
  */
 class Frontity_Headtags {
 	/**

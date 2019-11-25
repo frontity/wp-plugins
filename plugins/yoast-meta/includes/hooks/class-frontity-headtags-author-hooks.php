@@ -1,12 +1,12 @@
 <?php
 /**
- * Hooks for authors.
+ * File class-frontity-headtags-author-hooks.php
  *
- * @package Frontity_HeadTags.
+ * @package Frontity_Headtags.
  */
 
 /**
- * Class with hooks for authors.
+ * Class with REST API hooks for authors.
  */
 class Frontity_Headtags_Author_Hooks {
 

@@ -1,12 +1,15 @@
 <?php
 /**
- * Yoast integration.
+ * File class-frontity-headtags-yoast.php
  *
  * @package Frontity_HeadTags.
  */
 
 /**
- * Init and reset Yoast.
+ * Class that integrates Yoast with this plugin.
+ *
+ * It adds hooks to the actions that Frontity_Headtags execute just after replacing and restore
+ * the main wp_query.
  */
 class Frontity_Headtags_Yoast {
 	/**
@@ -18,7 +21,7 @@ class Frontity_Headtags_Yoast {
 	}
 
 	/**
-	 * Init function.
+	 * Setup function.
 	 */
 	public function setup() {
 		// Init Yoast.

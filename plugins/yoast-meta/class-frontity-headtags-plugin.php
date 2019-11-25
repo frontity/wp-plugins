@@ -1,12 +1,14 @@
 <?php
 /**
- * File description.
+ * File class-frontity-headtags-plugin.php
  *
  * @package Frontity_Headtags_Plugin
  */
 
 /**
- * The plugin class, you know.
+ * The plugin entry point.
+ *
+ * Load all dependencies and setup everything. Extends the class Frontity_Plugin.
  */
 class Frontity_Headtags_Plugin extends Frontity_Plugin {
 
