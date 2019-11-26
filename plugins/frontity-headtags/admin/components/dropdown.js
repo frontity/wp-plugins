@@ -9,7 +9,7 @@ const Dropdown = ({ margin, title, children }) => {
   return (
     <DropdownContainer margin={margin}>
       <DropdownHeader onClick={toggle}>
-        <h3>{title}</h3>
+        <h2>{title}</h2>
         <TriangleIcon size={24} pointingDown={!isOpen} />
       </DropdownHeader>
       {isOpen && <DropdownContent>{children}</DropdownContent>}
