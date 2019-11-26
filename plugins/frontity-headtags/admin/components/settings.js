@@ -43,16 +43,25 @@ const Field = styled.div`
   display: flex;
   min-height: 48px;
   margin-top: 20px;
-  align-items: center;
 
   @media (max-width: 669px) {
-    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-direction: column;
+    & > *:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
+
+  @media (min-width: 670px) {
+    align-items: center;
+    & > *:not(:last-child) {
+      margin-right: 32px;
+    }
   }
 `;
 
 const Label = styled.label`
   width: 184px;
-  padding-right: 16px;
   flex-shrink: 0;
   flex-growth: 0;
 `;
@@ -63,6 +72,5 @@ const InputContainer = styled.span`
 `;
 
 const Description = styled.span`
-  padding-left: 32px;
   color: rgba(12, 17, 43, 0.4);
 `;
