@@ -21,4 +21,22 @@ add_action( 'init', array( $frontity_headtags_plugin, 'should_run' ) );
 
 register_activation_hook( __FILE__, array( $frontity_headtags_plugin, 'activate' ) );
 register_deactivation_hook( __FILE__, array( $frontity_headtags_plugin, 'deactivate' ) );
-register_uninstall_hook( __FILE__, array( $frontity_headtags_plugin, 'uninstall' ) );
+
+
+// To be run when the plugin is uninstalled.
+register_uninstall_hook(
+	__FILE__,
+	function() {
+		// Remove settings.
+		delete_option( 'frontity_headtags_settings' );
+
+		// Remove all transients.
+		$transient_list = get_option( 'frontity_headtags_transients', array() );
+		foreach ( $transient_list as $transient ) {
+			delete_transient( $transient );
+		}
+
+		// Remove transients option.
+		delete_option( 'frontity_headtags_transients' );
+	}
+);
