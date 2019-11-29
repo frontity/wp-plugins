@@ -184,4 +184,11 @@ abstract class Frontity_Plugin {
 	public function run() {
 		add_action( 'wp_ajax_frontity_save_' . $this->props['option'], array( $this, 'save_settings' ) );
 	}
+
+	/**
+	 * Uninstall plugin.
+	 *
+	 * To be implemented by each one.
+	 */
+	abstract public function uninstall();
 }

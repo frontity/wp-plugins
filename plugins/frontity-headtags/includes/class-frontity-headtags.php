@@ -17,14 +17,6 @@
  */
 class Frontity_Headtags {
 	/**
-	 * Prefix used in transients and hooks.
-	 *
-	 * @access  private
-	 * @var     string
-	 */
-	private $prefix = 'frontity_headtags_';
-
-	/**
 	 * Variable to store the original WP Query object (needed to restore it).
 	 *
 	 * @access  private
@@ -39,7 +31,7 @@ class Frontity_Headtags {
 	 * @return array|mixed
 	 */
 	public function get_cached_headtags( $key ) {
-		return get_transient( "{$this->prefix}{$key}" );
+		return get_transient( "frontity_headtags_{$key}" );
 	}
 
 	/**
@@ -50,15 +42,19 @@ class Frontity_Headtags {
 	 * @return bool
 	 */
 	public function set_cached_headtags( $key, $headtags ) {
-		$cached_option = "{$this->prefix}cached_keys";
+		$transient_key = "frontity_headtags_{$key}";
 
-		$array = get_option( $cached_option, array() );
-		if ( ! in_array( $key, $array, true ) ) {
-			$array[] = $key;
-			update_option( $cached_option, $array );
+		// Get the list of transients.
+		$transient_list = get_option( 'frontity_headtags_transients', array() );
+
+		if ( ! in_array( $transient_key, $transient_list, true ) ) {
+
+			// Add the transient key if is not in the list.
+			$transient_list[] = $transient_key;
+			set_option( 'frontity_headtags_transients', $transient_list );
 		}
 
-		return set_transient( "{$this->prefix}{$key}", $headtags, MONTH_IN_SECONDS );
+		return set_transient( $transient_key, $headtags, MONTH_IN_SECONDS );
 	}
 
 	/**
@@ -68,15 +64,23 @@ class Frontity_Headtags {
 	 * @return bool
 	 */
 	public function delete_cached_headtags( $key ) {
-		$cached_option = "{$this->prefix}cached_keys";
+		$transient_key = "frontity_headtags_{$key}";
 
-		$array = get_option( $cached_option, array() );
-		if ( in_array( $key, $array, true ) ) {
-			$array = array_values( array_diff( $array, array( $key ) ) );
-			update_option( $cached_option, $array );
+		// Get the list of transients.
+		$transient_list = get_option( 'frontity_headtags_transients', array() );
+
+		if ( in_array( $transient_key, $transient_list, true ) ) {
+
+			// Remove the transient key from the list of transients.
+			$transient_list = array_values(
+				array_diff( $transient_list, array( $transient_key ) )
+			);
+
+			// Update the list of transients.
+			update_option( 'frontity_headtags_transients', $transient_list );
 		}
 
-		return delete_transient( "{$this->prefix}{$key}" );
+		return delete_transient( $transient_key );
 	}
 
 	/**
@@ -85,14 +89,13 @@ class Frontity_Headtags {
 	 * @return bool
 	 */
 	public function clear_cache() {
-		$cached_option = "{$this->prefix}cached_keys";
-
-		$array = get_option( $cached_option, array() );
-		foreach ( $array as $key ) {
-			delete_transient( "{$this->prefix}{$key}" );
+		// Remove all transients.
+		$transient_list = get_option( 'frontity_headtags_transients', array() );
+		foreach ( $transient_list as $transient ) {
+			delete_transient( $transient );
 		}
 
-		return update_option( $cached_option, array() );
+		return update_option( 'frontity_headtags_transients', array() );
 	}
 
 
@@ -136,7 +139,7 @@ class Frontity_Headtags {
 		$headtags = $this->parse( $html );
 
 		// Filter not desired head tags.
-		$headtags = apply_filters( "{$this->prefix}result", $headtags );
+		$headtags = apply_filters( 'frontity_headtags_result', $headtags );
 
 		$this->restore_query();
 
@@ -236,7 +239,7 @@ class Frontity_Headtags {
 		// phpcs:enable
 
 		// Init integrations.
-		do_action( "{$this->prefix}replace_query" );
+		do_action( 'frontity_headtags_replace_query' );
 	}
 
 	/**
@@ -254,6 +257,6 @@ class Frontity_Headtags {
 		wp_reset_postdata();
 
 		// Reset integrations.
-		do_action( "{$this->prefix}restore_query" );
+		do_action( 'frontity_headtags_restore_query' );
 	}
 }

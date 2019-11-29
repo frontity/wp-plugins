@@ -21,3 +21,4 @@ add_action( 'init', array( $frontity_headtags_plugin, 'should_run' ) );
 
 register_activation_hook( __FILE__, array( $frontity_headtags_plugin, 'activate' ) );
 register_deactivation_hook( __FILE__, array( $frontity_headtags_plugin, 'deactivate' ) );
+register_uninstall_hook( __FILE__, array( $frontity_headtags_plugin, 'uninstall' ) );

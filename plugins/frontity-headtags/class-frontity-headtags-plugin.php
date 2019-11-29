@@ -104,4 +104,21 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 	public function setup_filters() {
 		new Frontity_Headtags_Filters();
 	}
+
+	/**
+	 * Uninstall plugin.
+	 */
+	public function uninstall() {
+		// Remove settings.
+		delete_option( 'frontity_headtags_settings' );
+
+		// Remove all transients.
+		$transient_list = get_option( 'frontity_headtags_transients', array() );
+		foreach ( $transient_list as $transient ) {
+			delete_transient( $transient );
+		}
+
+		// Remove transients option.
+		delete_option( 'frontity_headtags_transients' );
+	}
 }
