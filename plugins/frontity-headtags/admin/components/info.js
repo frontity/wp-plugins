@@ -11,7 +11,8 @@ const Info = () => {
         <a href="" target="_blank">
           <code>@frontity/head-tags</code>
         </a>{" "}
-        package into your Frontity project and the head tags of each page will
+        package into your Frontity project and add it to your{" "}
+        <code>frontity.settings.js</code> file. The head tags of each page will
         appear in your Frontity site. That's all!
       </p>
       <br />
