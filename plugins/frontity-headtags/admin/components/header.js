@@ -9,7 +9,7 @@ const Header = () => {
     <HeaderContainer>
       <HeaderTitle>
         REST API - Head Tags Plugin by{" "}
-        <FrontityLogoContainer>
+        <FrontityLogoContainer href="https://frontity.org" target="_blank">
           <FrontityLogo color="#1f38c5" />
         </FrontityLogoContainer>
       </HeaderTitle>
@@ -85,7 +85,7 @@ const HeaderButtons = styled.div`
   }
 `;
 
-const FrontityLogoContainer = styled.span`
+const FrontityLogoContainer = styled.a`
   svg {
     height: 0.8em;
     margin-left: 8px;
