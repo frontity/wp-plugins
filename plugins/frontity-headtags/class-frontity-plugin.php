@@ -77,7 +77,7 @@ abstract class Frontity_Plugin {
 	 *
 	 * @return bool If the plugin is enabled or not.
 	 */
-	public function is_enabled(): bool {
+	public function is_enabled() {
 
 		if ( isset( $_GET[ $this->props['enable_param'] ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
@@ -92,7 +92,8 @@ abstract class Frontity_Plugin {
 			}
 		} else {
 			$settings = get_option( $this->props['option'] );
-			return (bool) $settings['isEnabled'];
+			// return (bool) $settings['isEnabled'];
+			return true;
 		}
 	}
 

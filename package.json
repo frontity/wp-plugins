@@ -24,7 +24,11 @@
     "sync:prod": "node ./scripts/symlink.js --production",
     "build": "node scripts/build.js",
     "version": "lerna exec --concurrency 1 -- node ../../scripts/version.js",
-    "release": "lerna version --no-push --yes && npm run build"
+    "release": "lerna version --no-push --yes && npm run build",
+    "install-wp-tests": "./bin/install-wp-tests.sh frontity_tests root '' 127.0.0.1 latest",
+    "phpcs": "composer run phpcs",
+    "phpcbf": "composer run phpcbf",
+    "phpunit": "composer run phpunit"
   },
   "dependencies": {
     "@emotion/core": "^10.0.22",
