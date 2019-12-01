@@ -12,7 +12,7 @@
     "wp-coding-standards/wpcs": "*",
     "dealerdirect/phpcodesniffer-composer-installer": "*",
     "phpcompatibility/phpcompatibility-wp": "*",
-    "phpunit/phpunit": "*"
+    "phpunit/phpunit": "^7.0"
   },
   "scripts": {
     "phpcbf": "vendor/bin/phpcbf",
