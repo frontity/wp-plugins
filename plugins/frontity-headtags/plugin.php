@@ -24,19 +24,19 @@ register_deactivation_hook( __FILE__, array( $frontity_headtags_plugin, 'deactiv
 
 
 // To be run when the plugin is uninstalled.
-register_uninstall_hook(
-	__FILE__,
-	function() {
-		// Remove settings.
-		delete_option( 'frontity_headtags_settings' );
+// register_uninstall_hook(
+// __FILE__,
+// function() {
+// Remove settings.
+// delete_option( 'frontity_headtags_settings' );
 
-		// Remove all transients.
-		$transient_list = get_option( 'frontity_headtags_transients', array() );
-		foreach ( $transient_list as $transient ) {
-			delete_transient( $transient );
-		}
+// Remove all transients.
+// $transient_list = get_option( 'frontity_headtags_transients', array() );
+// foreach ( $transient_list as $transient ) {
+// delete_transient( $transient );
+// }
 
-		// Remove transients option.
-		delete_option( 'frontity_headtags_transients' );
-	}
-);
+// Remove transients option.
+// delete_option( 'frontity_headtags_transients' );
+// }
+// );
