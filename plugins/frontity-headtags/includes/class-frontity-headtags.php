@@ -51,7 +51,7 @@ class Frontity_Headtags {
 
 			// Add the transient key if is not in the list.
 			$transient_list[] = $transient_key;
-			set_option( 'frontity_headtags_transients', $transient_list );
+			update_option( 'frontity_headtags_transients', $transient_list );
 		}
 
 		return set_transient( $transient_key, $headtags, MONTH_IN_SECONDS );
