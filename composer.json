@@ -1,0 +1,22 @@
+{
+  "name": "frontity/wp-plugins",
+  "description": "WordPress plugins suite made to enhance WordPress for the Frontity framework.",
+  "homepage": "https://frontity.org",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "support": {
+    "issues": "https://github.com/frontity/wp-plugins/issues"
+  },
+  "require-dev": {
+    "automattic/vipwpcs": "^2.0.0",
+    "wp-coding-standards/wpcs": "*",
+    "dealerdirect/phpcodesniffer-composer-installer": "*",
+    "phpcompatibility/phpcompatibility-wp": "*",
+    "phpunit/phpunit": "*"
+  },
+  "scripts": {
+    "phpcbf": "vendor/bin/phpcbf",
+    "phpcs": "vendor/bin/phpcs",
+    "phpunit": "vendor/bin/phpunit"
+  }
+}

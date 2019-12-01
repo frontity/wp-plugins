@@ -1,5 +1,6 @@
 {
   "name": "wp-org-plugins",
+  "description": "A set of WordPress enchancement to improve the integration with the Frontity Framework",
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.4.5",
