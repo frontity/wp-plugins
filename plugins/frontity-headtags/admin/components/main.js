@@ -2,10 +2,12 @@ import React from "react";
 import styled from "@emotion/styled";
 import Info from "./info";
 import Settings from "./settings";
+import Compatible from "./compatible";
 
 const Main = () => {
   return (
     <MainContainer>
+      <Compatible />
       <Info />
       <Settings />
     </MainContainer>

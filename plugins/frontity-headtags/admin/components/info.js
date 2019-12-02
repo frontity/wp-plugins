@@ -5,25 +5,31 @@ import Dropdown from "./dropdown";
 const Info = () => {
   return (
     <Dropdown margin="56px 0" title="How to use REST API - Head Tags">
-      <h3>If you are using Frontity</h3>
+      <h3>If you are using Frontity:</h3>
+      <ol>
+        <li>
+          Install the
+          <a href="https://docs.frontity.org/api-reference-1" target="_blank">
+            <code>@frontity/head-tags</code>
+          </a>{" "}
+          package in your Frontity project.
+        </li>
+        <li>
+          Add it to your <code>frontity.settings.js</code> file.
+        </li>
+      </ol>
       <p>
-        The only thing you have to do is install the{" "}
-        <a href="" target="_blank">
-          <code>@frontity/head-tags</code>
-        </a>{" "}
-        package into your Frontity project and add it to your{" "}
-        <code>frontity.settings.js</code> file. The head tags of each page will
-        appear in your Frontity site. That's all!
+        That's it. All the head tags of your pages will appear in your Frontity
+        site automatically.
       </p>
       <br />
-      <h3>If you are using other JS framework</h3>
+      <h3>If you are using other JS framework:</h3>
       <p>
-        In this case you have to access to the field <code>head_tags</code>
-        contained in each entity fetched from the WordPress REST API. This field
-        is an array of objects representing the tags that WordPress would
-        include normally inside the html <code>head</code> element.
+        There is a new field named <code>head_tags</code>
+        in each entity fetched from the WordPress REST API. This field is an
+        array of objects representing the tags that WordPress would include
+        normally inside the html <code>head</code> element.
       </p>
-
       <Question>
         Which entities will have a <code>head_tags</code> field?
       </Question>
@@ -34,7 +40,6 @@ const Info = () => {
         <li>Categories, tags and custom taxonomies</li>
         <li>Authors</li>
       </List>
-
       <Question>
         How do I fetch the <code>head_tags</code> field for each entity?
       </Question>
@@ -48,7 +53,6 @@ const Info = () => {
         </a>{" "}
         for more info.
       </p>
-
       <Question>
         How is the format of the <code>head_tags</code> field?
       </Question>
@@ -59,10 +63,11 @@ const Info = () => {
         and <code>content</code>.
       </p>
       <p>
-        Here is an example of what could be the content of the{" "}
-        <code>head_tags</code> field:
+        This is an example of the content of the <code>head_tags</code> field:
       </p>
       <CodeBlock>{headTagsSnippet}</CodeBlock>
+      <p>for these HTML tags:</p>
+      <CodeBlock>{headTagsHtml}</CodeBlock>
     </Dropdown>
   );
 };
@@ -89,6 +94,12 @@ const headTagsSnippet = `"head_tags": [
     }
   }
 ]
+`;
+
+const headTagsHtml = `
+  <title>Hello wordl! - My Site</title>
+  <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="http://mysite.com/hello-world/" />
 `;
 
 const List = styled.ul`
