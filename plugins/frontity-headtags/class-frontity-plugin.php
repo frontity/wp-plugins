@@ -92,8 +92,7 @@ abstract class Frontity_Plugin {
 			}
 		} else {
 			$settings = get_option( $this->props['option'] );
-			// return (bool) $settings['isEnabled'];
-			return true;
+			return $settings && $settings['isEnabled'];
 		}
 	}
 
