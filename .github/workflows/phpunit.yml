@@ -26,13 +26,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Setup npm cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
-
       - name: Setup composer cache
         uses: actions/cache@v1
         with:
@@ -45,3 +38,6 @@ jobs:
 
       - name: Install WordPress
         run: ./bin/install-wp-tests.sh frontity_tests root root 127.0.0.1 latest
+
+      - name: Run phpunit
+        run: composer phpunit
