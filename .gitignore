@@ -12,3 +12,6 @@ vendor/
 
 # build folders
 plugins/*/admin/build
+
+# env files
+.env

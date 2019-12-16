@@ -1,0 +1,5 @@
+---
+"frontity-headtags": major
+---
+
+Major
