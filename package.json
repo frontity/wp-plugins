@@ -21,7 +21,8 @@
     "install-wp-tests": "./bin/install-wp-tests.sh frontity_tests root '' 127.0.0.1 latest",
     "phpcs": "composer run phpcs",
     "phpcbf": "composer run phpcbf",
-    "phpunit": "composer run phpunit"
+    "phpunit": "composer run phpunit",
+    "version": "npx changeset version && node scripts/version.js"
   },
   "dependencies": {
     "@emotion/core": "^10.0.22",
