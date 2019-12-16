@@ -1,0 +1,13 @@
+name: phpcs-prs
+
+on: pull_request
+
+jobs:
+  phpcs-prs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: rtCamp/action-phpcs-code-review@master
+        env:
+          GH_BOT_TOKEN: ${{ secrets.FRONTIBOTITO_TOKEN }}
