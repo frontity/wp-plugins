@@ -6,42 +6,40 @@ jobs:
   phpunit-tests:
     runs-on: ubuntu-latest
 
-  services:
-    mysql:
-      image: mysql:5.7.27
-      ports:
-        - 3306
-      volumes:
-        - $HOME/mysql:/var/lib/mysql
+    services:
+      mysql:
+        image: mysql:5.7.27
+        ports:
+          - 3306
+        volumes:
+          - $HOME/mysql:/var/lib/mysql
 
-  strategy:
-    matrix:
-      php-version:
-        - "5.6"
-        - "7.3"
+    strategy:
+      matrix:
+        php-version:
+          - "5.6"
+          - "7.3"
 
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
 
-    - name: Setup npm cache
-      uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Setup npm cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
 
-    - name: Setup composer cache
-      uses: actions/cache@v1
-      with:
-        path: ~/.composer/cache
-        key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
-        restore-keys: |
-          php${{ matrix.php-version }}-composer-
+      - name: Setup composer cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache
+          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: php${{ matrix.php-version }}-composer-
 
-    - name: Install composer dependencies
-      run: composer install
+      - name: Install composer dependencies
+        run: composer install
 
-    - name: Install WordPress
-      run: npm run install-wp-tests
+      - name: Install WordPress
+        run: npm run install-wp-tests
