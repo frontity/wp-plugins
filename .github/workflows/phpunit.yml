@@ -11,6 +11,8 @@ jobs:
         image: mysql:5.7.27
         ports:
           - 3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
         volumes:
           - $HOME/mysql:/var/lib/mysql
 
@@ -42,4 +44,4 @@ jobs:
         run: composer install
 
       - name: Install WordPress
-        run: npm run install-wp-tests
+        run: ./bin/install-wp-tests.sh frontity_tests root root 127.0.0.1 latest
