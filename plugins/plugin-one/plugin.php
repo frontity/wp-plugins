@@ -1,10 +1,4 @@
 <?php
-/**
- * Plugin Name: Plugin One
- * Version: 0.0.1
- * 
- * @package Frontity_PluginOne
- */
 
 define( 'FRONTITY_ONE_VERSION', '0.0.1' );
 
