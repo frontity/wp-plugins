@@ -1,13 +1,13 @@
 <?php
-
 /**
  * Plugin Name: Plugin One
  * Version: 0.0.1
+ * 
+ * @package Frontity_PluginOne
  */
 
 define( 'FRONTITY_ONE_VERSION', '0.0.1' );
 
-// define('FRONTITY_ONE_PATH', plugin_dir_path(__FILE__));
 define( 'FRONTITY_ONE_URL', plugin_dir_url( __FILE__ ) );
 
 if ( ! class_exists( 'Plugin_One' ) ) {
