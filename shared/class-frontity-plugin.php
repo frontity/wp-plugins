@@ -26,7 +26,6 @@ abstract class Frontity_Plugin {
 	 *   $props['default_settings']
 	 *   $props['script']
 	 *   $props['enable_param']
-	 *   $props['version']
 	 *
 	 * @var props An object containing the keys above.
 	 */
@@ -70,6 +69,13 @@ abstract class Frontity_Plugin {
 	 */
 	public static function get_url() {
 		return plugin_dir_url( static::get_file_name() );
+	}
+
+	/**
+	 * Get the plugin version.
+	 */
+	public static function get_version() {
+		return get_plugin_data( static::get_path() . 'plugin.php', false, false )['Version'];
 	}
 
 	/**
@@ -120,13 +126,13 @@ abstract class Frontity_Plugin {
 	 * Method that executes "run" method if it should.
 	 */
 	public function should_run() {
-		if ( ! class_exists( 'Main_Plugin' ) ) {
+		if ( ! class_exists( 'Frontity_Main_Plugin' ) ) {
 			add_action( 'admin_menu', array( $this, 'register_menu' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_script' ) );
 			$this->run();
 		} else {
 			// Show admin notices.
-			if ( class_exists( 'Main_Plugin' ) ) {
+			if ( class_exists( 'Frontity_Main_Plugin' ) ) {
 				add_action( 'admin_notices', array( $this, 'render_warning' ) );
 			}
 		};
@@ -177,7 +183,7 @@ abstract class Frontity_Plugin {
 				$this->props['script'],
 				static::get_url() . 'admin/build/bundle.js',
 				array(),
-				$this->props['version'],
+				static::get_version(),
 				true
 			);
 			wp_enqueue_script( $this->props['script'] );
@@ -192,11 +198,11 @@ abstract class Frontity_Plugin {
 			echo '<div class="notice notice-warning">' .
 			'<h2>' . esc_html( $this->props['plugin_title'] ) . '</h2>' .
 			'<p>' .
-			'We noticed that you have enabled <b>Main Plugin</b>, ' .
-			'which includes <b>Yoast Meta</b>. ' .
+			'We noticed that you have enabled <b>Frontity Main Plugin</b>, ' .
+			'which includes <b>' . esc_html( $this->props['plugin_title'] ) . '</b>. ' .
 			'</p>' .
 			'<p>' .
-			'You can safely uninstall this plugin and keep using its functionality from the <b>Main Plugin</b>' .
+			'You can safely uninstall this plugin and keep using its functionality from the <b>Frontity Main Plugin</b>' .
 			'</p>' .
 			'</div>';
 		}

@@ -26,7 +26,6 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 				'enable_param'     => 'head_tags',
 				'option'           => 'frontity_headtags_settings',
 				'default_settings' => array( 'isEnabled' => true ),
-				'version'          => FRONTITY_HEADTAGS_VERSION,
 			)
 		);
 	}

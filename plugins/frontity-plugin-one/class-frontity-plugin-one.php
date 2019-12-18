@@ -25,7 +25,6 @@ class Frontity_Plugin_One extends Frontity_Plugin {
 				'script'           => 'frontity_plugin_one_admin_js',
 				'enable_param'     => 'plugin_one',
 				'option'           => 'frontity_plugin_one_settings',
-				'version'          => FRONTITY_PLUGIN_ONE_VERSION,
 				'default_settings' => array( 
 					'isEnabled' => true,
 					'value'     => 1, 

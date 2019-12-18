@@ -25,7 +25,6 @@ class Frontity_Plugin_Two extends Frontity_Plugin {
 				'script'           => 'frontity_plugin_two_admin_js',
 				'enable_param'     => 'plugin_two',
 				'option'           => 'frontity_plugin_two_settings',
-				'version'          => FRONTITY_PLUGIN_TWO_VERSION,
 				'default_settings' => array( 
 					'isEnabled' => true,
 					'value'     => 1, 
