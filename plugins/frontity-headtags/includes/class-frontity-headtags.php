@@ -130,12 +130,14 @@ class Frontity_Headtags {
 		$this->replace_query( $query_vars );
 
 		ob_start();
+		
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		do_action( 'wp_head' );
-		$html = ob_get_clean();
-		$html = html_entity_decode( $html ); // Replaces &hellip; to ...
-		$html = preg_replace( '/&(?!#?[a-z0-9]+;)/', '&amp;', $html ); // Replaces & to '&amp;.
 
-		// Parse the xml to create an array of meta items.
+		// Get rendered <head> content.
+		$html = ob_get_clean();
+
+		// Parse the HTML to create an array of head tags.
 		$headtags = $this->parse( $html );
 
 		// Filter not desired head tags.
@@ -177,7 +179,7 @@ class Frontity_Headtags {
 			if ( $node->hasAttributes() ) {
 				$head_tag['attributes'] = array();
 				foreach ( $node->attributes as $attr ) {
-					$head_tag['attributes'][ $attr->nodeName ] = $attr->nodeValue;
+					$head_tag['attributes'][ $attr->nodeName ] = html_entity_decode( $attr->nodeValue );
 				}
 			}
 
