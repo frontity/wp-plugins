@@ -9,62 +9,131 @@
  * Main Frontity Class
  */
 class Frontity_Main_Plugin {
+	/**
+	 * Static property with the list of plugin classes.
+	 * 
+	 * This one needs to be static because is used in the `uninstall`
+	 * static method.
+	 * 
+	 * @var array $plugin_classes List of class names.
+	 */
+	private static $plugin_classes;
 
 	/**
-	 * The namespace for this plugin in the @frontity / connect store.
-	 * 
-	 * @var $plugin_store Namespace.
-	 */ 
-	public static $plugin_namespace = 'main';
+	 * Object with all the plugin information.
+	 *
+	 * This variable is used when initializing the plugin. It contains:
+	 *   $props['plugin_namespace']
+	 *   $props['plugin_title']
+	 *   $props['menu_title']
+	 *   $props['menu_slug']
+	 *   $props['option']
+	 *   $props['default_settings']
+	 *   $props['script']
+	 *   $props['enable_param']
+	 *   $props['version']
+	 *
+	 * @var array $props An object containing the keys above.
+	 */
+	public $props = array(
+		'plugin_namespace' => 'main',
+		'plugin_title'     => 'Main Plugin by Frontity',
+		'menu_title'       => 'Main Plugin',
+		'menu_slug'        => 'frontity-main-plugin',
+		'option'           => 'frontity_main_plugin_settings',
+		'script'           => 'frontity_main_plugin_admin_js',
+	);
 
 	/**
-	 * Title that will appear in the admin pages.
+	 * List of plugin instances (by class name).
 	 * 
-	 * @var $plugin_title Title.
-	 */ 
-	public static $plugin_title = 'Main Plugin by Frontity';
+	 * @var array $plugins
+	 */
+	public $plugins = array();
+
+
+	/** 
+	 * Instantiate plugin and sub plugins.
+	 */
+	public function __construct() {
+		foreach ( self::$plugin_classes as $plugin_class ) {
+			$this->plugins[ $plugin_class ] = new $plugin_class();
+		}
+	}
+
+	/** 
+	 * Load and setup the plugin and sub plugins.
+	 * 
+	 * @param array $plugin_classes List of plugin classes names.
+	 */
+	public static function install( $plugin_classes ) {
+		// Assign passed classes to private static variable.
+		self::$plugin_classes = $plugin_classes;
+
+		// Create an instance of this class and add `init` hook.
+		$main_instance = new self();
+		add_action( 'init', array( $main_instance, 'run' ) );
+	
+		// Register activation / deactivation hooks for the main plugin.
+		register_activation_hook( __FILE__, array( $main_instance, 'activate' ) );
+		register_deactivation_hook( __FILE__, array( $main_instance, 'deactivate' ) );
+	}
+	
+	
+	/**
+	 * Uninstall plugin.
+	 */
+	public static function uninstall() {
+		// Remove settings for this plugin.
+		delete_option( 'frontity_main_plugin_settings' );
+	
+		// Remove settings for the other plugins as well.
+		foreach ( self::$plugin_classes as $plugin_class ) {
+			$plugin_class::uninstall();
+		};
+	}
 
 	/**
-	 * Title that will appear in the menu.
-	 * 
-	 * @var $menu_title Title.
-	 */ 
-	public static $menu_title = 'Main Plugin';
+	 * Activate all sub plugins.
+	 */
+	public function activate() {
+		foreach ( $this->$plugins as $plugin_class => $plugin_instance ) {
+			$plugin_instance->activate();
+		}
+	}
 
 	/**
-	 * Slug of the admin page.
-	 * 
-	 * @var $menu_slug Title.
-	 */ 
-	public static $menu_slug = 'frontity-main-plugin';
+	 * Deactivate all sub plugins.
+	 */
+	public function deactivate() {
+		foreach ( $this->$plugins as $plugin_class => $plugin_instance ) {
+			$plugin_instance->deactivate();
+		}
+	}
 
 	/**
-	 * Name of the settings stored in database.
-	 * 
-	 * @var $settings Option name.
-	 */ 
-	public static $settings = 'frontity_main_plugin_settings';
+	 * Run the plugin.
+	 */
+	public function run() {
+		add_action( 'admin_menu', array( $this, 'register_menu' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_script' ) );
 
-	/**
-	 * Name of generated JavaScript file for the admin page.
-	 * 
-	 * @var $script Script name.
-	 */ 
-	public static $script = 'frontity_main_plugin_admin_js';
+		// Executes `run` method for all sub plugins.
+		foreach ( $this->plugins as $plugin_class => $plugin_instance ) {
+			$plugin_instance->run();
+		}
+	}
 
 	/**
 	 * Register menu.
 	 */
 	public function register_menu() {
 		add_menu_page(
-			'Main Plugin',
-			'Main Plugin',
+			$this->props['menu_title'],
+			$this->props['menu_title'],
 			'manage_options',
-			'main-plugin',
-			function () {
-				global $frontity_plugin_classes;
-				require_once FRONTITY_MAIN_PATH . 'admin/index.php';
-			}
+			$this->props['menu_slug'],
+			array( $this, 'render_admin_page' )
 		);
 	}
 
@@ -75,29 +144,42 @@ class Frontity_Main_Plugin {
 		$plugin_dir_url = FRONTITY_MAIN_URL;
 		$loc            = get_locale();
 		?>
-		<div id='root'></div>
-		<script>
-			window.frontity = window.frontity || {
-				locale: <?php echo wp_json_encode( $loc ? $loc : '' ); ?>,
-				plugins: {}
-			};
+<div id='root'></div>
+<script>
+	window.frontity = window.frontity || {
+		locale: <?php echo wp_json_encode( $loc ? $loc : '' ); ?>,
+		plugins: {}
+	};
 		<?php
-		foreach ( $frontity_plugin_classes as $plugin_class ) {
-			// Get the plugin URL.
-			$url = wp_json_encode( $plugin_dir_url ? $plugin_dir_url : '' );
-
-			// Get settings from database.
-			$settings = get_option( $plugin_class->props['option'] );
-			$settings = wp_json_encode( $settings ? $settings : new stdClass() );
-
-			// Return code to add the plugin's settings.
-			echo esc_html(
-				'window.frontity.plugins.' . $plugin_class->props['plugin_namespace'] . '= { url:' .
-				$url . ', settings:' . $settings . ' };'
-			);
+		foreach ( $this->plugins as $plugin_class => $plugin_instance ) {
+			$this->render_plugin_settings( $plugin_instance );
 		}
 		?>
-		</script>
+</script>
+		<?php
+	}
+
+	/**
+	 * Render each plugin settings.
+	 * 
+	 * @param Frontity_Plugin $plugin_instance A Frontity Plugin instance.
+	 */
+	public function render_plugin_settings( $plugin_instance ) {
+		// Get namespace from plugin.
+		$namespace = $plugin_instance->props['plugin_namespace'];
+
+		// Get settings from database.
+		$settings         = get_option( $plugin_instance->props['option'] );
+		$default_settings = $plugin_instance->props['default_settings'];
+
+		// Create a json representation of the settings.
+		$settings_json = array(
+			'settings' => $settings ? $settings : new stdClass(),
+		);
+
+		// Render settings assign.
+		?>
+window.frontity.plugins[<?php echo wp_json_encode( $namespace ); ?>] = <?php echo wp_json_encode( $settings_json ); ?>;
 		<?php
 	}
 
@@ -107,7 +189,7 @@ class Frontity_Main_Plugin {
 	 * @param string $hook The hook.
 	 */
 	public function register_script( $hook ) {
-		if ( 'toplevel_page_main-plugin' === $hook ) {
+		if ( 'toplevel_page_frontity-main-plugin' === $hook ) {
 			wp_register_script(
 				'frontity_main_admin_js',
 				FRONTITY_MAIN_URL . 'admin/build/bundle.js',
@@ -118,12 +200,5 @@ class Frontity_Main_Plugin {
 			wp_enqueue_script( 'frontity_main_admin_js' );
 		}
 	}
-
-	/**
-	 * Run the plugin.
-	 */
-	public function run() {
-		add_action( 'admin_menu', array( $this, 'register_menu' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_script' ) );
-	}
 }
+
