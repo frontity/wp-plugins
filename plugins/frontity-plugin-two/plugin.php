@@ -1,21 +1,23 @@
 <?php
-
 /**
- * Plugin Name: Plugin Two
+ * Plugin Name: Plugin Two (example) by Frontity
  * Version: 0.0.1
+ *
+ * @package Frontity_Plugin_Two
  */
 
-define( 'FRONTITY_TWO_VERSION', '0.0.1' );
-define( 'FRONTITY_TWO_PATH', plugin_dir_path( __FILE__ ) );
-define( 'FRONTITY_TWO_URL', plugin_dir_url( __FILE__ ) );
+define( 'FRONTITY_PLUGIN_TWO_VERSION', '0.0.1' );
 
-if ( ! class_exists( 'Plugin_Two' ) ) {
-	require_once FRONTITY_TWO_PATH . 'class-plugin-two.php';
+if ( ! class_exists( 'Frontity_Plugin' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . '../../shared/class-frontity-plugin.php';
 }
 
-$plugin_two = new Plugin_Two();
+if ( ! class_exists( 'Frontity_Plugin_Two' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'class-frontity-plugin-two.php';
+}
 
-add_action( 'init', array( $plugin_two, 'should_run' ) );
+// Creates a plugin instance and set activation / deactivation hooks.
+Frontity_Plugin_Two::install();
 
-register_activation_hook( __FILE__, 'Plugin_Two::activate' );
-register_deactivation_hook( __FILE__, 'Plugin_Two::deactivate' );
+// To be run when the plugin is uninstalled.
+register_uninstall_hook( __FILE__, 'Frontity_Plugin_Two::uninstall' );
