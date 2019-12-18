@@ -149,7 +149,7 @@ abstract class Frontity_Plugin {
 	 * Render admin page.
 	 */
 	public function render_admin_page() {
-		$settings = get_option( $this->props['settings'] );
+		$settings = get_option( $this->props['option'] );
 		?>
 			<div id='root'></div>
 			<script>
