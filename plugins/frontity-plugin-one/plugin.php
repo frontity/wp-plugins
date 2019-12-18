@@ -1,16 +1,23 @@
 <?php
+/**
+ * Plugin Name: Plugin One (example) by Frontity
+ * Version: 0.0.1
+ *
+ * @package Frontity_Plugin_One
+ */
 
-define( 'FRONTITY_ONE_VERSION', '0.0.1' );
+define( 'FRONTITY_PLUGIN_ONE_VERSION', '0.0.1' );
 
-define( 'FRONTITY_ONE_URL', plugin_dir_url( __FILE__ ) );
-
-if ( ! class_exists( 'Plugin_One' ) ) {
-	require_once plugin_dir_path( __FILE__ ) . 'class-plugin-one.php';
+if ( ! class_exists( 'Frontity_Plugin' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . '../../shared/class-frontity-plugin.php';
 }
 
-$plugin_one = new Plugin_One();
+if ( ! class_exists( 'Frontity_Plugin_one' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'class-frontity-plugin-one.php';
+}
 
-add_action( 'init', array( $plugin_one, 'should_run' ) );
+// Creates a plugin instance and set activation / deactivation hooks.
+Frontity_Plugin_one::install();
 
-register_activation_hook( __FILE__, 'Plugin_One::activate' );
-register_deactivation_hook( __FILE__, 'Plugin_One::deactivate' );
+// To be run when the plugin is uninstalled.
+register_uninstall_hook( __FILE__, 'Frontity_Plugin_one::uninstall' );
