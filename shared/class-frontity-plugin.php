@@ -2,7 +2,7 @@
 /**
  * File containing an abstract class to create Frontity plugins.
  *
- * @package Frontity
+ * @package Frontity_Shared
  */
 
 /**
@@ -183,6 +183,18 @@ abstract class Frontity_Plugin {
 	 */
 	public function run() {
 		add_action( 'wp_ajax_frontity_save_' . $this->props['option'], array( $this, 'save_settings' ) );
+	}
+
+	/**
+	 * Function that creates an instance of the plugin and set up hooks.
+	 */
+	public static function install() {
+		$instance = new static();
+
+		add_action( 'init', array( $instance, 'should_run' ) );
+
+		register_activation_hook( __FILE__, array( $instance, 'activate' ) );
+		register_deactivation_hook( __FILE__, array( $instance, 'deactivate' ) );
 	}
 
 	/**
