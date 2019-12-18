@@ -19,7 +19,7 @@ const Compatible = () => {
       </ul>
       <p>
         If you test any other plugin please leave a message in our{" "}
-        <a href="https://community.frontity.org" target="_blank">
+        <a href="https://community.frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin" target="_blank">
           community
         </a>{" "}
         so we can update this list.

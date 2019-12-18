@@ -20,7 +20,7 @@ const Footer = () => {
           </span>
           <Link
             icon={<Frontity />}
-            href="https://community.frontity.org"
+            href="https://community.frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
             target="_blank"
           >
             Ask the community
@@ -64,7 +64,7 @@ const Footer = () => {
         </Link>
         <Link
           icon={<Frontity />}
-          href="https://frontity.org/#newsletter"
+          href="https://frontity.org/#newsletter?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
           target="_blank"
         >
           Get updates about Frontity

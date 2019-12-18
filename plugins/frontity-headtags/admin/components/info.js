@@ -9,7 +9,7 @@ const Info = () => {
       <ol>
         <li>
           Install the
-          <a href="https://docs.frontity.org/api-reference-1" target="_blank">
+          <a href="https://docs.frontity.org/api-reference-1/frontity-head-tags?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin" target="_blank">
             <code>@frontity/head-tags</code>
           </a>{" "}
           package in your Frontity project.
