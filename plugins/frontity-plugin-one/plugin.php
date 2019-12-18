@@ -12,12 +12,12 @@ if ( ! class_exists( 'Frontity_Plugin' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . '../../shared/class-frontity-plugin.php';
 }
 
-if ( ! class_exists( 'Frontity_Plugin_one' ) ) {
+if ( ! class_exists( 'Frontity_Plugin_One' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . 'class-frontity-plugin-one.php';
 }
 
 // Creates a plugin instance and set activation / deactivation hooks.
-Frontity_Plugin_one::install();
+Frontity_Plugin_One::install();
 
 // To be run when the plugin is uninstalled.
-register_uninstall_hook( __FILE__, 'Frontity_Plugin_one::uninstall' );
+register_uninstall_hook( __FILE__, 'Frontity_Plugin_One::uninstall' );
