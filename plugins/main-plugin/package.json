@@ -2,16 +2,6 @@
   "name": "main-plugin",
   "version": "0.0.1",
   "private": true,
-  "description": "> TODO: description",
-  "author": "David Arenas <darensr@gmail.com>",
-  "homepage": "https://github.com/frontity/wp-org-plugins#readme",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/frontity/wp-org-plugins.git"
-  },
-  "scripts": {},
-  "bugs": {
-    "url": "https://github.com/frontity/wp-org-plugins/issues"
-  }
+  "license": "GPLv2",
+  "scripts": {}
 }
