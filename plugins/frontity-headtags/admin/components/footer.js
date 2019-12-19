@@ -33,11 +33,7 @@ const Footer = () => {
         <span>
           Frontity is an open source framework for building headless WordPress
           sites with ReactJS. If you like the project, you can show your support
-          by{" "}
-          <InlineLink href="" target="_blank">
-            leaving a positive review
-          </InlineLink>{" "}
-          here or{" "}
+          by leaving a positive review here or{" "}
           <InlineLink
             href="https://github.com/frontity/wp-org-plugins"
             target="_blank"
