@@ -35,7 +35,7 @@ const Footer = () => {
           sites with ReactJS. If you like the project, you can show your support
           by leaving a positive review here or{" "}
           <InlineLink
-            href="https://github.com/frontity/wp-org-plugins"
+            href="https://github.com/frontity/frontity"
             target="_blank"
           >
             starring it on GitHub
