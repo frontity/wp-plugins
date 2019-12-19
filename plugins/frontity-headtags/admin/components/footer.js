@@ -20,7 +20,7 @@ const Footer = () => {
           </span>
           <Link
             icon={<Frontity />}
-            href="https://community.frontity.org"
+            href="https://community.frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
             target="_blank"
           >
             Ask the community
@@ -33,11 +33,7 @@ const Footer = () => {
         <span>
           Frontity is an open source framework for building headless WordPress
           sites with ReactJS. If you like the project, you can show your support
-          by{" "}
-          <InlineLink href="" target="_blank">
-            leaving a positive review
-          </InlineLink>{" "}
-          here or{" "}
+          by leaving a positive review here or{" "}
           <InlineLink
             href="https://github.com/frontity/wp-org-plugins"
             target="_blank"
@@ -64,7 +60,7 @@ const Footer = () => {
         </Link>
         <Link
           icon={<Frontity />}
-          href="https://frontity.org/#newsletter"
+          href="https://frontity.org/#newsletter?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
           target="_blank"
         >
           Get updates about Frontity
