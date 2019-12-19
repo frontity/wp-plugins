@@ -1,5 +1,5 @@
 === REST API - Head Tags of SEO Plugins ===
-Contributors: poliuk, luisherranz, rmartinezduque, orballo, davidarenas, santosguillamot
+Contributors: poliuk, luisherranz, rmartinezduque, orballo, davidarenas, santosguillamot, frontity
 Tags: seo, wp rest api, yoast, meta tags, head
 Requires at least: 4.7
 Tested up to: 5.3.2
