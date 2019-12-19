@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<phpunit
+	bootstrap="tests/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	>
+	<testsuites>
+		<testsuite name="headtags">
+			<directory prefix="test-" suffix=".php">./tests/frontity-headtags/</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
