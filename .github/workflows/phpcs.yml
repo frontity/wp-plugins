@@ -1,0 +1,24 @@
+name: phpcs
+
+on: [push]
+
+jobs:
+  phpcs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup composer cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache
+          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: php${{ matrix.php-version }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install
+
+      - name: Run phpcs
+        run: composer phpcs

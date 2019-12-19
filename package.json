@@ -1,11 +1,52 @@
 {
-  "name": "root",
+  "name": "wp-plugins",
+  "description": "A set of WordPress enchancement to improve the integration with the Frontity Framework",
   "private": true,
-  "devDependencies": {
-    "lerna": "^3.13.1"
+  "homepage": "https://github.com/frontity/wp-plugins#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frontity/wp-plugins.git"
   },
+  "bugs": {
+    "url": "https://github.com/frontity/wp-plugins/issues"
+  },
+  "workspaces": [
+    "plugins/*"
+  ],
   "scripts": {
-    "release": "lerna version",
-    "postversion": "echo \"postversion from root\""
+    "dev": "webpack --watch",
+    "build": "node scripts/build.js",
+    "sync": "node ./scripts/symlink.js",
+    "sync:prod": "node ./scripts/symlink.js --production",
+    "install-wp-tests": "./bin/install-wp-tests.sh frontity_tests root '' 127.0.0.1 latest",
+    "phpcs": "composer run phpcs",
+    "phpcbf": "composer run phpcbf",
+    "phpunit": "composer run phpunit",
+    "version": "npx changeset version && node scripts/version.js"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.22",
+    "@emotion/styled": "^10.0.23",
+    "@frontity/connect": "^1.0.1",
+    "axios": "^0.19.0",
+    "chalk": "^2.4.2",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@changesets/changelog-github": "^0.2.0",
+    "@changesets/cli": "^2.4.1",
+    "babel-loader": "^8.0.6",
+    "core-js": "^3.1.4",
+    "fs-extra": "^8.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "replace-in-file": "^3.4.3",
+    "simple-git": "^1.107.0",
+    "symlink-dir": "^3.1.0",
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.5"
   }
 }
