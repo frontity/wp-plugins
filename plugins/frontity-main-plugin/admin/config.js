@@ -1,4 +1,4 @@
-import pluginOne from "../../plugin-one/admin/config";
+import pluginOne from "../../frontity-plugin-one/admin/config";
 import headtags from "../../frontity-headtags/admin/config";
 
 // List of store configs from each plugin

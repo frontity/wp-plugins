@@ -2,8 +2,8 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider, createStore } from "@frontity/connect";
 import MainPlugin from "./components";
-import PluginOne from "../../plugin-one/admin/components";
-import PluginTwo from "../../plugin-two/admin/components";
+import PluginOne from "../../frontity-plugin-one/admin/components";
+import PluginTwo from "../../frontity-plugin-two/admin/components";
 import HeadTags from "../../frontity-headtags/admin/components";
 import config from "./config";
 
