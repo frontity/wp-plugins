@@ -8,7 +8,7 @@ const chalk = require("chalk");
 const BUILD_FOLDER = path.resolve(__dirname, "../build");
 const PLUGINS_FOLDER = path.resolve(__dirname, "../plugins");
 const SHARED_FOLDER = path.resolve(__dirname, "../shared");
-const MAIN_PLUGIN = "main-plugin";
+const MAIN_PLUGIN = "frontity-main-plugin";
 
 (async () => {
   // Build UI in production mode
@@ -41,10 +41,10 @@ const MAIN_PLUGIN = "main-plugin";
 
       // Copy shared folder to ./build/PLUGIN folder and update requires.
       console.log(`Copying shared files to ${chalk.yellow(plugin)}`);
-      await fs.copy(SHARED_FOLDER, buildPath);
+      await fs.copy(SHARED_FOLDER, path.join(buildPath, "./shared"));
       await replace({
         files: path.join(buildPath, "plugin.php"),
-        from: /\.\.\/shared/,
+        from: /\.\.\/\.\.\/shared/,
         to: "./shared"
       });
 
