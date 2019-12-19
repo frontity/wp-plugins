@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: REST API Head Tags by Frontity
+ * Plugin Name: REST API - Head Tags of SEO Plugins
  * Version: 0.0.1
  *
  * @package Frontity_Headtags
