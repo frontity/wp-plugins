@@ -9,19 +9,26 @@ const Header = () => {
     <HeaderContainer>
       <HeaderTitle>
         REST API - Head Tags of SEO Plugins by{" "}
-        <FrontityLogoContainer href="https://frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin" target="_blank">
+        <FrontityLogoContainer
+          href="https://frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
+          target="_blank"
+        >
           <FrontityLogo color="#1f38c5" />
         </FrontityLogoContainer>
       </HeaderTitle>
       <HeaderButtons>
-        <Button as="a" href="https://community.frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin" target="_blank">
+        <Button
+          as="a"
+          href="https://community.frontity.org?utm_source=plugin-dashboard&utm_medium=cta-button&utm_campaign=rest-api-head-tags-plugin"
+          target="_blank"
+        >
           Ask the community
         </Button>
         <Button
           primary
           icon={<FrontityIcon />}
           as="a"
-          href="https://docs.frontity.org/frontity-plugins/rest-api-head-tags?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
+          href="https://docs.frontity.org/frontity-plugins/rest-api-head-tags?utm_source=plugin-dashboard&utm_medium=cta-button&utm_campaign=rest-api-head-tags-plugin"
           target="_blank"
         >
           Documentation
