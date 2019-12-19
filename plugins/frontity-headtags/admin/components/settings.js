@@ -12,14 +12,23 @@ const Settings = ({ state, actions }) => {
 
   return (
     <Card margin="56px 0">
-      <h2>Settings</h2>
+      <div>
+        <Title>Settings</Title>
+        <a
+          href="https://docs.frontity.org/frontity-plugins/rest-api-head-tags#settings?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
+          target="_blank"
+        >
+          Learn More
+        </a>
+      </div>
       <Field>
         <Label>enabled</Label>
         <InputContainer>
           <Toggle checked={isEnabled} onClick={isEnabled ? disable : enable} />
         </InputContainer>
         <Description>
-          Check this option to enable output to the REST API responses.
+          Disable if you just want to get this data with the query:
+          <CodeBlock> ?head_tags=true</CodeBlock>.
         </Description>
       </Field>
       <Field>
@@ -32,12 +41,22 @@ const Settings = ({ state, actions }) => {
           taxonomies and archives).
         </Description>
       </Field>
+
       <ModalPurgeCache />
     </Card>
   );
 };
 
 export default connect(Settings);
+
+const CodeBlock = styled.pre`
+  display: inline;
+`;
+
+const Title = styled.h2`
+  display: inline;
+  padding-right: 15px;
+`;
 
 const Field = styled.div`
   display: flex;

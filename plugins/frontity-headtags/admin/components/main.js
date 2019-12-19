@@ -7,9 +7,10 @@ import Compatible from "./compatible";
 const Main = () => {
   return (
     <MainContainer>
-      <Compatible />
-      <Info />
       <Settings />
+      <Info />
+      <Compatible />
+      
     </MainContainer>
   );
 };
