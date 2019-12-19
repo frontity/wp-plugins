@@ -1,12 +1,12 @@
 <?php
 /**
  * Plugin Name: REST API Head Tags by Frontity
- * Version: 0.1.0
+ * Version: 0.0.1
  *
  * @package Frontity_Headtags
  */
 
-define( 'FRONTITY_HEADTAGS_VERSION', '0.1.0' );
+define( 'FRONTITY_HEADTAGS_VERSION', '0.0.1' );
 
 if ( ! class_exists( 'Frontity_Plugin' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . '../../shared/class-frontity-plugin.php';

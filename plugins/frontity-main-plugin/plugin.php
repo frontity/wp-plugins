@@ -3,7 +3,7 @@
  * Plugin Name: Frontity
  * Description: A set of WordPress enchancement to improve the integration with the Frontity Framework
  * Plugin URI: http://github.com/frontity/wp-plugins
- * Version: 1.0.0
+ * Version: 0.0.1
  * 
  * Author: Frontity
  * Author URI: https://frontity.org
