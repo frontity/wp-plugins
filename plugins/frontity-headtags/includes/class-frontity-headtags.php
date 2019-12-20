@@ -131,8 +131,10 @@ class Frontity_Headtags {
 
 		ob_start();
 		
-		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		do_action( 'template_redirect' );
 		do_action( 'wp_head' );
+		// phpcs:enable
 
 		// Get rendered <head> content.
 		$html = ob_get_clean();
