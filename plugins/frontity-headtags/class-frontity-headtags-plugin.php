@@ -19,7 +19,7 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		parent::__construct(
 			array(
 				'plugin_namespace' => 'headtags',
-				'plugin_title'     => 'REST API - Head Tags of SEO Plugins',
+				'plugin_title'     => 'REST API - Head Tags',
 				'menu_title'       => 'REST API - Head Tags',
 				'menu_slug'        => 'frontity-headtags',
 				'script'           => 'frontity_headtags_admin_js',
