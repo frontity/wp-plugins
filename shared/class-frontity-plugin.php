@@ -65,6 +65,13 @@ abstract class Frontity_Plugin {
 	}
 
 	/**
+	 * Get the main PHP file.
+	 */
+	public static function get_main_php_file() {
+		return static::get_path() . 'plugin.php';
+	}
+
+	/**
 	 * Get the plugin dir URL.
 	 */
 	public static function get_url() {
@@ -75,7 +82,7 @@ abstract class Frontity_Plugin {
 	 * Get the plugin version.
 	 */
 	public static function get_version() {
-		return get_plugin_data( static::get_path() . 'plugin.php', false, false )['Version'];
+		return get_plugin_data( static::get_main_php_file(), false, false )['Version'];
 	}
 
 	/**
@@ -238,8 +245,8 @@ abstract class Frontity_Plugin {
 
 		add_action( 'init', array( $instance, 'should_run' ) );
 
-		register_activation_hook( static::get_file_name(), array( $instance, 'activate' ) );
-		register_deactivation_hook( static::get_file_name(), array( $instance, 'deactivate' ) );
+		register_activation_hook( static::get_main_php_file(), array( $instance, 'activate' ) );
+		register_deactivation_hook( static::get_main_php_file(), array( $instance, 'deactivate' ) );
 	}
 
 	/**
