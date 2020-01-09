@@ -69,14 +69,8 @@ class Frontity_Headtags_Taxonomy_Hooks {
 			$query['tag_id'] = $id;
 			$query['tag']    = $slug; // Add also the slug for tags.
 		} else {
-
-		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-			$query['tax_query'] = array(
-				array(
-					'taxonomy' => $type,
-					'terms'    => $id,
-				),
-			);
+			// Just set the slug for the type.
+			$query[ $type ] = $slug;
 		}
 
 		// Return the head tags.
