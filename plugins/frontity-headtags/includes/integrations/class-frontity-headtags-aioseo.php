@@ -18,19 +18,22 @@ class Frontity_Headtags_AIOSEO {
 	public function __construct() {
 		add_action( 'frontity_headtags_replace_query', array( $this, 'setup' ) );
 		add_action( 'frontity_headtags_restore_query', array( $this, 'reset' ) );
-
-		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
-		define( 'AIOSEOP_UNIT_TESTING', true );
 	}
-
+	
 	/**
 	 * Setup function.
 	 */
 	public function setup() {
+		if ( ! defined( 'AIOSEOP_UNIT_TESTING' ) ) {
+			// This constant allows $aioseop->wp_head() to be executed more than once.
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+			define( 'AIOSEOP_UNIT_TESTING', true );
+		}
+
 		// The WP Query has changed at this moment, we can check if it's for an author.
 		global $wp_query;
 
-		// Add a filter just for authors.
+		// Add the ld+json filter just for authors.
 		if ( $wp_query->is_author ) {
 			add_filter( 'frontity_headtags_result', array( $this, 'filter_ldjson' ) );
 		}
