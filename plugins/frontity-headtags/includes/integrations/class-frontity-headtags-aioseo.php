@@ -30,17 +30,18 @@ class Frontity_Headtags_AIOSEO {
 		/**
 		 * Things that don't work at this moment:
 		 * - The canonical URL doesn't appear for post tags.
-		 *   ** SOLUTION: currently investigating...
+		 *   ** SOLUTION: add 'tag' attribute to $wp_query -> DONE
 		 * - The ld+json tag is wrong for authors.
-		 *   ** SOLUTION: remove that tags for authors -> DONE. 
+		 *   ** SOLUTION: remove that tags for authors -> DONE
 		 * - The title is wrong for pages (%page_title% appears instead of the actual title).
+		 *   ** SOLUTION: currently investigating...
 		 */
 
 		// The WP Query has changed at this moment, we can check if it's for an author.
 		global $wp_query;
 
-		// Check if the current query is for an author.
-		if ( isset( $wp_query->query['author'] ) ) {
+		// Add a filter just for authors.
+		if ( $wp_query->is_author ) {
 			add_filter( 'frontity_headtags_result', array( $this, 'filter_ldjson' ) );
 		}
 	}
@@ -49,7 +50,7 @@ class Frontity_Headtags_AIOSEO {
 	 * Reset function.
 	 */
 	public function reset() {
-		// Do nothing at this moment.
+		// Remove the ld+json filter if it was added.
 		remove_filter( 'frontity_headtags_result', array( $this, 'filter_ldjson' ) );
 	}
 
@@ -79,5 +80,4 @@ class Frontity_Headtags_AIOSEO {
 
 		return ! $is_ldjson;
 	}
-
 }
