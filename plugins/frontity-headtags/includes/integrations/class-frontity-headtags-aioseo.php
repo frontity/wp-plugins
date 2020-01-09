@@ -27,16 +27,6 @@ class Frontity_Headtags_AIOSEO {
 	 * Setup function.
 	 */
 	public function setup() {
-		/**
-		 * Things that don't work at this moment:
-		 * - The canonical URL doesn't appear for post tags.
-		 *   ** SOLUTION: add 'tag' attribute to $wp_query -> DONE
-		 * - The ld+json tag is wrong for authors.
-		 *   ** SOLUTION: remove that tags for authors -> DONE
-		 * - The title is wrong for pages (%page_title% appears instead of the actual title).
-		 *   ** SOLUTION: currently investigating...
-		 */
-
 		// The WP Query has changed at this moment, we can check if it's for an author.
 		global $wp_query;
 
