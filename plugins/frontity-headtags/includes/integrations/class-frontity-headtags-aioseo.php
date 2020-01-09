@@ -18,15 +18,31 @@ class Frontity_Headtags_AIOSEO {
 	public function __construct() {
 		add_action( 'frontity_headtags_replace_query', array( $this, 'setup' ) );
 		add_action( 'frontity_headtags_restore_query', array( $this, 'reset' ) );
+
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+		define( 'AIOSEOP_UNIT_TESTING', true );
 	}
 
 	/**
 	 * Setup function.
 	 */
 	public function setup() {
-		// Create an instance and add hooks.
-		$aiosp = new All_in_One_SEO_Pack();
-		$aiosp->add_hooks();
+		/**
+		 * Things that don't work at this moment:
+		 * - The canonical URL doesn't appear for post tags.
+		 *   ** SOLUTION: currently investigating...
+		 * - The ld+json tag is wrong for authors.
+		 *   ** SOLUTION: remove that tags for authors -> DONE. 
+		 * - The title is wrong for pages (%page_title% appears instead of the actual title).
+		 */
+
+		// The WP Query has changed at this moment, we can check if it's for an author.
+		global $wp_query;
+
+		// Check if the current query is for an author.
+		if ( isset( $wp_query->query['author'] ) ) {
+			add_filter( 'frontity_headtags_result', array( $this, 'filter_ldjson' ) );
+		}
 	}
 
 	/**
@@ -34,5 +50,34 @@ class Frontity_Headtags_AIOSEO {
 	 */
 	public function reset() {
 		// Do nothing at this moment.
+		remove_filter( 'frontity_headtags_result', array( $this, 'filter_ldjson' ) );
 	}
+
+	/**
+	 * Filter ld+json tags.
+	 *
+	 * @param array $headtags All the <head> tags.
+	 * @return array All the <head> tags that are not ld+json tags.
+	 */
+	public function filter_ldjson( $headtags ) {
+		$filtered = array_filter( $headtags, array( $this, 'is_not_ldjson' ) );
+		return array_values( $filtered );
+	}
+
+	/**
+	 * Check if a tag is a ld+json tag or a stylesheet.
+	 *
+	 * @param array $element Object representing a HTML element.
+	 * @return bool TRUE if it is NOT a ld+json tag.
+	 */
+	public function is_not_ldjson( $element ) {
+		$is_ldjson = 'script' === $element['tag'] && in_array(
+			$element['attributes']['type'],
+			array( '', 'text/ld+json', 'application/ld+json' ),
+			true
+		);
+
+		return ! $is_ldjson;
+	}
+
 }
