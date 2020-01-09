@@ -55,23 +55,25 @@ class Frontity_Headtags_Taxonomy_Hooks {
 	 * @param mixed $taxonomy Taxonomy object.
 	 */
 	public function get_headtags( $taxonomy ) {
-		$slug = $taxonomy['taxonomy'];
+		$type = $taxonomy['taxonomy'];
+		$slug = $taxonomy['slug'];
 		$id   = $taxonomy['id'];
 
 		// Build key with the variables above.
-		$key   = "{$slug}_{$id}";
+		$key   = "{$type}_{$id}";
 		$query = array();
 
-		if ( 'category' === $slug ) {
+		if ( 'category' === $type ) {
 			$query['cat'] = $id;
-		} elseif ( 'post_tag' === $slug ) {
+		} elseif ( 'post_tag' === $type ) {
 			$query['tag_id'] = $id;
+			$query['tag']    = $slug; // Add also the slug for tags.
 		} else {
 
 		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 			$query['tax_query'] = array(
 				array(
-					'taxonomy' => $slug,
+					'taxonomy' => $type,
 					'terms'    => $id,
 				),
 			);
