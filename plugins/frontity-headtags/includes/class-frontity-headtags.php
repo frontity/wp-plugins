@@ -107,8 +107,11 @@ class Frontity_Headtags {
 	 * @return array|mixed
 	 */
 	public function get_headtags( $key, $query ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$ignore_cache = isset( $_GET['ignore_cache'] ) && 'true' === $_GET['ignore_cache'];
+
 		// Get head tags from transients.
-		$headtags = $this->get_cached_headtags( $key );
+		$headtags = $ignore_cache ? null : $this->get_cached_headtags( $key );
 
 		// If head tags are not cached, compute and cache them.
 		if ( empty( $headtags ) ) {
