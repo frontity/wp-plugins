@@ -33,7 +33,8 @@ class Frontity_Headtags_AIOSEO {
 		// The WP Query has changed at this moment, we can check if it's for an author.
 		global $wp_query;
 
-		// Add the ld+json filter just for authors.
+		// Add the ld+json tag filter just for authors.
+		// This property is not being generated well so it's being removed.
 		if ( $wp_query->is_author ) {
 			add_filter( 'frontity_headtags_result', array( $this, 'filter_ldjson' ) );
 		}
