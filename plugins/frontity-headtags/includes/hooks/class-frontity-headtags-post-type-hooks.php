@@ -76,14 +76,25 @@ class Frontity_Headtags_Post_Type_Hooks {
 	public function get_post_headtags( $post ) {
 		// Get post type and id.
 		$post_type = $post['type'];
+		$post_slug = $post['slug'];
 		$post_id   = $post['id'];
 
 		// Use them to create $key and $query vars.
-		$key   = "{$post_type}_{$post_id}";
-		$query = array(
-			'post_type' => $post_type,
-			'p'         => $post_id,
-		);
+		$key = "{$post_type}_{$post_id}";
+
+		// Initialize an empty query.
+		$query = array();
+
+		if ( 'page' === $post_type ) {
+			// Add page attributes if the query is for a page.
+			$query['page']     = '';
+			$query['pagename'] = $post_slug;
+		} else {
+			// Add post attributes.
+			$query['post_type'] = $post_type;
+			$query['p']         = $post_id;
+		}
+
 		// Return the head tags.
 		return $this->frontity_headtags->get_headtags( $key, $query );
 	}

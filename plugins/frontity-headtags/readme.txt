@@ -99,6 +99,12 @@ By default, the head_tags field is included in the common endpoint of each entit
 
 For example, with the output disabled, `https://mysite.com/wp-json/wp/v2/posts`  won't show the head_tags field unless you have the query `?head_tags=true` at the end.
 
+#### Skip cache
+
+In case you want to skip the cache, you can do so by adding to the query the  parameter `skip_cache`.
+
+There are some cache plugins for the REST API that also use the same parameter. In case you want to ignore the cache for the REST API call but not for the head tags, you can use `skip_cache&head_tags_skip_cache=false`.
+
 == Problems and Questions ==
 
 If you have any trouble with the REST API - Head Tags, you can check out [our docs](https://docs.frontity.org/frontity-plugins/rest-api-head-tags?utm_source=plugin-repository&utm_medium=readme&utm_campaign=rest-api-head-tags-plugin) or join our [community forum](https://community.frontity.org/?utm_source=plugin-repository&utm_medium=readme&utm_campaign=rest-api-head-tags-plugin) and let us know, we’ll be happy to help!
@@ -145,6 +151,6 @@ Yes, the plugin will automatically add the meta tags to the custom post types an
 
 = Is this plugin compatible with Yoast SEO plugin? And with All in One SEO? =
 
-Yes! It is compatible out of the box with most of the SEO plugins, and Yoast SEO and All in One SEO plugins have already been tested.
+Yes, it works with both Yoast SEO and All in One SEO plugins. We actually plan to make it compatible with most of the WordPress SEO plugins. If you test it with any other plugin, kindly let us know whether it works or not so we can update the list.
 
 == Changelog ==

@@ -24,17 +24,7 @@ class Frontity_Headtags_Yoast {
 	 * Setup function.
 	 */
 	public function setup() {
-		// Init Yoast.
-		// Add first actions.
-		wpseo_frontend_head_init();
-		// Add missing opengraph hooks.
-		if ( is_singular() && ! is_front_page() ) {
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'article_author_facebook' ), 15 );
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'tags' ), 16 );
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'category' ), 17 );
-			add_action( 'wpseo_opengraph', array( $GLOBALS['wpseo_og'], 'publish_date' ), 19 );
-		}
-		// Create a new instance.
+		// Create a new instance of WPSEO_Frontend if it's not created yet.
 		WPSEO_Frontend::get_instance();
 	}
 
@@ -42,7 +32,7 @@ class Frontity_Headtags_Yoast {
 	 * Reset function.
 	 */
 	public function reset() {
-		// Create an action and move this to a hook?
+		// Get current instance.
 		$wp_seo = WPSEO_Frontend::get_instance();
 		// Remove wp_seo actions added to 'wp_head' hook.
 		remove_action( 'wp_head', array( $wp_seo, 'front_page_specific_init' ), 0 );
