@@ -151,6 +151,6 @@ Yes, the plugin will automatically add the meta tags to the custom post types an
 
 = Is this plugin compatible with Yoast SEO plugin? And with All in One SEO? =
 
-Yes! It is compatible out of the box with most of the SEO plugins, and Yoast SEO and All in One SEO plugins have already been tested.
+Yes, it works with both Yoast SEO and All in One SEO plugins. We actually plan to make it compatible with most of the WordPress SEO plugins. If you test it with any other plugin, kindly let us know whether it works or not so we can update the list.
 
 == Changelog ==
