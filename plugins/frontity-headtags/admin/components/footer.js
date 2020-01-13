@@ -43,7 +43,7 @@ const Footer = () => {
           .
         </span>
       </TinyCard>
-      <Row gap={54}>
+      <Links>
         <Link
           icon={<Twitter />}
           href="https://twitter.com/frontity"
@@ -65,7 +65,14 @@ const Footer = () => {
         >
           Get updates about Frontity
         </Link>
-      </Row>
+        <Link
+          icon={<Heart solid />}
+          href="https://wordpress.org/support/plugin/rest-api-head-tags/reviews/?filter=5"
+          target="_blank"
+        >
+          Leave a positive review
+        </Link>
+      </Links>
     </FooterContainer>
   );
 };
@@ -76,6 +83,18 @@ const FooterContainer = styled.footer`
   margin: auto;
   max-width: 700px;
   padding: 0 16px;
+`;
+
+const Links = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 16em;
+  margin-left: auto;
+  margin-right: auto;
+
+  & > *:not(:last-child) {
+    margin-bottom: 2em;
+  }
 `;
 
 const Row = styled.div`
