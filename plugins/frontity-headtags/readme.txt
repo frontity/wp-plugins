@@ -154,3 +154,15 @@ Yes, the plugin will automatically add the meta tags to the custom post types an
 Yes, it works with both Yoast SEO and All in One SEO plugins. We actually plan to make it compatible with most of the WordPress SEO plugins. If you test it with any other plugin, kindly let us know whether it works or not so we can update the list.
 
 == Changelog ==
+
+= 1.1.0 =
+
+Minor Changes: Added integration with All In One SEO Pack.
+
+= 1.0.1 =
+
+Patch Changes: Fix the registering of activation / deactivation hooks.
+
+= 1.0.0 =
+
+Major Changes: Release the first version of REST API - Head Tags
