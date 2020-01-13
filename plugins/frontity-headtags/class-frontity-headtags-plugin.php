@@ -19,7 +19,7 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		parent::__construct(
 			array(
 				'plugin_namespace' => 'headtags',
-				'plugin_title'     => 'REST API - Head Tags of SEO Plugins',
+				'plugin_title'     => 'REST API - Head Tags',
 				'menu_title'       => 'REST API - Head Tags',
 				'menu_slug'        => 'frontity-headtags',
 				'script'           => 'frontity_headtags_admin_js',
@@ -56,6 +56,7 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		require_once "$dirname/includes/hooks/class-frontity-headtags-author-hooks.php";
 		// Integrations.
 		require_once "$dirname/includes/integrations/class-frontity-headtags-yoast.php";
+		require_once "$dirname/includes/integrations/class-frontity-headtags-aioseo.php";
 		// Filters.
 		require_once "$dirname/includes/filters/class-frontity-headtags-filters.php";
 	}
@@ -93,6 +94,10 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		// Setup Yoast integration.
 		if ( class_exists( 'WPSEO_Frontend' ) ) {
 			new Frontity_Headtags_Yoast();
+		}
+		// Setup All In One SEO Pack integration.
+		if ( class_exists( 'All_in_One_SEO_Pack' ) ) {
+			new Frontity_Headtags_AIOSEO();
 		}
 	}
 

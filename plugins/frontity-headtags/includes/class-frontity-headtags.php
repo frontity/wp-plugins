@@ -107,8 +107,15 @@ class Frontity_Headtags {
 	 * @return array|mixed
 	 */
 	public function get_headtags( $key, $query ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$skip_cache = isset( $_GET['head_tags_skip_cache'] )
+			? wp_validate_boolean( $_GET['head_tags_skip_cache'] )
+			: isset( $_GET['skip_cache'] );
+		// phpcs:enable
+
 		// Get head tags from transients.
-		$headtags = $this->get_cached_headtags( $key );
+		$headtags = $skip_cache ? null : $this->get_cached_headtags( $key );
 
 		// If head tags are not cached, compute and cache them.
 		if ( empty( $headtags ) ) {
@@ -131,8 +138,10 @@ class Frontity_Headtags {
 
 		ob_start();
 		
-		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		do_action( 'template_redirect' );
 		do_action( 'wp_head' );
+		// phpcs:enable
 
 		// Get rendered <head> content.
 		$html = ob_get_clean();

@@ -37,6 +37,8 @@ class HeadTags extends WP_UnitTestCase {
 	 * @param mixed $factory Factory.
 	 */
 	public static function wpSetUpBeforeClass( $factory ) {
+		// This fixes a problem when running 'redirect_canonical' (/wp-includes/canonical.php).
+		$_SERVER['REQUEST_URI'] = '/';
 
 		// Init a test post.
 		self::$post_id = $factory->post->create(

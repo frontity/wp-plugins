@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <HeaderContainer>
       <HeaderTitle>
-        REST API - Head Tags of SEO Plugins by{" "}
+        REST API - Head Tags by{" "}
         <FrontityLogoContainer
           href="https://frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
           target="_blank"

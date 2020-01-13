@@ -1,4 +1,4 @@
-=== REST API - Head Tags of SEO Plugins ===
+=== REST API - Head Tags ===
 Contributors: poliuk, luisherranz, rmartinezduque, orballo, davidarenas, santosguillamot, frontity
 Tags: seo, wp rest api, yoast, meta tags, head
 Requires at least: 4.7
@@ -115,14 +115,14 @@ Get help on the [Frontity Community Forum](https://community.frontity.org/?utm_s
 == Installation ==
 
 1. First of all you have to install the plugin. You can do it:
-    * **Automatic**: from within WordPress dashboard go to Plugins, click Add New button, search for REST API - Head Tags of SEO Plugins (by Frontity) and click Install Now.
+    * **Automatic**: from within WordPress dashboard go to Plugins, click Add New button, search for REST API - Head Tags (by Frontity) and click Install Now.
     * **Manual**: this method requires to download the plugin and upload it to your web server via FTP. For a more detailed explanation, WordPress explains how to do this [on this guide](https://wordpress.org/support/article/managing-plugins/#manual-plugin-installation).
 
 2. Once installed, you have to activate it and it will be running! The *head_tags* field is cached and enabled by default, but you can purge the cache or disable the output as explained on the [Settings](https://docs.frontity.org/frontity-plugins/rest-api-head-tags#settings?utm_source=plugin-repository&utm_medium=readme&utm_campaign=rest-api-head-tags-plugin) section.
 
 == Screenshots ==
 
-1. REST API Head Tags of SEO Plugins Settings
+1. REST API Head Tags Settings
 2. WordPress REST API response example
 
 == Frequently Asked Questions ==
