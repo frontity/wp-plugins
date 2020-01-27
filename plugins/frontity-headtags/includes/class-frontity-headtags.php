@@ -138,8 +138,12 @@ class Frontity_Headtags {
 
 		ob_start();
 		
+		// Arguments to be used when doing 'template_redirect' action.
+		$requested_url = null;
+		$do_redirect   = false;
+
 		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		do_action( 'template_redirect' );
+		do_action( 'template_redirect', $requested_url, $do_redirect );
 		do_action( 'wp_head' );
 		// phpcs:enable
 
@@ -249,6 +253,13 @@ class Frontity_Headtags {
 		$wp_the_query = $new_query;
 		// phpcs:enable
 
+		// Allow 'redirect_canonical' action to receive arguments.
+		remove_action( 'template_redirect', 'redirect_canonical' );
+		add_action( 'template_redirect', 'redirect_canonical', 10, 2 );
+
+		// Remove 'rest_output_link_header' action.
+		remove_action( 'template_redirect', 'rest_output_link_header', 11, 0 );
+
 		// Init integrations.
 		do_action( 'frontity_headtags_replace_query' );
 	}
@@ -267,6 +278,13 @@ class Frontity_Headtags {
 		// phpcs:enable
 		wp_reset_postdata();
 
+		// Reset 'redirect_canonical' action.
+		remove_action( 'template_redirect', 'redirect_canonical', 10, 2 );
+		add_action( 'template_redirect', 'redirect_canonical' );
+
+		// Reset 'rest_output_link_header' action.
+		add_action( 'template_redirect', 'rest_output_link_header', 11, 0 );
+		
 		// Reset integrations.
 		do_action( 'frontity_headtags_restore_query' );
 	}
