@@ -257,6 +257,9 @@ class Frontity_Headtags {
 		remove_action( 'template_redirect', 'redirect_canonical' );
 		add_action( 'template_redirect', 'redirect_canonical', 10, 2 );
 
+		// Remove 'rest_output_link_header' action.
+		remove_action( 'template_redirect', 'rest_output_link_header', 11, 0 );
+
 		// Init integrations.
 		do_action( 'frontity_headtags_replace_query' );
 	}
@@ -279,6 +282,9 @@ class Frontity_Headtags {
 		remove_action( 'template_redirect', 'redirect_canonical', 10, 2 );
 		add_action( 'template_redirect', 'redirect_canonical' );
 
+		// Reset 'rest_output_link_header' action.
+		add_action( 'template_redirect', 'rest_output_link_header', 11, 0 );
+		
 		// Reset integrations.
 		do_action( 'frontity_headtags_restore_query' );
 	}
