@@ -1,5 +1,11 @@
 # frontity-headtags
 
+## 1.1.1
+
+### Patch Changes
+
+- [`fab8711`](https://github.com/frontity/wp-plugins/commit/fab87113b088c8d37426bce58ad997a135a33c56) [#21](https://github.com/frontity/wp-plugins/pull/21) - Fix redirects when making calls to the REST API
+
 ## 1.1.0
 
 ### Minor Changes

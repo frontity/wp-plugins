@@ -155,6 +155,10 @@ Yes, it works with both Yoast SEO and All in One SEO plugins. We actually plan t
 
 == Changelog ==
 
+= 1.1.1 =
+
+Patch Changes: Fix redirects when making calls to the REST API.
+
 = 1.1.0 =
 
 Minor Changes: Added integration with All In One SEO Pack plugin.
