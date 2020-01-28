@@ -74,13 +74,13 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 
 		// Init hooks.
 		if ( is_admin() ) {
-			add_action( 'admin_init', array( $post_types, 'register_admin_hooks' ) );
-			add_action( 'admin_init', array( $taxonomies, 'register_admin_hooks' ) );
-			add_action( 'admin_init', array( $authors, 'register_admin_hooks' ) );
+			add_action( 'admin_init', array( $post_types, 'register_admin_hooks' ), 50 );
+			add_action( 'admin_init', array( $taxonomies, 'register_admin_hooks' ), 50 );
+			add_action( 'admin_init', array( $authors, 'register_admin_hooks' ), 50 );
 		} elseif ( $this->is_enabled() ) {
-			add_action( 'rest_api_init', array( $post_types, 'register_rest_hooks' ) );
-			add_action( 'rest_api_init', array( $taxonomies, 'register_rest_hooks' ) );
-			add_action( 'rest_api_init', array( $authors, 'register_rest_hooks' ) );
+			add_action( 'rest_api_init', array( $post_types, 'register_rest_hooks' ), 50 );
+			add_action( 'rest_api_init', array( $taxonomies, 'register_rest_hooks' ), 50 );
+			add_action( 'rest_api_init', array( $authors, 'register_rest_hooks' ), 50 );
 		}
 
 		// Add AJAX action hooks.
