@@ -113,12 +113,19 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 
 	/**
 	 * Function that removes all cached head tags.
+	 * 
+	 * The function clears all the WordPress object cache as well.
+	 * It runs when clicking a button in the admin panel or when 
+	 * uninstalling the plugin so that's not a problem anyway.
 	 *
-	 * @return bool
+	 * @return number|false
 	 */
 	public static function clear_cache() {
 		// Remove all transients.
-		global $wpdb;
+		global $wpdb, $wp_object_cache;
+
+		// Remove all the object cache.
+		$wp_object_cache->flush();
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
