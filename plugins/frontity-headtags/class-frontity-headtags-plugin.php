@@ -121,21 +121,33 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 	 * @return number|false
 	 */
 	public static function clear_cache() {
-		// Remove all transients.
+		// Get global variables.
 		global $wpdb, $wp_object_cache;
 
-		// Remove all the object cache.
-		$wp_object_cache->flush();
-
+		
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
-		return $wpdb->query( 
+
+		// Get transient names from database.
+		$options = $wpdb->get_results( 
 			$wpdb->prepare( 
-				"DELETE FROM $wpdb->options WHERE option_name LIKE %s",
-				'_transient_%frontity_headtags%'
+				"SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s",
+				'\_transient\_frontity\_headtags%'
 			)
 		);
 		// phpcs:enable
+
+		// Assume everything is going to be okay.
+		$all_deleted = true;
+
+		// Remove all transients.
+		foreach ( $options as $option ) {
+			$transient   = preg_replace( '/^_transient_/', '', $option->option_name );
+			$all_deleted = $all_deleted && delete_transient( $transient );
+		}
+
+		// If it didn't failed removing a transient, return the number.
+		return $all_deleted ? count( $options ) : false;
 	}
 
 
