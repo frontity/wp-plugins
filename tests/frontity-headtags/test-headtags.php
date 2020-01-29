@@ -71,7 +71,7 @@ class HeadTags extends WP_UnitTestCase {
 		self::$frontity_headtags_plugin->uninstall();
 	}
 	/**
-	 * A single example test.
+	 * Title is populated correctly in posts.
 	 */
 	public function test_post_title() {
 		$request = new WP_REST_Request( 'GET', sprintf( '/wp/v2/posts/%d', self::$post_id ) );
@@ -83,7 +83,7 @@ class HeadTags extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Another single example test.
+	 * Title is populated correctly in pages.
 	 */
 	public function test_page_title() {
 		$request = new WP_REST_Request( 'GET', sprintf( '/wp/v2/pages/%d', self::$page_id ) );
@@ -92,5 +92,46 @@ class HeadTags extends WP_UnitTestCase {
 		$data     = $response->get_data();
 		$this->assertEquals( 'title', $data['head_tags'][0]['tag'] );
 		$this->assertEquals( 'Page Title – Test Blog', $data['head_tags'][0]['content'] );
+	}
+
+	/**
+	 * Transients are saved correctly.
+	 */
+	public function test_set_transients() {
+		$request = new WP_REST_Request( 'GET', sprintf( '/wp/v2/pages/%d', self::$page_id ) );
+		$request->set_query_params( array( 'head_tags' => 'true' ) );
+		$response          = rest_get_server()->dispatch( $request );
+		$data              = $response->get_data();
+		$transient         = get_option( '_transient_frontity_headtags_page_' . self::$page_id );
+		$transient_timeout = get_option( '_transient_timeout_frontity_headtags_page_' . self::$page_id );
+		$next_month        = time() + MONTH_IN_SECONDS;
+		$this->assertEquals( $data['head_tags'], $transient );
+		$this->assertLessThan( 100, $next_month - $transient_timeout );
+	}
+	
+	/**
+	 * Transients are used correctly.
+	 */
+	public function test_use_transients() {
+		update_option( '_transient_frontity_headtags_page_' . self::$page_id, 'my_saved_transient' );
+		$request = new WP_REST_Request( 'GET', sprintf( '/wp/v2/pages/%d', self::$page_id ) );
+		$request->set_query_params( array( 'head_tags' => 'true' ) );
+		$response = rest_get_server()->dispatch( $request );
+		$data     = $response->get_data();
+		$this->assertEquals( $data['head_tags'], 'my_saved_transient' );
+	}
+	
+	/**
+	 * Transients are cleared correctly.
+	 */
+	public function test_clear_transients() {
+		$request = new WP_REST_Request( 'GET', sprintf( '/wp/v2/pages/%d', self::$page_id ) );
+		$request->set_query_params( array( 'head_tags' => 'true' ) );
+		$response = rest_get_server()->dispatch( $request );
+		Frontity_Headtags_Plugin::clear_cache();
+		$transient         = get_option( '_transient_frontity_headtags_page_' . self::$page_id );
+		$transient_timeout = get_option( '_transient_timeout_frontity_headtags_page_' . self::$page_id );
+		$this->assertEquals( false, $transient );
+		$this->assertEquals( false, $transient_timeout );
 	}
 }

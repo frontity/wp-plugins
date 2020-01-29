@@ -84,7 +84,10 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		}
 
 		// Add AJAX action hooks.
-		add_action( 'wp_ajax_frontity_headtags_clear_cache', array( $headtags, 'clear_cache' ) );
+		add_action(
+			'wp_ajax_frontity_headtags_clear_cache',
+			'Frontity_Headtags_Plugin::clear_cache'
+		);
 	}
 
 	/**
@@ -109,6 +112,34 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 	}
 
 	/**
+	 * Function that removes all cached head tags.
+	 * 
+	 * The function clears all the WordPress object cache as well.
+	 * It runs when clicking a button in the admin panel or when 
+	 * uninstalling the plugin so that's not a problem anyway.
+	 *
+	 * @return number|false
+	 */
+	public static function clear_cache() {
+		// Remove all transients.
+		global $wpdb, $wp_object_cache;
+
+		// Remove all the object cache.
+		$wp_object_cache->flush();
+
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
+		return $wpdb->query( 
+			$wpdb->prepare( 
+				"DELETE FROM $wpdb->options WHERE option_name LIKE %s",
+				'_transient_%frontity_headtags%'
+			)
+		);
+		// phpcs:enable
+	}
+
+
+	/**
 	 * Function to be executed when uninstalling the plugin.
 	 */
 	public static function uninstall() {
@@ -116,12 +147,6 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		delete_option( 'frontity_headtags_settings' );
 
 		// Remove all transients.
-		$transient_list = get_option( 'frontity_headtags_transients', array() );
-		foreach ( $transient_list as $transient ) {
-			delete_transient( $transient );
-		}
-
-		// Remove transients option.
-		delete_option( 'frontity_headtags_transients' );
+		self::clear_cache();
 	}
 }
