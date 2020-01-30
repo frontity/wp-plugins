@@ -34,6 +34,17 @@ class Frontity_Headtags {
 		$settings        = get_option( 'frontity_headtags_settings' );
 		$cached_headtags = get_transient( "frontity_headtags_{$key}" );
 
+		// Return false if the transient doesn't exist.
+		if ( ! $cached_headtags || empty( $cached_headtags['headtags'] ) ) {
+			return false;
+		}
+
+		// Fix the cacheToken if it's not set.
+		if ( ! $settings['cacheToken'] ) {
+			$settings['cacheToken'] = 'first_token';
+			update_option( 'frontity_headtags_settings', $settings );
+		}
+
 		// Compare the cache token of this head tags with that stored in settings.
 		if ( $settings['cacheToken'] !== $cached_headtags['cacheToken'] ) {
 			return false;
