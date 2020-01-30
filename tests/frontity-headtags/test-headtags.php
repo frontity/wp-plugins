@@ -105,7 +105,7 @@ class HeadTags extends WP_UnitTestCase {
 		$transient         = get_option( '_transient_frontity_headtags_page_' . self::$page_id );
 		$transient_timeout = get_option( '_transient_timeout_frontity_headtags_page_' . self::$page_id );
 		$next_month        = time() + MONTH_IN_SECONDS;
-		$this->assertEquals( $data['head_tags'], $transient );
+		$this->assertEquals( $data['head_tags'], $transient['headtags'] );
 		$this->assertLessThan( 100, $next_month - $transient_timeout );
 	}
 	
@@ -113,25 +113,48 @@ class HeadTags extends WP_UnitTestCase {
 	 * Transients are used correctly.
 	 */
 	public function test_use_transients() {
-		update_option( '_transient_frontity_headtags_page_' . self::$page_id, 'my_saved_transient' );
+		// Set current settings.
+		$settings = array(
+			'isEnabled'  => true,
+			'cacheToken' => 'awkgl',
+		);
+		update_option( 'frontity_headtags_settings', $settings );
+		// Mock transient.
+		$transient = array(
+			'headtags'   => 'mocked_headtags',
+			'cacheToken' => 'awkgl',
+		);
+		update_option( '_transient_frontity_headtags_page_' . self::$page_id, $transient );
+		// Do the request.
 		$request = new WP_REST_Request( 'GET', sprintf( '/wp/v2/pages/%d', self::$page_id ) );
 		$request->set_query_params( array( 'head_tags' => 'true' ) );
 		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
-		$this->assertEquals( $data['head_tags'], 'my_saved_transient' );
+		$this->assertEquals( $data['head_tags'], $transient['headtags'] );
 	}
 	
 	/**
-	 * Transients are cleared correctly.
+	 * Transients are invalidated correctly.
 	 */
-	public function test_clear_transients() {
+	public function test_invalidate_transients() {
+		// Set current settings.
+		$settings = array(
+			'isEnabled'  => true,
+			'cacheToken' => 'fukwc', // New cache token.
+		);
+		update_option( 'frontity_headtags_settings', $settings );
+		// Mock transient.
+		$transient = array(
+			'headtags'   => 'mocked_headtags',
+			'cacheToken' => 'awkgl',
+		);
+		update_option( '_transient_frontity_headtags_page_' . self::$page_id, $transient );
+		// Do the request.
 		$request = new WP_REST_Request( 'GET', sprintf( '/wp/v2/pages/%d', self::$page_id ) );
 		$request->set_query_params( array( 'head_tags' => 'true' ) );
 		$response = rest_get_server()->dispatch( $request );
-		Frontity_Headtags_Plugin::clear_cache();
-		$transient         = get_option( '_transient_frontity_headtags_page_' . self::$page_id );
-		$transient_timeout = get_option( '_transient_timeout_frontity_headtags_page_' . self::$page_id );
-		$this->assertEquals( false, $transient );
-		$this->assertEquals( false, $transient_timeout );
+		$data     = $response->get_data();
+		$this->assertEquals( 'title', $data['head_tags'][0]['tag'] );
+		$this->assertEquals( 'Page Title – Test Blog', $data['head_tags'][0]['content'] );
 	}
 }
