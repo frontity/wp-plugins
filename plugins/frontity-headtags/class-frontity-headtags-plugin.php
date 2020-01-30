@@ -25,7 +25,10 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 				'script'           => 'frontity_headtags_admin_js',
 				'enable_param'     => 'head_tags',
 				'option'           => 'frontity_headtags_settings',
-				'default_settings' => array( 'isEnabled' => true ),
+				'default_settings' => array(
+					'isEnabled'  => true,
+					'cacheToken' => null,
+				),
 			)
 		);
 	}
@@ -157,8 +160,5 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 	public static function uninstall() {
 		// Remove settings.
 		delete_option( 'frontity_headtags_settings' );
-
-		// Remove all transients.
-		self::clear_cache();
 	}
 }
