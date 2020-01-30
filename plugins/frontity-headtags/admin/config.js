@@ -1,5 +1,11 @@
 import { post } from "axios";
 
+const generateToken = () =>
+  Math.random()
+    .toString(36)
+    .replace(/[^a-z]+/g, "")
+    .substr(0, 5);
+
 export default {
   state: {
     headtags: {
@@ -39,14 +45,11 @@ export default {
         state.headtags.settings.isEnabled = false;
         actions.headtags.save();
       },
-      clearCache: async ({ state }) => {
-        console.log("clearing cache");
-        const data = new window.FormData();
-        data.append("action", "frontity_headtags_clear_cache");
-        data.append("data", JSON.stringify({}));
-        const res = await post(window.ajaxurl, data);
-        console.log("cache is empty now");
-        console.log(res);
+      clearCache: async ({ state, actions }) => {
+        console.log("Invalidating cache");
+        state.headtags.settings.cacheToken = generateToken();
+        await actions.headtags.save();
+        console.log("cache is invalid now");
         const { cacheModal } = state.headtags;
         cacheModal.isWaitingConfirmation = false;
         cacheModal.isConfirmed = true;
