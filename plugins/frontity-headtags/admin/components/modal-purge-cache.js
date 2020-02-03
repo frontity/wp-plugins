@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import Card from "./card";
 import Button from "./button";
 
-const ModalCache = ({ state, actions }) => {
+const ModalPurgeCache = ({ state, actions }) => {
   const { isWaitingConfirmation, isConfirmed } = state.headtags.cacheModal;
   const { clearCache, closeCacheModal } = actions.headtags;
   return (
@@ -13,13 +13,13 @@ const ModalCache = ({ state, actions }) => {
         <ModalContainer>
           <StyledCard>
             <ModalTitle>
-              Are you sure you want to invalidate all cached items?
+              Are you sure you want to purge all cached items?
             </ModalTitle>
             <InputContainer>
               <Button primary onClick={closeCacheModal}>
                 no
               </Button>
-              <Button onClick={clearCache}>yes, invalidate</Button>
+              <Button onClick={clearCache}>yes, purge</Button>
             </InputContainer>
           </StyledCard>
         </ModalContainer>
@@ -27,7 +27,7 @@ const ModalCache = ({ state, actions }) => {
       {isConfirmed && (
         <ModalContainer>
           <StyledCard>
-            <ModalTitle>Cache has been invalidated</ModalTitle>
+            <ModalTitle>Cache has been removed</ModalTitle>
             <InputContainer>
               <Button primary onClick={closeCacheModal}>
                 close
@@ -40,7 +40,7 @@ const ModalCache = ({ state, actions }) => {
   );
 };
 
-export default connect(ModalCache);
+export default connect(ModalPurgeCache);
 
 const ModalContainer = styled.div`
   position: absolute;

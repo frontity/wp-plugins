@@ -4,7 +4,7 @@ import connect from "@frontity/connect";
 import Card from "./card";
 import Toggle from "./toggle";
 import Button from "./button";
-import ModalCache from "./modal-cache";
+import ModalPurgeCache from "./modal-purge-cache";
 
 const Settings = ({ state, actions }) => {
   const { isEnabled } = state.headtags.settings;
@@ -34,15 +34,15 @@ const Settings = ({ state, actions }) => {
       <Field>
         <Label>head tags cache</Label>
         <InputContainer>
-          <Button onClick={openCacheModal}>invalidate cache</Button>
+          <Button onClick={openCacheModal}>purge cache</Button>
         </InputContainer>
         <Description>
-          Invalidate cached head tags for all entities (post types, authors,
+          Delete cached head tags for all entities (post types, authors,
           taxonomies and archives).
         </Description>
       </Field>
 
-      <ModalCache />
+      <ModalPurgeCache />
     </Card>
   );
 };
