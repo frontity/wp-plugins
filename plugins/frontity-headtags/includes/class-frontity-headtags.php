@@ -31,7 +31,22 @@ class Frontity_Headtags {
 	 * @return array|mixed
 	 */
 	public function get_cached_headtags( $key ) {
-		return get_transient( "frontity_headtags_{$key}" );
+		$cached_headtags = get_transient( "frontity_headtags_{$key}" );
+		
+		// Return false if the transient doesn't exist.
+		if ( ! $cached_headtags || empty( $cached_headtags['head_tags'] ) ) {
+			return false;
+		}
+		
+		// Get the current cache token.
+		$cache_token = get_option( 'frontity_headtags_cache_token' );
+
+		// Compare the cache token of this head tags with that stored in settings.
+		if ( $cache_token !== $cached_headtags['cache_token'] ) {
+			return false;
+		}
+
+		return $cached_headtags['head_tags'];
 	}
 
 	/**
@@ -42,19 +57,13 @@ class Frontity_Headtags {
 	 * @return bool
 	 */
 	public function set_cached_headtags( $key, $headtags ) {
-		$transient_key = "frontity_headtags_{$key}";
+		$cache_token     = get_option( 'frontity_headtags_cache_token' );
+		$cached_headtags = array(
+			'head_tags'   => $headtags,
+			'cache_token' => $cache_token,
+		);
 
-		// Get the list of transients.
-		$transient_list = get_option( 'frontity_headtags_transients', array() );
-
-		if ( ! in_array( $transient_key, $transient_list, true ) ) {
-
-			// Add the transient key if is not in the list.
-			$transient_list[] = $transient_key;
-			update_option( 'frontity_headtags_transients', $transient_list );
-		}
-
-		return set_transient( $transient_key, $headtags, MONTH_IN_SECONDS );
+		return set_transient( "frontity_headtags_{$key}", $cached_headtags, MONTH_IN_SECONDS );
 	}
 
 	/**
@@ -64,38 +73,7 @@ class Frontity_Headtags {
 	 * @return bool
 	 */
 	public function delete_cached_headtags( $key ) {
-		$transient_key = "frontity_headtags_{$key}";
-
-		// Get the list of transients.
-		$transient_list = get_option( 'frontity_headtags_transients', array() );
-
-		if ( in_array( $transient_key, $transient_list, true ) ) {
-
-			// Remove the transient key from the list of transients.
-			$transient_list = array_values(
-				array_diff( $transient_list, array( $transient_key ) )
-			);
-
-			// Update the list of transients.
-			update_option( 'frontity_headtags_transients', $transient_list );
-		}
-
-		return delete_transient( $transient_key );
-	}
-
-	/**
-	 * Remove all cached head tags.
-	 *
-	 * @return bool
-	 */
-	public function clear_cache() {
-		// Remove all transients.
-		$transient_list = get_option( 'frontity_headtags_transients', array() );
-		foreach ( $transient_list as $transient ) {
-			delete_transient( $transient );
-		}
-
-		return update_option( 'frontity_headtags_transients', array() );
+		return delete_transient( "frontity_headtags_{$key}" );
 	}
 
 
