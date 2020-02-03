@@ -155,6 +155,12 @@ Yes, it works with both Yoast SEO and All in One SEO plugins. We actually plan t
 
 == Changelog ==
 
+= 1.1.2 =
+
+Patch Changes:
+- Fix the performance of the clear cache functionality.
+- Fix the way admin hooks and rest api hooks are being registered.
+
 = 1.1.1 =
 
 Patch Changes: Fix redirects when making calls to the REST API.

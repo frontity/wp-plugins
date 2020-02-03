@@ -1,5 +1,16 @@
 # frontity-headtags
 
+## 1.1.2
+
+### Patch Changes
+
+- [`8159151`](https://github.com/frontity/wp-plugins/commit/81591510a74fc053999e78ea9fd690d50f760bde) [#23](https://github.com/frontity/wp-plugins/pull/23) - Fix the performance of the clear cache functionality.
+
+* [`f15f02a`](https://github.com/frontity/wp-plugins/commit/f15f02a2f0163547ab120b918455df1ff73eb2d7) [#22](https://github.com/frontity/wp-plugins/pull/22) - Fix the way admin hooks and rest api hooks are being registered.
+
+  - `admin_init` is used for `register_admin_hooks`
+  - `rest_api_init` is used for `register_rest_hooks`
+
 ## 1.1.1
 
 ### Patch Changes
