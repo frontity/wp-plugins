@@ -23,13 +23,10 @@ export default {
   actions: {
     headtags: {
       save: async ({ state }) => {
-        console.log("saving");
         const data = new window.FormData();
         data.append("action", "frontity_save_frontity_headtags_settings");
         data.append("data", JSON.stringify(state.headtags.settings));
-        const res = await post(window.ajaxurl, data);
-        console.log("saved");
-        console.log(res);
+        await post(window.ajaxurl, data);
       },
       enable: ({ state, actions }) => {
         state.headtags.settings.isEnabled = true;
@@ -40,13 +37,10 @@ export default {
         actions.headtags.save();
       },
       clearCache: async ({ state }) => {
-        console.log("clearing cache");
         const data = new window.FormData();
         data.append("action", "frontity_headtags_clear_cache");
         data.append("data", JSON.stringify({}));
-        const res = await post(window.ajaxurl, data);
-        console.log("cache is empty now");
-        console.log(res);
+        await post(window.ajaxurl, data);
         const { cacheModal } = state.headtags;
         cacheModal.isWaitingConfirmation = false;
         cacheModal.isConfirmed = true;

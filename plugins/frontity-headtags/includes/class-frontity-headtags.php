@@ -31,7 +31,22 @@ class Frontity_Headtags {
 	 * @return array|mixed
 	 */
 	public function get_cached_headtags( $key ) {
-		return get_transient( "frontity_headtags_{$key}" );
+		$cached_headtags = get_transient( "frontity_headtags_{$key}" );
+		
+		// Return false if the transient doesn't exist.
+		if ( ! $cached_headtags || empty( $cached_headtags['head_tags'] ) ) {
+			return false;
+		}
+		
+		// Get the current cache token.
+		$cache_token = get_option( 'frontity_headtags_cache_token' );
+
+		// Compare the cache token of this head tags with that stored in settings.
+		if ( $cache_token !== $cached_headtags['cache_token'] ) {
+			return false;
+		}
+
+		return $cached_headtags['head_tags'];
 	}
 
 	/**
@@ -42,7 +57,13 @@ class Frontity_Headtags {
 	 * @return bool
 	 */
 	public function set_cached_headtags( $key, $headtags ) {
-		return set_transient( "frontity_headtags_{$key}", $headtags, MONTH_IN_SECONDS );
+		$cache_token     = get_option( 'frontity_headtags_cache_token' );
+		$cached_headtags = array(
+			'head_tags'   => $headtags,
+			'cache_token' => $cache_token,
+		);
+
+		return set_transient( "frontity_headtags_{$key}", $cached_headtags, MONTH_IN_SECONDS );
 	}
 
 	/**

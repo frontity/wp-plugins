@@ -40,6 +40,9 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		$this->setup_hooks();
 		$this->setup_integrations();
 		$this->setup_filters();
+
+		// Init cache token for the first time.
+		add_option( 'frontity_headtags_cache_token', self::get_token() );
 	}
 
 	/**
@@ -121,18 +124,20 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 	 * @return number|false
 	 */
 	public static function clear_cache() {
-		// Remove all transients.
-		global $wpdb, $wp_object_cache;
+		// Get global variables.
+		global $wpdb;
 
-		// Remove all the object cache.
-		$wp_object_cache->flush();
-
+		// Reset cache token.
+		update_option( 'frontity_headtags_cache_token', self::get_token() );
+		
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
+
+		// Remove transients from database.
 		return $wpdb->query( 
 			$wpdb->prepare( 
 				"DELETE FROM $wpdb->options WHERE option_name LIKE %s",
-				'_transient_%frontity_headtags%'
+				'\_transient\_%frontity\_headtags%'
 			)
 		);
 		// phpcs:enable
@@ -140,13 +145,23 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 
 
 	/**
+	 * Generate a random token.
+	 * 
+	 * @return string
+	 */
+	public static function get_token() {
+		return bin2hex( random_bytes( 5 ) );
+	}
+
+	/**
 	 * Function to be executed when uninstalling the plugin.
 	 */
 	public static function uninstall() {
-		// Remove settings.
-		delete_option( 'frontity_headtags_settings' );
-
 		// Remove all transients.
 		self::clear_cache();
+		// Remove cache token.
+		delete_option( 'frontity_headtags_cache_token' );
+		// Remove settings.
+		delete_option( 'frontity_headtags_settings' );
 	}
 }
