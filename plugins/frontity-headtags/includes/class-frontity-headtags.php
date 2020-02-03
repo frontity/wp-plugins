@@ -46,7 +46,7 @@ class Frontity_Headtags {
 			return false;
 		}
 
-		return $cached_headtags['headtags'];
+		return $cached_headtags['head_tags'];
 	}
 
 	/**
@@ -57,10 +57,10 @@ class Frontity_Headtags {
 	 * @return bool
 	 */
 	public function set_cached_headtags( $key, $headtags ) {
-		$settings        = get_option( 'frontity_headtags_settings' );
+		$cache_token     = get_option( 'frontity_headtags_cache_token' );
 		$cached_headtags = array(
-			'headtags'   => $headtags,
-			'cacheToken' => $settings['cacheToken'],
+			'head_tags'   => $headtags,
+			'cache_token' => $cache_token,
 		);
 
 		return set_transient( "frontity_headtags_{$key}", $cached_headtags, MONTH_IN_SECONDS );
