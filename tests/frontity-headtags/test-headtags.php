@@ -105,7 +105,7 @@ class HeadTags extends WP_UnitTestCase {
 		$transient         = get_option( '_transient_frontity_headtags_page_' . self::$page_id );
 		$transient_timeout = get_option( '_transient_timeout_frontity_headtags_page_' . self::$page_id );
 		$next_month        = time() + MONTH_IN_SECONDS;
-		$this->assertEquals( $data['head_tags'], $transient['headtags'] );
+		$this->assertEquals( $data['head_tags'], $transient['head_tags'] );
 		$this->assertLessThan( 100, $next_month - $transient_timeout );
 	}
 	
@@ -113,16 +113,12 @@ class HeadTags extends WP_UnitTestCase {
 	 * Transients are used correctly.
 	 */
 	public function test_use_transients() {
-		// Set current settings.
-		$settings = array(
-			'isEnabled'  => true,
-			'cacheToken' => 'awkgl',
-		);
-		update_option( 'frontity_headtags_settings', $settings );
+		// Set current cache token.
+		update_option( 'frontity_headtags_cache_token', 'awkgl' );
 		// Mock transient.
 		$transient = array(
-			'headtags'   => 'mocked_headtags',
-			'cacheToken' => 'awkgl',
+			'head_tags'   => 'mocked_headtags',
+			'cache_token' => 'awkgl',
 		);
 		update_option( '_transient_frontity_headtags_page_' . self::$page_id, $transient );
 		// Do the request.
@@ -130,31 +126,45 @@ class HeadTags extends WP_UnitTestCase {
 		$request->set_query_params( array( 'head_tags' => 'true' ) );
 		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
-		$this->assertEquals( $data['head_tags'], $transient['headtags'] );
+		$this->assertEquals( $data['head_tags'], $transient['head_tags'] );
 	}
 	
 	/**
-	 * Transients are invalidated correctly.
+	 * Transients are removed correctly.
 	 */
-	public function test_invalidate_transients() {
-		// Set current settings.
-		$settings = array(
-			'isEnabled'  => true,
-			'cacheToken' => 'fukwc', // New cache token.
-		);
-		update_option( 'frontity_headtags_settings', $settings );
+	public function test_remove_transients() {
+		// Set current cache token.
+		update_option( 'frontity_headtags_cache_token', 'awkgl' );
 		// Mock transient.
 		$transient = array(
-			'headtags'   => 'mocked_headtags',
-			'cacheToken' => 'awkgl',
+			'head_tags'   => 'mocked_headtags',
+			'cache_token' => 'awkgl',
 		);
-		update_option( '_transient_frontity_headtags_page_' . self::$page_id, $transient );
+		set_transient( 'frontity_headtags_page_' . self::$page_id, $transient, MONTH_IN_SECONDS );
+		// Remove cache.
+		Frontity_Headtags_Plugin::clear_cache();
 		// Do the request.
 		$request = new WP_REST_Request( 'GET', sprintf( '/wp/v2/pages/%d', self::$page_id ) );
 		$request->set_query_params( array( 'head_tags' => 'true' ) );
 		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
+		$this->assertNotEquals( $data['head_tags'], $transient['head_tags'] );
 		$this->assertEquals( 'title', $data['head_tags'][0]['tag'] );
 		$this->assertEquals( 'Page Title – Test Blog', $data['head_tags'][0]['content'] );
+		
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
+		
+		// Check that transients doesn't exist in database.
+		global $wpdb;
+		$transients = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s",
+				'\_transient\_%frontity\_headtags%'
+			)
+		);
+		// phpcs:enable
+
+		$this->assertEmpty( $transients );
 	}
 }
