@@ -136,8 +136,8 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		// Remove transients from database.
 		return $wpdb->query( 
 			$wpdb->prepare( 
-				"DELETE option_name FROM $wpdb->options WHERE option_name LIKE %s",
-				'\_transient\_frontity\_headtags%'
+				"DELETE FROM $wpdb->options WHERE option_name LIKE %s",
+				'\_transient\_%frontity\_headtags%'
 			)
 		);
 		// phpcs:enable
