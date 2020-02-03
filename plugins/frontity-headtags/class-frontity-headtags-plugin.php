@@ -25,10 +25,7 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 				'script'           => 'frontity_headtags_admin_js',
 				'enable_param'     => 'head_tags',
 				'option'           => 'frontity_headtags_settings',
-				'default_settings' => array(
-					'isEnabled'  => true,
-					'cacheToken' => null,
-				),
+				'default_settings' => array( 'isEnabled' => true ),
 			)
 		);
 	}
@@ -43,6 +40,9 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		$this->setup_hooks();
 		$this->setup_integrations();
 		$this->setup_filters();
+
+		// Init cache token for the first time.
+		add_option( 'frontity_headtags_cache_token', self::get_token() );
 	}
 
 	/**
@@ -125,39 +125,42 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 	 */
 	public static function clear_cache() {
 		// Get global variables.
-		global $wpdb, $wp_object_cache;
+		global $wpdb;
 
+		// Reset cache token.
+		update_option( 'frontity_headtags_cache_token', self::get_token() );
 		
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
 
-		// Get transient names from database.
-		$options = $wpdb->get_results( 
+		// Remove transients from database.
+		return $wpdb->query( 
 			$wpdb->prepare( 
-				"SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s",
+				"DELETE option_name FROM $wpdb->options WHERE option_name LIKE %s",
 				'\_transient\_frontity\_headtags%'
 			)
 		);
 		// phpcs:enable
-
-		// Assume everything is going to be okay.
-		$all_deleted = true;
-
-		// Remove all transients.
-		foreach ( $options as $option ) {
-			$transient   = preg_replace( '/^_transient_/', '', $option->option_name );
-			$all_deleted = $all_deleted && delete_transient( $transient );
-		}
-
-		// If it didn't failed removing a transient, return the number.
-		return $all_deleted ? count( $options ) : false;
 	}
 
+
+	/**
+	 * Generate a random token.
+	 * 
+	 * @return string
+	 */
+	public static function get_token() {
+		return bin2hex( random_bytes( 5 ) );
+	}
 
 	/**
 	 * Function to be executed when uninstalling the plugin.
 	 */
 	public static function uninstall() {
+		// Remove all transients.
+		self::clear_cache();
+		// Remove cache token.
+		delete_option( 'frontity_headtags_cache_token' );
 		// Remove settings.
 		delete_option( 'frontity_headtags_settings' );
 	}
