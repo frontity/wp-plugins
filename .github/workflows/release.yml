@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - test-changeset
+      - master
 
 jobs:
   release:
