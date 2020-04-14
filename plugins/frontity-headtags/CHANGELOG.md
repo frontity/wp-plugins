@@ -1,5 +1,11 @@
 # frontity-headtags
 
+## 1.1.3
+
+### Patch Changes
+
+- [`dceb51f`](https://github.com/frontity/wp-plugins/commit/dceb51f2bea3f2a6c839905aea075f2aa166543f) Thanks [@luisherranz](https://github.com/luisherranz)! - Testing GitHub action to do releases
+
 ## 1.1.2
 
 ### Patch Changes
