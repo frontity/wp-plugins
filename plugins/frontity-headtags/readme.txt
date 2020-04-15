@@ -155,6 +155,12 @@ Yes, it works with both Yoast SEO and All in One SEO plugins. We actually plan t
 
 == Changelog ==
 
+= 1.1.3 =
+
+Patch Changes:
+- Fix redirects to images when making calls to the REST API in a site with Yoast installed.
+- Also, refactor the code to prevent other redirections in the future.
+
 = 1.1.2 =
 
 Patch Changes:
