@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   phpunit-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-16.04
 
     services:
       mysql:
@@ -14,7 +14,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
         volumes:
-          - /$HOME/mysql:/var/lib/mysql
+          - $HOME/mysql:/var/lib/mysql
 
     strategy:
       matrix:
