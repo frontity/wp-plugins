@@ -14,7 +14,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
         volumes:
-          - /$(pwd)/mysql:/var/lib/mysql
+          - ./mysql:/var/lib/mysql
 
     strategy:
       matrix:
