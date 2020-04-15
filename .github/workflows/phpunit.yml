@@ -10,7 +10,7 @@ jobs:
       mysql:
         image: mysql:5.7.27
         ports:
-          - 3306
+          - 3306:3306
         env:
           MYSQL_ROOT_PASSWORD: root
 
@@ -35,9 +35,7 @@ jobs:
         run: composer install
 
       - name: Install WordPress
-        run: ./bin/install-wp-tests.sh frontity_tests root root "127.0.0.1:$PORT" latest
-        env:
-          PORT: ${{ job.services.mysql.ports[3306] }}
+        run: ./bin/install-wp-tests.sh frontity_tests root root 127.0.0.1 latest
 
       - name: Run phpunit
         run: composer phpunit
