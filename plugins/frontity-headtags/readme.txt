@@ -2,7 +2,7 @@
 Contributors: poliuk, luisherranz, rmartinezduque, orballo, davidarenas, santosguillamot, frontity
 Tags: seo, rest, api, yoast, meta, tags, head, frontity
 Requires at least: 4.7
-Tested up to: 5.3.2
+Tested up to: 5.4
 Stable tag: trunk
 Requires PHP: 5.6
 License: GPLv3
@@ -20,8 +20,9 @@ It is perfect if you are using WordPress for a headless set-up and would like to
 
 This plugin is compatible and works out of the box with some of the most popular WordPress SEO plugins. These are the ones that we tested:
 
-  * **Yoast SEO**
-  * **All in One SEO Pack**
+  * **[Yoast SEO](https://wordpress.org/plugins/wordpress-seo/)** (up to 13.5)
+  * **[All in One SEO Pack](https://wordpress.org/plugins/all-in-one-seo-pack/)** (up to 3.4.2)
+  * **[WP SEO](https://github.com/alleyinteractive/wp-seo)**
 
 Are you using a different SEO plugin and want to know if it's compatible? Feel free to ask in our [community forum](https://community.frontity.org/?utm_source=plugin-repository&utm_medium=readme&utm_campaign=rest-api-head-tags-plugin). If you tested any other plugin, please let us know as well so we can update the list.
 
