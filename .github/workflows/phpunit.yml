@@ -35,7 +35,7 @@ jobs:
         run: composer install
 
       - name: Install WordPress
-        run: ./bin/install-wp-tests.sh frontity_tests root root 127.0.0.1 latest
+        run: ./bin/install-wp-tests.sh frontity_tests root root mysql latest
 
       - name: Run phpunit
         run: composer phpunit
