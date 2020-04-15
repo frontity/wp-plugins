@@ -26,6 +26,9 @@ class Frontity_Headtags_Yoast {
 	public function setup() {
 		// Create a new instance of WPSEO_Frontend if it's not created yet.
 		WPSEO_Frontend::get_instance();
+
+		// Call Yoast init function.
+		wpseo_frontend_head_init();
 	}
 
 	/**
