@@ -13,8 +13,6 @@ jobs:
           - 3306
         env:
           MYSQL_ROOT_PASSWORD: root
-        volumes:
-          - mysql:/var/lib/mysql
 
     strategy:
       matrix:
