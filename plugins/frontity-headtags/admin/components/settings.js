@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 import connect from "@frontity/connect";
-import Card from "./card";
-import Toggle from "./toggle";
-import Button from "./button";
+import Card from "../../../components/card";
+import Toggle from "../../../components/toggle";
+import Button from "../../../components/button";
 import ModalPurgeCache from "./modal-purge-cache";
 
 const Settings = ({ state, actions }) => {

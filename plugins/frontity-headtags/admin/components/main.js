@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import Settings from "./settings";
-import CardLink from "./card-link";
+import CardLink from "../../../components/card-link";
 
 const Main = () => {
   return (

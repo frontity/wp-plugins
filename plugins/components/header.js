@@ -4,13 +4,16 @@ import Button from "./button";
 import FrontityIcon from "./icons/frontity";
 import FrontityLogo from "./frontity-logo";
 
-const Header = () => {
+const Header = ({ title, slug, docsLink }) => {
   return (
     <HeaderContainer>
       <HeaderTitle>
-        REST API - Head Tags by{" "}
+        {title} by{" "}
         <FrontityLogoContainer
-          href="https://frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
+          href={
+            "https://frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=" +
+            slug
+          }
           target="_blank"
         >
           <FrontityLogo color="#1f38c5" />
@@ -28,7 +31,11 @@ const Header = () => {
           primary
           icon={<FrontityIcon />}
           as="a"
-          href="https://docs.frontity.org/frontity-plugins/rest-api-head-tags?utm_source=plugin-dashboard&utm_medium=cta-button&utm_campaign=rest-api-head-tags-plugin"
+          href={
+            docsLink +
+            "?utm_source=plugin-dashboard&utm_medium=cta-button&utm_campaign=" +
+            slug
+          }
           target="_blank"
         >
           Documentation

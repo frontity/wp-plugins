@@ -8,7 +8,7 @@ import Twitter from "./icons/twitter";
 import Info from "./icons/info";
 import Heart from "./icons/heart";
 
-const Footer = () => {
+const Footer = ({ slug, reviewsLink }) => {
   return (
     <FooterContainer>
       <Row gap={44}>
@@ -20,7 +20,10 @@ const Footer = () => {
           </span>
           <Link
             icon={<Frontity />}
-            href="https://community.frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
+            href={
+              "https://community.frontity.org?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=" +
+              slug
+            }
             target="_blank"
           >
             Ask the community
@@ -60,16 +63,15 @@ const Footer = () => {
         </Link>
         <Link
           icon={<Frontity />}
-          href="https://frontity.org/#newsletter?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=rest-api-head-tags-plugin"
+          href={
+            "https://frontity.org/#newsletter?utm_source=plugin-dashboard&utm_medium=link&utm_campaign=" +
+            slug
+          }
           target="_blank"
         >
           Get updates about Frontity
         </Link>
-        <Link
-          icon={<Heart solid />}
-          href="https://wordpress.org/support/plugin/rest-api-head-tags/reviews/?filter=5"
-          target="_blank"
-        >
+        <Link icon={<Heart solid />} href={reviewsLink} target="_blank">
           Leave a positive review
         </Link>
       </Links>
