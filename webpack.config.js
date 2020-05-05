@@ -10,18 +10,20 @@ module.exports = {
     "plugins/frontity-plugin-two/admin/build/bundle":
       "./plugins/frontity-plugin-two/admin",
     "plugins/frontity-headtags/admin/build/bundle":
-      "./plugins/frontity-headtags/admin"
+      "./plugins/frontity-headtags/admin",
+    "plugins/frontity-theme-bridge/admin/build/bundle":
+      "./plugins/frontity-theme-bridge/admin",
   },
   output: {
     path: path.resolve("./"),
-    filename: "[name].js"
+    filename: "[name].js",
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        use: "babel-loader"
-      }
-    ]
-  }
+        use: "babel-loader",
+      },
+    ],
+  },
 };
