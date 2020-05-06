@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import connect from "@frontity/connect";
-import Card from "../../../components/card";
+import Card from "../../../../components/card";
 import Form from "./form";
 
 const Settings = ({ state, actions }) => {

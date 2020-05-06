@@ -1,8 +1,8 @@
 import React from "react";
-import GlobalStyles from "../../../components/global-styles";
-import Header from "../../../components/header";
+import GlobalStyles from "../../../../components/global-styles";
+import Header from "../../../../components/header";
 import Main from "./main";
-import Footer from "../../../components/footer";
+import Footer from "../../../../components/footer";
 
 const ThemeBridge = () => {
   const title = "Theme Bridge - beta version - ";

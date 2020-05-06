@@ -1,8 +1,8 @@
 import React from "react";
 import connect from "@frontity/connect";
 import styled from "@emotion/styled";
-import Card from "../../../components/card";
-import Button from "../../../components/button";
+import Card from "../../../../components/card";
+import Button from "../../../../components/button";
 
 const ModalPurgeCache = ({ state, actions }) => {
   const { isWaitingConfirmation, isConfirmed } = state.headtags.cacheModal;
