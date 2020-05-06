@@ -17,9 +17,8 @@ export default {
         console.log("saved");
         console.log(res);
       },
-      setValue: ({ state, actions }) => {
-        state.themeBridge.settings.value = Math.random();
-        actions.themeBridge.save();
+      setFormPropString: ({ state }) => ({ name, value }) => {
+        state.themeBridge.settings[name] = value;
       },
     },
   },

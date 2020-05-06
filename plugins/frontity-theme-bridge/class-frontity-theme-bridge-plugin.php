@@ -27,7 +27,8 @@ class Frontity_Theme_Bridge_Plugin extends Frontity_Plugin {
 				'option'           => 'frontity_theme_bridge_settings',
 				'default_settings' => array( 
 					'isEnabled' => true,
-					'value'     => 1, 
+					'serverUrl' => 'http://localhost:3000',
+					'staticUrl' => false,
 				),
 			)
 		);
