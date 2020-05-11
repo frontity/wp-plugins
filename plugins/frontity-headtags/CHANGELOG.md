@@ -1,5 +1,11 @@
 # frontity-headtags
 
+## 1.1.3
+
+### Patch Changes
+
+- [`a46927b`](https://github.com/frontity/wp-plugins/commit/a46927bbde468157e85fe247b72ad44895ccf50d) [#29](https://github.com/frontity/wp-plugins/pull/29) - Fix redirects to images when making calls to the REST API in a site with Yoast installed. Also, refactor the code to prevent other redirections in the future.
+
 ## 1.1.2
 
 ### Patch Changes

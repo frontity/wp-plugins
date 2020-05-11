@@ -120,13 +120,14 @@ class Frontity_Headtags {
 		$requested_url = null;
 		$do_redirect   = false;
 
-		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		do_action( 'template_redirect', $requested_url, $do_redirect );
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		do_action( 'wp_head' );
-		// phpcs:enable
 
 		// Get rendered <head> content.
 		$html = ob_get_clean();
+
+		// Filter the <head> HTML code.
+		$html = apply_filters( 'frontity_headtags_html', $html );
 
 		// Parse the HTML to create an array of head tags.
 		$headtags = $this->parse( $html );
