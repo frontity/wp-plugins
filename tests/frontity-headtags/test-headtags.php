@@ -70,6 +70,7 @@ class HeadTags extends WP_UnitTestCase {
 		// Remove all plugin settings.
 		self::$frontity_headtags_plugin->uninstall();
 	}
+
 	/**
 	 * Title is populated correctly in posts.
 	 */
@@ -166,5 +167,35 @@ class HeadTags extends WP_UnitTestCase {
 		// phpcs:enable
 
 		$this->assertEmpty( $transients );
+	}
+
+	/**
+	 * Test malformed HTML.
+	 * 
+	 * This test fails with the code:
+	 * DOMDocument::loadHTML(): Unexpected end tag : link in Entity, line: 12.
+	 */
+	public function test_malformed_html() {
+		add_action( 'wp_head', array( $this, 'add_malformed_html_to_wp_head' ) );
+		$request = new WP_REST_Request( 'GET', sprintf( '/wp/v2/posts/%d', self::$post_id ) );
+		$request->set_query_params( array( 'head_tags' => 'true' ) );
+		$response = rest_get_server()->dispatch( $request );
+		$data     = $response->get_data();
+
+		// Tags are working fine.
+		$this->assertEquals( 'title', $data['head_tags'][0]['tag'] );
+		$this->assertEquals( 'Post Title – Test Blog', $data['head_tags'][0]['content'] );
+
+		// Even malformed tags work.
+		$this->assertEquals( 'link', end( $data['head_tags'] )['tag'] );
+		$this->assertEquals( 'malformed', end( $data['head_tags'] )['attributes']['rel'] );
+		$this->assertEquals( 'malformed', end( $data['head_tags'] )['attributes']['href'] );
+	}
+
+	/**
+	 * Simple function that adds malformed HTML code.
+	 */
+	public function add_malformed_html_to_wp_head() {
+		echo "<link rel='malformed' href='malformed'></link>";
 	}
 }
