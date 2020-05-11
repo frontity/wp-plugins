@@ -151,13 +151,13 @@ class Frontity_Headtags {
 
 		$headtags = array();
 
-		$dom = new DOMDocument();
-		$previous_value = libxml_use_internal_errors(TRUE);
+		$dom            = new DOMDocument();
+		$previous_value = libxml_use_internal_errors( true );
 
 		$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' ) );
 
 		libxml_clear_errors();
-		libxml_use_internal_errors($previous_value);
+		libxml_use_internal_errors( $previous_value );
 
 		$nodes = $dom->getElementsByTagName( 'head' )[0]->childNodes;
 		
