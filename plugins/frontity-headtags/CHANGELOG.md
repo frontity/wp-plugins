@@ -1,5 +1,11 @@
 # frontity-headtags
 
+## 1.1.4
+
+### Patch Changes
+
+- [`0c39e5b`](https://github.com/frontity/wp-plugins/commit/0c39e5b46d79c083dc23943ba85c134a196f4d16) [#34](https://github.com/frontity/wp-plugins/pull/34) - Remove warning messages from REST API responses when head's HTML code is malformed
+
 ## 1.1.3
 
 ### Patch Changes

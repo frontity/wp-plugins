@@ -156,6 +156,11 @@ Yes, it works with both Yoast SEO and All in One SEO plugins. We actually plan t
 
 == Changelog ==
 
+= 1.1.4 =
+
+Patch Changes:
+- Remove warning messages from REST API responses when head's HTML code is malformed.
+
 = 1.1.3 =
 
 Patch Changes:
