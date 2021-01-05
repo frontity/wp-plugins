@@ -28,7 +28,7 @@
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@frontity/connect": "^1.0.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "chalk": "^2.4.2",
     "minimist": "^1.2.3"
   },
