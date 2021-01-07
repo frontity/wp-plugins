@@ -104,7 +104,7 @@ In order to not affect the performance of your site, the head_tags field is cach
 
 By default, the head_tags field is included in the common endpoint of each entity. You can configure it so it doesn't appear by default and to be shown when you include the head_tags=true query.
 
-For example, with the output disabled, `https://test.frontity.org/wp-json/wp/v2/posts` won't show the head_tags field unless you have the query `?head_tags=true` at the end.
+For example, with the output disabled, https://test.frontity.org/wp-json/wp/v2/posts won't show the head_tags field unless you have the query `?head_tags=true` at the end.
 
 #### Skip cache
 
