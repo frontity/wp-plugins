@@ -26,9 +26,9 @@ This package depends on the [PHP DOM library](https://www.php.net/manual/en/book
 
 This plugin is compatible and works out of the box with some of the most popular WordPress SEO plugins. These are the ones that we tested:
 
-  * **[Yoast SEO](https://wordpress.org/plugins/wordpress-seo/)** (up to 13.5)
-  * **[All in One SEO Pack](https://wordpress.org/plugins/all-in-one-seo-pack/)** (up to 3.4.2)
-  * **[WP SEO](https://github.com/alleyinteractive/wp-seo)**
+  * **[Yoast SEO](https://wordpress.org/plugins/wordpress-seo/) - (up to 13.5)**
+  * **[All in One SEO Pack](https://wordpress.org/plugins/all-in-one-seo-pack/) - (up to 3.4.2)**
+  * **[WP SEO](https://github.com/alleyinteractive/wp-seo) -**
 
 Are you using a different SEO plugin and want to know if it's compatible? Feel free to ask in our [community forum](https://community.frontity.org/?utm_source=plugin-repository&utm_medium=readme&utm_campaign=rest-api-head-tags-plugin). If you tested any other plugin, please let us know as well so we can update the list.
 
@@ -64,7 +64,7 @@ For example for these HTML tags:
 `
 <title>Hello wordl! - My Site</title>
 <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-<link rel="canonical" href="<http://mysite.com/hello-world/>" />
+<link rel="canonical" href="<https://test.frontity.org/>" />
 `
 
 This would be the content of the head_tags field:
@@ -86,7 +86,7 @@ This would be the content of the head_tags field:
     "tag": "link",
     "attributes": {
       "rel": "canonical",
-      "href": "<http://mysite.com/hello-world/>"
+      "href": "<https://test.frontity.org/>"
     }
   }
 ]
@@ -104,7 +104,7 @@ In order to not affect the performance of your site, the head_tags field is cach
 
 By default, the head_tags field is included in the common endpoint of each entity. You can configure it so it doesn't appear by default and to be shown when you include the head_tags=true query.
 
-For example, with the output disabled, `https://mysite.com/wp-json/wp/v2/posts` won't show the head_tags field unless you have the query `?head_tags=true` at the end.
+For example, with the output disabled, `https://test.frontity.org/wp-json/wp/v2/posts` won't show the head_tags field unless you have the query `?head_tags=true` at the end.
 
 #### Skip cache
 
