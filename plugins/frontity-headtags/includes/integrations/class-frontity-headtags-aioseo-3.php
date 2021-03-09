@@ -11,7 +11,7 @@
  * It adds hooks to the actions that Frontity_Headtags execute just after replacing and restore
  * the main wp_query.
  */
-class Frontity_Headtags_AIOSEO {
+class Frontity_Headtags_AIOSEO_3 {
 	/**
 	 * Constructor.
 	 */
