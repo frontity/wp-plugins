@@ -6,6 +6,11 @@ jobs:
   phpcs:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php-version:
+          - "7.3"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -18,7 +23,7 @@ jobs:
           restore-keys: php${{ matrix.php-version }}-composer-
 
       - name: Install composer dependencies
-        run: composer install
+        run: php${{ matrix.php-version }} /usr/bin/composer install
 
       - name: Run phpcs
-        run: composer phpcs
+        run: php${{ matrix.php-version }} /usr/bin/composer phpcs
