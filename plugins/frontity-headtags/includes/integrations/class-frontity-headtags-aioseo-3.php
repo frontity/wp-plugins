@@ -1,6 +1,6 @@
 <?php
 /**
- * File class-frontity-headtags-aioseo.php
+ * File class-frontity-headtags-aioseo-3.php
  *
  * @package Frontity_HeadTags.
  */

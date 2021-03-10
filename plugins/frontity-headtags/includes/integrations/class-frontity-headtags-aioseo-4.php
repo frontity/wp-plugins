@@ -1,7 +1,6 @@
 <?php
-
 /**
- * File class-frontity-headtags-aioseo.php
+ * File class-frontity-headtags-aioseo-4.php
  *
  * @package Frontity_HeadTags.
  */
@@ -16,8 +15,11 @@ class Frontity_Headtags_AIOSEO_4 {
 
 	/**
 	 * Store the previous `$wp->request` value.
+	 * 
+	 * @access  private
+	 * @var     string
 	 */
-	private $previous_wp_request = "";
+	private $previous_wp_request = '';
 
 	/**
 	 * Constructor.
@@ -39,8 +41,10 @@ class Frontity_Headtags_AIOSEO_4 {
 		$this->previous_wp_request = $wp->request;
 
 		// Replace the `request` value with the expected path.
-		$parsedUrl = wp_parse_url( self::get_archive_url() );
-		if ( $parsedUrl ) $wp->request = $parsedUrl['path'];
+		$parsed_url = wp_parse_url( self::get_archive_url() );
+		if ( $parsed_url ) {
+			$wp->request = $parsed_url['path'];
+		}
 	}
 
 	/**
@@ -71,12 +75,21 @@ class Frontity_Headtags_AIOSEO_4 {
 	public static function get_archive_url() {
 		$obj = get_queried_object();
 
-		if ( is_category() ) return get_category_link( $obj );
-		if ( is_tag() )      return get_tag_link( $obj );
-		if ( is_tax() )      return get_term_link( $obj );
-		if ( is_author() )   return get_author_posts_url( $obj->id );
-		if ( is_post_type_archive() )
+		if ( is_category() ) {
+			return get_category_link( $obj );
+		}
+		if ( is_tag() ) {
+			return get_tag_link( $obj );
+		}
+		if ( is_tax() ) {
+			return get_term_link( $obj );
+		}
+		if ( is_author() ) {
+			return get_author_posts_url( $obj->id );
+		}
+		if ( is_post_type_archive() ) {
 			return get_post_type_archive_link( $obj->name );
+		}
 
 		// Return `null` for any other case.
 		return null;
