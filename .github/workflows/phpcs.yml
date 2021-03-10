@@ -23,7 +23,7 @@ jobs:
           restore-keys: php${{ matrix.php-version }}-composer-
 
       - name: Install composer dependencies
-        run: /usr/bin/php${{ matrix.php-version }} composer install
+        run: composer install
 
       - name: Run phpcs
-        run: /usr/bin/php${{ matrix.php-version }} composer phpcs
+        run: composer phpcs
