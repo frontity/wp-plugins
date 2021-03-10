@@ -25,6 +25,10 @@ class Frontity_Headtags_AIOSEO_4 {
 	public function __construct() {
 		add_action( 'frontity_headtags_replace_query', array( $this, 'setup' ) );
 		add_action( 'frontity_headtags_restore_query', array( $this, 'reset' ) );
+
+		// Add filter hooks to render correct titles.
+		add_filter( 'pre_get_document_title', array( $this, 'filter_title' ), 99999 );
+		add_filter( 'wp_title', array( $this, 'filter_title' ), 99999 );
 	}
 
 	/**
@@ -50,21 +54,29 @@ class Frontity_Headtags_AIOSEO_4 {
 	}
 
 	/**
+	 * Filter the current title.
+	 * 
+	 * @param  string $wp_title  The original page title from WordPress.
+	 * @return string $pageTitle The page title filtered by AIOSEO.
+	 */
+	public static function filter_title( $wp_title = '' ) {
+		return aioseo()->meta->title->getTitle( $wp_title );
+	}
+
+	/**
 	 * Get the link of the current requested archive.
 	 * 
 	 * @return string|null
 	 */
 	public static function get_archive_url() {
-		if ( is_archive() ) {
-			$obj = get_queried_object();
+		$obj = get_queried_object();
 
-			if ( is_category() ) return get_category_link( $obj );
-			if ( is_tag() )      return get_tag_link( $obj );
-			if ( is_tax() )      return get_term_link( $obj );
-			if ( is_author() )   return get_author_posts_url( $obj->id );
-			if ( is_post_type_archive() )
-			  return get_post_type_archive_link( $obj->name );
-		}
+		if ( is_category() ) return get_category_link( $obj );
+		if ( is_tag() )      return get_tag_link( $obj );
+		if ( is_tax() )      return get_term_link( $obj );
+		if ( is_author() )   return get_author_posts_url( $obj->id );
+		if ( is_post_type_archive() )
+			return get_post_type_archive_link( $obj->name );
 
 		// Return `null` for any other case.
 		return null;
