@@ -9,8 +9,8 @@
 /**
  * Class that integrates All In One SEO Pack with this plugin.
  *
- * It adds hooks to the actions that Frontity_Headtags execute just after replacing and restore
- * the main wp_query.
+ * It adds hooks to the actions that Frontity_Headtags execute just after
+ * replacing and restore the main wp_query.
  */
 class Frontity_Headtags_AIOSEO_4 {
 
@@ -35,20 +35,8 @@ class Frontity_Headtags_AIOSEO_4 {
 		$this->previous_wp_request = $wp->request;
 
 		// Replace the `request` value with the expected path.
-
-		$id = get_queried_object_id();
-		$link = null;
-		
-		if ( is_singular() ) return;
-		else if ( is_author() )   $link = get_author_posts_url( $id );
-		else if ( is_category() ) $link = get_category_link( $id );
-		else if ( is_tag() )      $link = get_tag_link( $id );
-		else if ( is_tax() )      $link = get_term_link( $id );
-
-		$parsed = wp_parse_url( $link );
-		if ( !$parsed ) return;
-		
-		$wp->request = $parsed['path'];
+		$parsedUrl = wp_parse_url( self::get_archive_url() );
+		if ( $parsedUrl ) $wp->request = $parsedUrl['path'];
 	}
 
 	/**
@@ -56,6 +44,29 @@ class Frontity_Headtags_AIOSEO_4 {
 	 */
 	public function reset() {
 		global $wp;
+
+		// Restore the previous `request` value.
 		$wp->request = $this->previous_wp_request;
+	}
+
+	/**
+	 * Get the link of the current requested archive.
+	 * 
+	 * @return string|null
+	 */
+	public static function get_archive_url() {
+		if ( is_archive() ) {
+			$obj = get_queried_object();
+
+			if ( is_category() ) return get_category_link( $obj );
+			if ( is_tag() )      return get_tag_link( $obj );
+			if ( is_tax() )      return get_term_link( $obj );
+			if ( is_author() )   return get_author_posts_url( $obj->id );
+			if ( is_post_type_archive() )
+			  return get_post_type_archive_link( $obj->name );
+		}
+
+		// Return `null` for any other case.
+		return null;
 	}
 }
