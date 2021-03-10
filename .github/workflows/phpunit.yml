@@ -32,10 +32,10 @@ jobs:
           restore-keys: php${{ matrix.php-version }}-composer-
 
       - name: Install composer dependencies
-        run: composer install
+        run: php${{ matrix.php-version }} /usr/bin/composer install
 
       - name: Install WordPress
         run: ./bin/install-wp-tests.sh frontity_tests root root 127.0.0.1 latest
 
       - name: Run phpunit
-        run: composer phpunit
+        run: php${{ matrix.php-version }} /usr/bin/scomposer phpunit
