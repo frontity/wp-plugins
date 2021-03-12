@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   phpunit-tests:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
 
     services:
       mysql:
@@ -19,11 +19,14 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Setup composer cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.composer/cache
-          key: php7.4-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: php7.4-composer-
+          key: php-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: php-composer-
+
+      - name: Set php version to 7.4
+        run: update-alternatives --set php /usr/bin/php7.4
 
       - name: Install composer dependencies
         run: composer install
