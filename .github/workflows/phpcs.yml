@@ -18,7 +18,9 @@ jobs:
           restore-keys: php-composer-
 
       - name: Set php version to 7.4
-        run: update-alternatives --set php /usr/bin/php7.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
 
       - name: Install composer dependencies
         run: composer install
