@@ -6,11 +6,6 @@ jobs:
   phpcs:
     runs-on: ubuntu-16.04
 
-    strategy:
-      matrix:
-        php-version:
-          - "7.3"
-
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -19,11 +14,11 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.composer/cache
-          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: php${{ matrix.php-version }}-composer-
+          key: php7.4-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: php7.4-composer-
 
       - name: Install composer dependencies
-        run: php${{ matrix.php-version }} /usr/bin/composer update  --no-ansi --no-interaction --no-progress
+        run: composer install
 
       - name: Run phpcs
-        run: php${{ matrix.php-version }} /usr/bin/composer phpcs
+        run: composer phpcs
