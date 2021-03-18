@@ -1,5 +1,11 @@
 # frontity-headtags
 
+## 1.2.0
+
+### Minor Changes
+
+- [`8872e6d`](https://github.com/frontity/wp-plugins/commit/8872e6d446b03e8680bf6be69e38c63146fd7fc8) [#49](https://github.com/frontity/wp-plugins/pull/49) - Add support for the latest version of the All In One SEO plugin (^4.0.16).
+
 ## 1.1.4
 
 ### Patch Changes
