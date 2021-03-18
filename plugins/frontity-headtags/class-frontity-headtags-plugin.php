@@ -59,7 +59,8 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		require_once "$dirname/includes/hooks/class-frontity-headtags-author-hooks.php";
 		// Integrations.
 		require_once "$dirname/includes/integrations/class-frontity-headtags-yoast.php";
-		require_once "$dirname/includes/integrations/class-frontity-headtags-aioseo.php";
+		require_once "$dirname/includes/integrations/class-frontity-headtags-aioseo-3.php";
+		require_once "$dirname/includes/integrations/class-frontity-headtags-aioseo-4.php";
 		// Filters.
 		require_once "$dirname/includes/filters/class-frontity-headtags-filters.php";
 	}
@@ -101,9 +102,13 @@ class Frontity_Headtags_Plugin extends Frontity_Plugin {
 		if ( class_exists( 'WPSEO_Frontend' ) ) {
 			new Frontity_Headtags_Yoast();
 		}
-		// Setup All In One SEO Pack integration.
+		// Setup All In One SEO Pack integration (version 3).
 		if ( class_exists( 'All_in_One_SEO_Pack' ) ) {
-			new Frontity_Headtags_AIOSEO();
+			new Frontity_Headtags_AIOSEO_3();
+		}
+		// Setup All In One SEO Pack integration (version 4).
+		if ( function_exists( 'aioseo' ) ) {
+			new Frontity_Headtags_AIOSEO_4();
 		}
 	}
 
