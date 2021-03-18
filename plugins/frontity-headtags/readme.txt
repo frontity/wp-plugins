@@ -162,6 +162,11 @@ Yes, it works with both Yoast SEO and All in One SEO plugins. We actually plan t
 
 == Changelog ==
 
+= 1.2.0 =
+
+Minor Changes:
+- Add support for the latest version of the All In One SEO plugin (^4.0.16).
+
 = 1.1.4 =
 
 Patch Changes:
