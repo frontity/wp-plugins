@@ -2,7 +2,7 @@
 Contributors: poliuk, luisherranz, rmartinezduque, orballo, davidarenas, santosguillamot, frontity
 Tags: seo, rest, api, yoast, meta, tags, head, frontity
 Requires at least: 4.7
-Tested up to: 5.4
+Tested up to: 5.6
 Stable tag: trunk
 Requires PHP: 5.6
 License: GPLv3
