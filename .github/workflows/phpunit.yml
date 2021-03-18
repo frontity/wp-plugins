@@ -4,32 +4,31 @@ on: [push]
 
 jobs:
   phpunit-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     services:
       mysql:
-        image: mysql:5.7.27
+        image: mysql:8.0.23
         ports:
           - 3306:3306
         env:
           MYSQL_ROOT_PASSWORD: root
-
-    strategy:
-      matrix:
-        php-version:
-          - "5.6"
-          - "7.3"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v1
 
       - name: Setup composer cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.composer/cache
-          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: php${{ matrix.php-version }}-composer-
+          key: php-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: php-composer-
+
+      - name: Set php version to 7.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
 
       - name: Install composer dependencies
         run: composer install
