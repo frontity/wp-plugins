@@ -160,7 +160,7 @@ class Frontity_Headtags {
 		libxml_clear_errors();
 		libxml_use_internal_errors( $previous_value );
 
-		$nodes = $dom->getElementsByTagName( 'head' )[0]->childNodes;
+		$dom_node = $dom->getElementsByTagName( 'head' )[0]; $nodes = $dom_node ? $dom_node->childNodes : [];
 		
 		foreach ( $nodes as $node ) {
 
