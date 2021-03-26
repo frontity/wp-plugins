@@ -2,7 +2,7 @@
 Contributors: poliuk, luisherranz, rmartinezduque, orballo, davidarenas, santosguillamot, frontity
 Tags: seo, rest, api, yoast, meta, tags, head, frontity
 Requires at least: 4.7
-Tested up to: 5.6
+Tested up to: 5.7
 Stable tag: trunk
 Requires PHP: 5.6
 License: GPLv3
@@ -161,6 +161,12 @@ Yes, the plugin will automatically add the meta tags to the custom post types an
 Yes, it works with both Yoast SEO and All in One SEO plugins. We actually plan to make it compatible with most of the WordPress SEO plugins. If you test it with any other plugin, kindly let us know whether it works or not so we can update the list.
 
 == Changelog ==
+
+= 1.2.1 =
+
+Patch Changes:
+- Return an empty array when there is no `<head>` tag.
+
 
 = 1.2.0 =
 
