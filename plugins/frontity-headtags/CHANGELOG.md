@@ -1,5 +1,11 @@
 # frontity-headtags
 
+## 1.2.1
+
+### Patch Changes
+
+- [`8a28bb2`](https://github.com/frontity/wp-plugins/commit/8a28bb2440ed93e2c1ff536c61bd948817119df5) [#51](https://github.com/frontity/wp-plugins/pull/51) - Return an empty array when there is no `<head>` tag.
+
 ## 1.2.0
 
 ### Minor Changes
