@@ -30,7 +30,7 @@
     "@frontity/connect": "^1.0.1",
     "axios": "^0.21.1",
     "chalk": "^2.4.2",
-    "minimist": "^1.2.3"
+    "minimist": "^1.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
