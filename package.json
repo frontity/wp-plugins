@@ -47,6 +47,6 @@
     "simple-git": "^1.107.0",
     "symlink-dir": "^3.1.0",
     "webpack": "^4.35.0",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.12"
   }
 }
